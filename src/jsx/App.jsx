@@ -574,7 +574,7 @@ function App() {
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The first chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter1-min.jpg" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter1-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
@@ -605,7 +605,7 @@ function App() {
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter2-min.jpg" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter2-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
@@ -663,7 +663,7 @@ function App() {
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter3-min.jpg" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter3-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
@@ -694,7 +694,7 @@ function App() {
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter4-min.jpg" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter4-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
@@ -725,7 +725,7 @@ function App() {
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter5-min.jpg" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter5-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
