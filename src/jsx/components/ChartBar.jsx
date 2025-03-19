@@ -81,13 +81,7 @@ const BarChart = forwardRef((props, ref) => {
         enabled: false
       },
       legend: {
-        enabled: false,
-        align: 'left',
-        verticalAlign: 'top',
-        itemStyle: {
-          color: '#fff',
-          fontSize: '14px'
-        }
+        enabled: false
       },
       plotOptions: {
         bar: {
@@ -98,7 +92,7 @@ const BarChart = forwardRef((props, ref) => {
           borderRadius: 0,
           borderWidth: 2,
           colorByPoint: true,
-          cursor: 'pointer',
+          cursor: 'default',
           colors: ['#009edb', '#009edb', '#009edb'],
           dataLabels: {
             connectorColor: '#fff',
@@ -110,7 +104,19 @@ const BarChart = forwardRef((props, ref) => {
               fontWeight: 600
             }
           },
-          groupPadding: 0.1
+          enableMouseTracking: false,
+          groupPadding: 0.05, // The space between the bars.
+          states: {
+            hover: {
+              enabled: false
+            },
+            inactive: {
+              opacity: 1
+            },
+            select: {
+              enabled: false
+            }
+          }
         }
       },
       responsive: {
@@ -169,7 +175,6 @@ const BarChart = forwardRef((props, ref) => {
           color: 'transparent',
           width: 1
         },
-        reserveSpace: true,
         labels: {
           distance: 10,
           padding: 0,
@@ -185,6 +190,7 @@ const BarChart = forwardRef((props, ref) => {
         lineWidth: 0,
         opposite: false,
         plotLines: null,
+        reserveSpace: true,
         showFirstLabel: true,
         showLastLabel: true,
         tickWidth: 0,

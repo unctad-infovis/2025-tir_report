@@ -88,7 +88,7 @@ const Figure01 = forwardRef((props, ref) => {
 
 Figure01.propTypes = {
   setData2023: PropTypes.func.isRequired, // Ensure it's a function and required
-  setData2033: PropTypes.func.isRequired, // Ensure it's a function and required
+  setData2033: PropTypes.func.isRequired // Ensure it's a function and required
 };
 
 export default Figure01;

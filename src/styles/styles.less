@@ -1,6 +1,8 @@
 @import 'colors.less';
 @import 'download_buttons.less';
 @import url('https://fonts.googleapis.com/css?family=Inter:300,600,800,900.css');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=VT323&display=swap.css');
+
 
 .chapter_header {
   background-color: #27833A;
@@ -8,13 +10,24 @@
   will-change: transform, opacity;
   .content {
     color: #fff;
-    font-size: 55px;
+    font-size: 70px;
     font-weight: 700;
     letter-spacing: 0.025em;
     margin: auto auto;
     max-width: 800px;
-    padding: 5px 20px;
+    padding: 10px 20px;
+    line-height: 60px;
     text-transform: uppercase;
+    font-family: "Source Code Pro", monospace;
+    .chapter_number {
+      color: #ffcb05;
+      display: inline-block;
+      font-size: 110px;
+      margin-right: 20px;
+    }
+    .title {
+      display: inline;
+    }
   }
 }
 
@@ -120,6 +133,9 @@ hr {
   .highcharts-a11y-proxy-button {
     cursor: default !important;
   }
+  .highcharts-legend {
+    pointer-events: none !important;
+  }
 }
 
 .slide-section {
@@ -203,16 +219,29 @@ hr {
       flex-direction: column;
       top: 50vh;
       z-index: 2;
+      &.full {
+        div {
+          align-items: center;
+          background-color: #fff;
+          display: flex;
+          max-width: 100%;
+          min-height: 30vh;
+          width: 100%;
+        }
+      }
       div {
         background-color: rgba(255, 203, 5, 1);
         box-shadow: 10px 10px 10px #000;
         max-width: 400px;
+        box-sizing: border-box;
         padding: 20px 20px;
         text-align: center;
         h3 {
           font-size: 24px;
           font-weight: 800;
           line-height: 30px;
+          margin: auto auto;
+          max-width: 700px;
         }
         ol {
           margin: auto auto;
@@ -224,6 +253,8 @@ hr {
         p {
           font-size: 24px;
           line-height: 30px;
+          margin: auto auto;
+          max-width: 700px;
           span {
             font-weight: 800;
           }
@@ -240,7 +271,7 @@ hr {
   >.header_container {
     align-content: space-between;
     background-color: #8b0000;
-    background-image: url('./../assets/img/l/header.jpg');
+    background-image: url('./../assets/img/l/cover-min.jpg');
     background-position: 50% 0;
     background-repeat: no-repeat;
     background-size: cover;
@@ -251,10 +282,10 @@ hr {
     min-height: 50vh;
     position: relative;
     @media all and (max-width: 970px) {
-      background-image: url('./../assets/img/m/header.jpg');
+      background-image: url('./../assets/img/m/cover-min.jpg');
     }
     @media all and (max-width: 450px) {
-      background-image: url('./../assets/img/s/header.jpg');
+      background-image: url('./../assets/img/s/cover-min.jpg');
     }
     >div {
       box-sizing: border-box;
@@ -409,21 +440,27 @@ hr {
                 }
                 div {
                   aspect-ratio: 1/1;
-                  background-size: 100% 100%;
+                  background-position: 50% 50%;
+                  background-size: auto 100%;
                   &.chapter_image_1 {
-                    background-image: url('./../assets/img/thumbnails/ch1.jpg');
+                    // background-image: url('./../assets/img/thumbnails/ch1.jpg');
+                    background-image: url('./../assets/img/l/chapter1-min.jpg');
                   }
                   &.chapter_image_2 {
-                    background-image: url('./../assets/img/thumbnails/ch2.jpg');
+                    // background-image: url('./../assets/img/thumbnails/ch2.jpg');
+                    background-image: url('./../assets/img/l/chapter2-min.jpg');
                   }
                   &.chapter_image_3 {
-                    background-image: url('./../assets/img/thumbnails/ch3.jpg');
+                    // background-image: url('./../assets/img/thumbnails/ch3.jpg');
+                    background-image: url('./../assets/img/l/chapter3-min.jpg');
                   }
                   &.chapter_image_4 {
-                    background-image: url('./../assets/img/thumbnails/ch4.jpg');
+                    // background-image: url('./../assets/img/thumbnails/ch4.jpg');
+                    background-image: url('./../assets/img/l/chapter4-min.jpg');
                   }
                   &.chapter_image_5 {
-                    background-image: url('./../assets/img/thumbnails/ch5.jpg');
+                    // background-image: url('./../assets/img/thumbnails/ch5.jpg');
+                    background-image: url('./../assets/img/l/chapter5-min.jpg');
                   }
                 }
               }

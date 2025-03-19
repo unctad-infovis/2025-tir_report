@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 // https://www.highcharts.com/
 
 import Highcharts from 'highcharts';
+import 'highcharts/modules/treemap';
 import 'highcharts/modules/accessibility';
 import 'highcharts/modules/exporting';
 import 'highcharts/modules/export-data';
@@ -30,7 +31,7 @@ Highcharts.SVGRenderer.prototype.symbols.download = (x, y, w, h) => {
   return path;
 };
 
-const ScatterPlotChart = forwardRef((props, ref) => {
+const TreemapChart = forwardRef((props, ref) => {
   const chartRef = useRef();
   const isVisible = useIsVisible(chartRef, { once: true });
 
@@ -65,7 +66,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
           fontFamily: 'Inter',
           fontWeight: 400
         },
-        type: 'scatter'
+        type: 'treemap'
       },
       credits: {
         enabled: false
@@ -81,71 +82,59 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         enabled: false
       },
       legend: {
-        align: 'left',
-        enabled: true,
-        events: {
-          itemClick() {
-            return false;
+        enabled: false
+      },
+      series: [{
+        borderColor: '#fff',
+        borderRadius: 0,
+        borderWidth: 0,
+        data: props.data,
+        enableMouseTracking: false,
+        layoutAlgorithm: 'sliceAndDice',
+        levels: [{
+          level: 1,
+          layoutAlgorithm: 'sliceAndDice',
+          dataLabels: {
+            align: 'left',
+            enabled: true,
+            padding: 5,
+            style: {
+              color: '#000',
+              fontSize: '20px',
+              fontWeight: 600,
+              textOutline: 'none'
+            },
+            verticalAlign: 'top'
+          }
+        }, {
+          level: 2,
+          layoutAlgorithm: 'sliceAndDice',
+          dataLabels: {
+            align: 'right',
+            allowOverlap: true,
+            enabled: true,
+            padding: 5,
+            style: {
+              fontSize: '15px',
+              fontWeight: 400,
+              textOutline: 'none'
+            },
+            verticalAlign: 'bottom',
+          }
+        }],
+        states: {
+          hover: {
+            enabled: false
+          },
+          inactive: {
+            opacity: 1
+          },
+          select: {
+            enabled: false
           }
         },
-        itemDistance: 10,
-        itemStyle: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        squareSymbol: false,
-        symbolHeight: 12,
-        symbolRadius: 6,
-        symbolWidth: 12,
-        verticalAlign: 'top'
-      },
-      plotOptions: {
-        scatter: {
-          allowPointSelect: false,
-          animation: {
-            duration: 2000
-          },
-          borderRadius: 0,
-          borderWidth: 2,
-          cursor: 'default',
-          dataLabels: {
-            enabled: true,
-            format: '{point.name}',
-            style: {
-              fontSize: 18,
-              fontWeight: 600
-            }
-          },
-          enableMouseTracking: false,
-          marker: {
-            radius: 3,
-            symbol: 'circle',
-            states: {
-              hover: {
-                enabled: false
-              },
-              select: {
-                enabled: false
-              }
-            }
-          },
-          states: {
-            hover: {
-              enabled: false
-            },
-            inactive: {
-              opacity: 1
-            },
-            select: {
-              enabled: false
-            }
-          },
-          jitter: {
-            x: 0.005
-          },
-          groupPadding: 0.1
-        }
-      },
+        type: 'treemap'
+      }],
       responsive: {
         rules: [{
           chartOptions: {
@@ -165,7 +154,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
           }
         }]
       },
-      series: props.data,
       subtitle: {
         align: 'left',
         enabled: true,
@@ -181,7 +169,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       },
       title: {
         align: 'left',
-        margin: 20,
         minScale: 1,
         style: {
           color: '#fff',
@@ -194,78 +181,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       },
       tooltip: {
         enabled: false
-      },
-      xAxis: {
-        endOnTick: false,
-        gridLineColor: '#555',
-        gridLineDashStyle: 'shortdot',
-        gridLineWidth: 1,
-        labels: {
-          distance: 10,
-          padding: 0,
-          rotation: 0,
-          style: {
-            color: '#666',
-            fontFamily: 'Inter',
-            fontSize: '14px',
-            fontWeight: 400
-          }
-        },
-        lineColor: '#666',
-        lineWidth: 1,
-        max: 10,
-        min: 0,
-        opposite: false,
-        plotLines: [],
-        showFirstLabel: true,
-        showLastLabel: true,
-        startOnTick: false,
-        tickInterval: 2,
-        tickWidth: 0,
-        title: {
-          enabled: true,
-          style: {
-            fontFamily: 'Inter',
-            fontWeight: 400
-          },
-          text: 'Share of developers compared to working age population'
-        }
-      },
-      yAxis: {
-        endOnTick: false,
-        gridLineColor: '#555',
-        gridLineDashStyle: 'shortdot',
-        gridLineWidth: 1,
-        labels: {
-          distance: 10,
-          padding: 0,
-          rotation: 0,
-          style: {
-            color: '#666',
-            fontFamily: 'Inter',
-            fontSize: '14px',
-            fontWeight: 400
-          }
-        },
-        lineColor: '#666',
-        lineWidth: 1,
-        max: 60,
-        min: 0,
-        opposite: false,
-        plotLines: [],
-        showFirstLabel: true,
-        startOnTick: false,
-        tickInterval: 20,
-        showLastLabel: true,
-        title: {
-          enabled: true,
-          style: {
-            fontFamily: 'Inter',
-            fontWeight: 400
-          },
-          text: 'Share of working age population with advanced degree'
-        },
-        type: 'linear'
       }
     });
     chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;
@@ -295,9 +210,9 @@ const ScatterPlotChart = forwardRef((props, ref) => {
   );
 });
 
-export default ScatterPlotChart;
+export default TreemapChart;
 
-ScatterPlotChart.propTypes = {
+TreemapChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
   idx: PropTypes.string.isRequired,

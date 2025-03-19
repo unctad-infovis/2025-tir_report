@@ -30,7 +30,7 @@ Highcharts.SVGRenderer.prototype.symbols.download = (x, y, w, h) => {
   return path;
 };
 
-const ScatterPlotChart = forwardRef((props, ref) => {
+const LineChart = forwardRef((props, ref) => {
   const chartRef = useRef();
   const isVisible = useIsVisible(chartRef, { once: true });
 
@@ -65,7 +65,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
           fontFamily: 'Inter',
           fontWeight: 400
         },
-        type: 'scatter'
+        type: 'line'
       },
       credits: {
         enabled: false
@@ -82,44 +82,41 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       },
       legend: {
         align: 'left',
+        alignColumns: false,
         enabled: true,
+        itemStyle: {
+          color: '#fff',
+          fontSize: '14px'
+        },
         events: {
           itemClick() {
             return false;
           }
         },
-        itemDistance: 10,
-        itemStyle: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        squareSymbol: false,
-        symbolHeight: 12,
-        symbolRadius: 6,
-        symbolWidth: 12,
+        margin: 30,
         verticalAlign: 'top'
       },
       plotOptions: {
-        scatter: {
+        line: {
           allowPointSelect: false,
           animation: {
-            duration: 2000
+            duration: 500
           },
-          borderRadius: 0,
-          borderWidth: 2,
-          cursor: 'default',
+          cursor: 'pointer',
           dataLabels: {
-            enabled: true,
-            format: '{point.name}',
+            connectorColor: '#fff',
+            connectorWidth: 0,
+            enabled: false,
+            inside: false,
             style: {
-              fontSize: 18,
+              fontSize: 26,
               fontWeight: 600
             }
           },
           enableMouseTracking: false,
+          lineWidth: 6,
           marker: {
-            radius: 3,
-            symbol: 'circle',
+            enabled: false,
             states: {
               hover: {
                 enabled: false
@@ -128,22 +125,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
                 enabled: false
               }
             }
-          },
-          states: {
-            hover: {
-              enabled: false
-            },
-            inactive: {
-              opacity: 1
-            },
-            select: {
-              enabled: false
-            }
-          },
-          jitter: {
-            x: 0.005
-          },
-          groupPadding: 0.1
+          }
         }
       },
       responsive: {
@@ -181,7 +163,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       },
       title: {
         align: 'left',
-        margin: 20,
         minScale: 1,
         style: {
           color: '#fff',
@@ -196,74 +177,75 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         enabled: false
       },
       xAxis: {
-        endOnTick: false,
-        gridLineColor: '#555',
-        gridLineDashStyle: 'shortdot',
-        gridLineWidth: 1,
+        categories: props.data[0].data.map(el => el.name),
+        crosshair: {
+          color: 'transparent',
+          width: 1
+        },
         labels: {
           distance: 10,
           padding: 0,
           rotation: 0,
           style: {
-            color: '#666',
+            color: '#fff',
             fontFamily: 'Inter',
             fontSize: '14px',
             fontWeight: 400
           }
         },
-        lineColor: '#666',
-        lineWidth: 1,
-        max: 10,
-        min: 0,
+        lineColor: 'transparent',
+        lineWidth: 0,
         opposite: false,
-        plotLines: [],
+        plotLines: null,
+        reserveSpace: false,
         showFirstLabel: true,
         showLastLabel: true,
-        startOnTick: false,
-        tickInterval: 2,
         tickWidth: 0,
         title: {
-          enabled: true,
-          style: {
-            fontFamily: 'Inter',
-            fontWeight: 400
-          },
-          text: 'Share of developers compared to working age population'
+          enabled: false
         }
       },
       yAxis: {
-        endOnTick: false,
+        accessibility: {
+          description: 'Index'
+        },
+        allowDecimals: true,
         gridLineColor: '#555',
-        gridLineDashStyle: 'shortdot',
         gridLineWidth: 1,
+        gridLineDashStyle: 'shortdot',
         labels: {
-          distance: 10,
-          padding: 0,
           rotation: 0,
           style: {
-            color: '#666',
+            color: '#fff',
             fontFamily: 'Inter',
             fontSize: '14px',
             fontWeight: 400
           }
         },
-        lineColor: '#666',
-        lineWidth: 1,
-        max: 60,
+        endOnTick: false,
+        lineColor: 'transparent',
+        lineWidth: 0,
+        max: 70,
         min: 0,
-        opposite: false,
-        plotLines: [],
         showFirstLabel: true,
-        startOnTick: false,
-        tickInterval: 20,
         showLastLabel: true,
+        startOnTick: false,
+        tickInterval: 10,
         title: {
+          align: 'high',
           enabled: true,
+          offset: 0,
+          reserveSpace: false,
+          rotation: 0,
           style: {
+            color: '#fff',
             fontFamily: 'Inter',
-            fontWeight: 400
+            fontSize: '16px',
+            fontWeight: 600
           },
-          text: 'Share of working age population with advanced degree'
+          text: 'Percentage',
+          x: 115,
+          y: 5
         },
         type: 'linear'
       }
@@ -295,9 +277,9 @@ const ScatterPlotChart = forwardRef((props, ref) => {
   );
 });
 
-export default ScatterPlotChart;
+export default LineChart;
 
-ScatterPlotChart.propTypes = {
+LineChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
   idx: PropTypes.string.isRequired,

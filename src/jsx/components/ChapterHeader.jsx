@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import PropTypes from 'prop-types';
 
-function ChapterHeader({ title }) {
+function ChapterHeader(props) {
+  const { chapter_number, title } = props;
   const headerRef = useRef(null);
   const [scrollPercentage, setScrollPercentage] = useState(0);
 
@@ -28,21 +29,17 @@ function ChapterHeader({ title }) {
 
   return (
     <div ref={headerRef} className="chapter_header">
-      <div
-        className="content"
-        style={{
-          transform: `translateX(${(1 - scrollPercentage) * -10}%)`,
-          opacity: scrollPercentage
-        }}
-      >
-        {title}
+      <div className="content" style={{ opacity: scrollPercentage, transform: `translateX(${(1 - scrollPercentage) * -10}%)` }}>
+        <div className="chapter_number">{chapter_number}</div>
+        <div className="title">{title}</div>
       </div>
     </div>
   );
 }
 
 ChapterHeader.propTypes = {
-  title: PropTypes.string.isRequired, // Ensure it's a function and required
+  chapter_number: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default ChapterHeader;

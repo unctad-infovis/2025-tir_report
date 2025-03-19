@@ -207,8 +207,6 @@ const Figure03 = forwardRef((props, ref) => {
       }
     });
 
-    console.log(formattedDataStage8);
-
     return {
       formattedDataStage1: structuredClone(formattedDataStage1),
       formattedDataStage2: structuredClone(formattedDataStage2),

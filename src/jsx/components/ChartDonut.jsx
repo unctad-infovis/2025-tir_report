@@ -30,10 +30,8 @@ Highcharts.SVGRenderer.prototype.symbols.download = (x, y, w, h) => {
   return path;
 };
 
-// eslint-disable-next-line
-(function (H) {
-  // eslint-disable-next-line
-  H.seriesTypes.pie.prototype.animate = function (init) {
+(function custom_animation(H) {
+  H.seriesTypes.pie.prototype.animate = function init_animation(init) {
     const series = this;
     const { chart } = series;
     const { points } = series;
@@ -49,53 +47,45 @@ Highcharts.SVGRenderer.prototype.symbols.download = (x, y, w, h) => {
       const args = point.shapeArgs;
 
       if (graphic && args) {
-        graphic
-          // Set inital animation values
-          .attr({
-            start: startAngleRadius,
-            end: startAngleRadius,
-            opacity: 1
-          })
-          // Animate to the final position
-          .animate({
-            start: args.start,
-            end: args.end
-          }, {
-            duration: animation.duration / points.length
-          }, () => {
-            // On complete, start animating the next point
-            if (points[point.index + 1]) {
-              fanAnimate(points[point.index + 1], args.end);
-            }
-            // On the last point, fade in the data labels, then
-            // apply the inner size
-            if (point.index === series.points.length - 1) {
-              series.dataLabelsGroup.animate(
-                {
-                  opacity: 1
-                },
-                undefined,
-                // eslint-disable-next-line
-                // void 0,
-                () => {
-                  points.forEach(p => {
-                    p.opacity = 1;
-                  });
-                  series.update({
-                    enableMouseTracking: true
-                  }, false);
-                  chart.update({
-                    plotOptions: {
-                      pie: {
-                        innerSize: '40%',
-                        borderRadius: 0
-                      }
+        graphic.attr({ // Set inital animation values
+          start: startAngleRadius,
+          end: startAngleRadius,
+          opacity: 1
+        }).animate({ // Animate to the final position
+          start: args.start,
+          end: args.end
+        }, {
+          duration: animation.duration / points.length
+        }, () => {
+          // On complete, start animating the next point
+          if (points[point.index + 1]) {
+            fanAnimate(points[point.index + 1], args.end);
+          }
+          // On the last point, fade in the data labels, then
+          // apply the inner size
+          if (point.index === series.points.length - 1) {
+            series.dataLabelsGroup.animate(
+              {
+                opacity: 1
+              },
+              undefined,
+              () => {
+                points.forEach(p => {
+                  p.opacity = 1;
+                });
+                chart.update({
+                  plotOptions: {
+                    pie: {
+                      innerSize: '40%',
+                      borderRadius: 0
                     }
-                  });
-                }
-              );
-            }
-          });
+                  }
+                });
+                document.querySelector('.highcharts-label').style.display = 'block';
+              }
+            );
+          }
+        });
       }
     }
     if (init) {
@@ -128,8 +118,8 @@ const DonutChart = forwardRef((props, ref) => {
         x: 0
       },
       chart: {
-        custom: {},
         backgroundColor: '#000',
+        custom: {},
         height: props.chart_height,
         events: {
           load() {
@@ -144,28 +134,23 @@ const DonutChart = forwardRef((props, ref) => {
             if (!customLabel) {
               chart_el.options.chart.custom.label = chart_el.renderer.label(
                 'In 2023<br/><strong>$2&nbsp;542</strong>'
-              )
-                .css({
-                  color: '#fff',
-                  textAnchor: 'middle'
-                })
-                .add();
+              ).css({
+                color: '#fff',
+                display: 'none',
+                textAnchor: 'middle'
+              }).add();
               customLabel = chart_el.options.chart.custom.label;
             }
-
             const x = series.center[0] + chart_el.plotLeft;
             const y = series.center[1] + chart_el.plotTop - (customLabel.attr('height') / 2);
-
             customLabel.attr({
               x,
               y
             });
-            // Set font size based on chart diameter
             customLabel.css({
-              fontSize: `${series.center[2] / 12}px`
+              fontSize: `${series.center[2] / 12}px` // Set font size based on chart diameter
             });
           }
-
         },
         style: {
           color: '#fff',
@@ -188,13 +173,18 @@ const DonutChart = forwardRef((props, ref) => {
         enabled: false
       },
       legend: {
-        enabled: true,
         align: 'left',
-        verticalAlign: 'top',
+        enabled: true,
         itemStyle: {
           color: '#fff',
           fontSize: '14px'
-        }
+        },
+        events: {
+          itemClick() {
+            return false;
+          }
+        },
+        verticalAlign: 'top'
       },
       plotOptions: {
         pie: {
@@ -204,11 +194,10 @@ const DonutChart = forwardRef((props, ref) => {
           },
           borderRadius: 0,
           borderWidth: 2,
-          cursor: 'pointer',
+          cursor: 'default',
           dataLabels: {
             connectorColor: '#fff',
             connectorWidth: 0,
-            // connectorShape: 'straight',
             enabled: true,
             formatter() {
               const el = this;
@@ -216,16 +205,29 @@ const DonutChart = forwardRef((props, ref) => {
             },
             distance: -50,
             style: {
-              fontSize: 18,
-              fontWeight: 600
+              fontSize: 20,
+              fontWeight: 600,
+              textOutline: 'none'
             },
             y: 8
           },
           dataSorting: {
             enabled: false
           },
+          enableMouseTracking: false,
           showInLegend: true,
-          slicedOffset: 30
+          slicedOffset: 30,
+          states: {
+            hover: {
+              enabled: false
+            },
+            inactive: {
+              opacity: 1
+            },
+            select: {
+              enabled: false
+            }
+          }
         }
       },
       responsive: {
@@ -277,77 +279,6 @@ const DonutChart = forwardRef((props, ref) => {
       },
       tooltip: {
         enabled: false
-      },
-      xAxis: {
-        categories: props.data[0].labels,
-        crosshair: {
-          color: 'transparent',
-          width: 1
-        },
-        reserveSpace: true,
-        labels: {
-          formatter: (el) => el.Name,
-          distance: 10,
-          padding: 0,
-          rotation: 0,
-          style: {
-            color: 'rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Inter',
-            fontSize: '14px',
-            fontWeight: 400
-          },
-          useHTML: true
-        },
-        lineColor: 'transparent',
-        lineWidth: 0,
-        opposite: false,
-        plotLines: null,
-        showFirstLabel: true,
-        showLastLabel: true,
-        tickWidth: 0,
-        title: {
-          enabled: false
-        },
-        type: 'category'
-      },
-      yAxis: {
-        accessibility: {
-          description: 'Index'
-        },
-        allowDecimals: true,
-        gridLineColor: 'rgba(124, 112, 103, 0.2)',
-        gridLineWidth: 1,
-        gridLineDashStyle: 'shortdot',
-        labels: {
-          rotation: 0,
-          style: {
-            color: 'rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Inter',
-            fontSize: '14px',
-            fontWeight: 400
-          }
-        },
-        endOnTick: false,
-        lineColor: 'transparent',
-        lineWidth: 0,
-        opposite: true,
-        startOnTick: false,
-        showFirstLabel: false,
-        showLastLabel: true,
-        title: {
-          enabled: true,
-          reserveSpace: true,
-          rotation: 0,
-          style: {
-            color: 'rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: 400
-          },
-          text: '',
-          verticalAlign: 'top',
-        },
-        type: 'linear'
       }
     });
     chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;

@@ -14,6 +14,8 @@ import ShareContainer from './components/ShareContainer.jsx';
 import Figure01 from './Figure01.jsx';
 import Figure02 from './Figure02.jsx';
 import Figure03 from './Figure03.jsx';
+import Figure04 from './Figure04.jsx';
+import Figure05 from './Figure05.jsx';
 import ChapterHeader from './components/ChapterHeader.jsx';
 
 function App() {
@@ -32,16 +34,16 @@ function App() {
   // track('Scroll', chapter);
   // };
 
+  /** *********
+  * FIGURE 1 *
+  *********** */
+
   const [figure01Data2023, setFigure01Data2023] = useState([]);
   const [figure01Data2033, setFigure01Data2033] = useState([]);
   const [positionFigure01, setPositionFigure01] = useState('');
   const aboveSwitchPointFigure01 = useRef(true);
   const fixedSectionRefFigure01 = useRef(null);
   const chartFigure01 = useRef(null);
-
-  /** ************************************
-  * FIGURE 1
-  ************************************* */
 
   const handleScrollFigure01 = useCallback(() => {
     fixedSectionRefFigure01.current.style.height = '400vh';
@@ -62,9 +64,11 @@ function App() {
     const isAbove = relativeScroll < switchPoint;
     if (aboveSwitchPointFigure01.current === isAbove) return;
 
-    aboveSwitchPointFigure01.current = isAbove;
+    if (chartFigure01.current) {
+      aboveSwitchPointFigure01.current = isAbove;
+    }
     const newData = isAbove ? figure01Data2023 : figure01Data2033;
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-irregular-whitespace
     const newLabel = `${isAbove ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="60" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove ? '$2&nbsp;542' : '$16&nbsp;420'}</tspan>`;
 
     if (!chartFigure01.current) return;
@@ -78,9 +82,9 @@ function App() {
     return () => window.removeEventListener('scroll', handleScrollFigure01);
   }, [handleScrollFigure01]);
 
-  /** ************************************
-  * FIGURE 2
-  ************************************* */
+  /** *********
+  * FIGURE 2 *
+  *********** */
 
   const [figure02Data, setFigure02Data] = useState([]);
   const [positionFigure02, setPositionFigure02] = useState('absolute_bottom');
@@ -115,7 +119,9 @@ function App() {
 
     if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
 
-    aboveSwitchPointFigure02.current = newState;
+    if (chartFigure02.current) {
+      aboveSwitchPointFigure02.current = newState;
+    }
 
     if (!figure02Data) return;
 
@@ -137,9 +143,9 @@ function App() {
     return () => window.removeEventListener('scroll', handleScrollFigure02);
   }, [handleScrollFigure02]);
 
-  /** ************************************
-  * FIGURE 3
-  ************************************* */
+  /** *********
+  * FIGURE 3 *
+  *********** */
 
   const [figure03DataStage1, setFigure03DataStage1] = useState([]);
   const [figure03DataStage2, setFigure03DataStage2] = useState([]);
@@ -214,7 +220,10 @@ function App() {
     }
 
     if (aboveSwitchPointFigure03.current === newData) return;
-    aboveSwitchPointFigure03.current = newData;
+
+    if (chartFigure03.current) {
+      aboveSwitchPointFigure03.current = newData;
+    }
 
     // Update chart data
     if (!chartFigure03.current) return;
@@ -225,18 +234,18 @@ function App() {
 
     chartFigure03.current.xAxis[0].update({
       plotLines: [{
-        color: '#999999',
+        color: '#eee',
         dashStyle: 'dash',
         value: 2.7,
-        width: (position > 1 && position < 8) ? 1 : 0,
+        width: (position > 1 && position < 8) ? 1.5 : 0,
       }]
     }, false);
     chartFigure03.current.yAxis[0].update({
       plotLines: [{
-        color: '#999999',
+        color: '#eee',
         dashStyle: 'dash',
         value: 18.5,
-        width: (position > 1 && position < 8) ? 1 : 0,
+        width: (position > 1 && position < 8) ? 1.5 : 0,
       }]
     }, false);
 
@@ -299,6 +308,117 @@ function App() {
     return () => window.removeEventListener('scroll', handleScrollFigure03);
   }, [handleScrollFigure03]);
 
+  /** *********
+  * FIGURE 4 *
+  *********** */
+
+  const [figure04Data, setFigure04Data] = useState([]);
+  const [positionFigure04, setPositionFigure04] = useState('absolute_bottom');
+  const aboveSwitchPointFigure04 = useRef({ isAbove1: false, isAbove2: false });
+  const fixedSectionRefFigure04 = useRef(null);
+  const chartFigure04 = useRef(null);
+
+  const handleScrollFigure04 = useCallback(() => {
+    fixedSectionRefFigure04.current.style.height = '350vh';
+    const fixedTop = fixedSectionRefFigure04.current.offsetTop;
+    const fixedBottom = fixedTop + fixedSectionRefFigure04.current.offsetHeight - window.innerHeight;
+    const { scrollY } = window;
+    const relativeScroll = scrollY - fixedTop;
+    const switchPoint1 = window.innerHeight;
+    const switchPoint2 = window.innerHeight * 2;
+
+    // Determine position state
+    setPositionFigure04(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed'
+          : 'absolute_bottom'
+    );
+
+    if (!fixedSectionRefFigure04.current || !chartFigure04.current) return;
+    // Define states for switch points
+    const isAbove1 = relativeScroll < switchPoint1;
+    const isAbove2 = relativeScroll < switchPoint2;
+
+    // Store previous state to avoid unnecessary updates
+    const prevState = aboveSwitchPointFigure04.current;
+    const newState = { isAbove1, isAbove2 };
+
+    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
+
+    aboveSwitchPointFigure04.current = newState;
+
+    if (!figure04Data) return;
+
+    if (!isAbove1) {
+      chartFigure04.current.update({
+      });
+    }
+    chartFigure04.current.update({
+    });
+  }, [figure04Data]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollFigure04);
+    return () => window.removeEventListener('scroll', handleScrollFigure04);
+  }, [handleScrollFigure04]);
+
+  /** *********
+  * FIGURE 5 *
+  *********** */
+
+  const [figure05DataFirst, setFigure05DataFirst] = useState([]);
+  const [figure05DataSecond, setFigure05DataSecond] = useState([]);
+  const [positionFigure05, setPositionFigure05] = useState('absolute_bottom');
+  const aboveSwitchPointFigure05 = useRef({ isAbove1: false, isAbove2: false });
+  const fixedSectionRefFigure05 = useRef(null);
+  const chartFigure05 = useRef(null);
+
+  const handleScrollFigure05 = useCallback(() => {
+    fixedSectionRefFigure05.current.style.height = '350vh';
+    const fixedTop = fixedSectionRefFigure05.current.offsetTop;
+    const fixedBottom = fixedTop + fixedSectionRefFigure05.current.offsetHeight - window.innerHeight;
+    const { scrollY } = window;
+    const relativeScroll = scrollY - fixedTop;
+    const switchPoint1 = window.innerHeight;
+    const switchPoint2 = window.innerHeight * 2;
+
+    // Determine position state
+    setPositionFigure05(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed'
+          : 'absolute_bottom'
+    );
+
+    if (!fixedSectionRefFigure05.current || !chartFigure05.current) return;
+    // Define states for switch points
+    const isAbove1 = relativeScroll < switchPoint1;
+    const isAbove2 = relativeScroll < switchPoint2;
+
+    // Store previous state to avoid unnecessary updates
+    const prevState = aboveSwitchPointFigure05.current;
+    const newState = { isAbove1, isAbove2 };
+
+    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
+
+    if (chartFigure05.current) {
+      aboveSwitchPointFigure05.current = newState;
+    }
+
+    const newData = isAbove1 ? figure05DataFirst : figure05DataSecond;
+    // eslint-disable-next-line
+
+    if (!chartFigure05.current) return;
+    const newDataCopy = structuredClone(newData);
+    chartFigure05.current.series[0].setData(newDataCopy, false);
+
+    chartFigure05.current.redraw();
+  }, [figure05DataFirst, figure05DataSecond]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollFigure05);
+    return () => window.removeEventListener('scroll', handleScrollFigure05);
+  }, [handleScrollFigure05]);
+
   const scrollTo = useCallback((target, name) => {
     track('Button', name);
     setTimeout(() => {
@@ -333,6 +453,12 @@ function App() {
     return false;
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('scroll'));
+    }, 500); // A short delay ensures the DOM is ready
+  }, []);
+
   return (
     <div className="app" ref={appRef}>
       { /* Header */}
@@ -352,14 +478,13 @@ function App() {
             Inclusive Artificial Intelligence for development
             <div className="share_wrapper"><ShareContainer url={window.location.href} /></div>
           </h2>
-
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tir2024overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="overview">Overview</a>
             <a href="/system/files/official-document/tir2024_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Full report</a>
           </div>
           <div className="chapters_navigation_container">
             {
-              ['The macro-economics of discontent', 'The illusion of a rebound', 'Globalization at an inflection point', 'Rise, retreat and repositioning: Lessons from the Global South', 'The Global South and new international tax architecture'].map((chapter_title, i) => (
+              ['AI at the technology frontier', 'Leveraging AI for productivity and workers’ empowerment', 'Preparing to seize AI opportunities', 'Designing national policies for AI', 'Global collaboration for inclusive and equitable AI'].map((chapter_title, i) => (
                 <button onClick={() => scrollTo(`.chapter_header_${i + 1}`, `To chapter ${i + 1}`)} type="button" key={chapter_title}>
                   <div className="chapter_navigation">
                     <div className="chapter_title"><h2>{chapter_title}</h2></div>
@@ -402,11 +527,12 @@ function App() {
         </div>
       </div>
 
-      <ChapterHeader title="Chapter 1" />
+      { /* Chapter 1 */ }
+      <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
       <div ref={fixedSectionRefFigure01} className="fixed-section">
         <div className={`fixed-background ${positionFigure01}`}>
           <div className="chart_container_full">
-            <Figure01 ref={chartFigure01} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
+            <Figure01 ref={chartFigure01} above={aboveSwitchPointFigure01.current} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
           </div>
         </div>
         <div className="scroll-elements">
@@ -441,21 +567,20 @@ function App() {
           </div>
         </div>
       </div>
-
-      { /* Chapter 1 */ }
       <div className="content_container">
         <div className="text_container">
-          <h2>1: The Rise of AI and Global Economic Shifts</h2>
+          <h2>Chapter 1: AI at the technology frontier</h2>
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The first chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/image5.png" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter1-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
 
-      <ChapterHeader title="Chapter 2" />
+      { /* Chapter 2 */ }
+      <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
       <div ref={fixedSectionRefFigure02} className="fixed-section">
         <div className={`fixed-background ${positionFigure02}`}>
           <div className="chart_container_full">
@@ -473,21 +598,20 @@ function App() {
           </div>
         </div>
       </div>
-
-      { /* Chapter 2 */ }
       <div className="content_container">
         <div className="text_container">
-          <h2>2: The Fall of AI and Local Economic Shifts</h2>
+          <h2>Chapter 2: Leveraging AI for productivity and workers’ empowerment</h2>
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/image5.png" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter2-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>
 
-      <ChapterHeader title="Chapter 3" />
+      { /* Chapter 3 */ }
+      <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
       <div ref={fixedSectionRefFigure03} className="fixed-section">
         <div className={`fixed-background ${positionFigure03}`}>
           <div className="chart_container_full">
@@ -532,16 +656,76 @@ function App() {
           <div className="scroll-content"><div><p>In this analysis the are categorised as practitioners and laggars.</p></div></div>
         </div>
       </div>
-
-      { /* Chapter 3 */ }
       <div className="content_container">
         <div className="text_container">
-          <h2>3: The Death of AI and Local Economic Shifts</h2>
+          <h2>Chapter 3: Preparing to seize AI opportunities</h2>
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
           <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
-          <div className="media_container"><div className="image_container"><img src="/assets/img/image5.png" alt="" /></div></div>
+          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter3-min.jpg" alt="" /></div></div>
+          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+        </div>
+      </div>
+
+      { /* Chapter 4 */ }
+      <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
+      <div ref={fixedSectionRefFigure04} className="fixed-section">
+        <div className={`fixed-background ${positionFigure04}`}>
+          <div className="chart_container_full">
+            <Figure04 ref={chartFigure04} setData={setFigure04Data} />
+          </div>
+        </div>
+        <div className="scroll-elements">
+          <div className="scroll-content"><div><p>Jobs in all economies are affected by artificial intelligence.</p></div></div>
+          <div className="scroll-content"><div><p>But jobs in developed economies are the to get hit.</p></div></div>
+          <div className="scroll-content">
+            <div>
+              <p>But developing economies are not far behind.</p>
+              <p>And therefore now is the time to take action.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="content_container">
+        <div className="text_container">
+          <h2>Chapter 4: Designing national policies for AI</h2>
+          <div className="download_buttons_container">
+            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
+          </div>
+          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter4-min.jpg" alt="" /></div></div>
+          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+        </div>
+      </div>
+
+      { /* Chapter 5 */ }
+      <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
+      <div ref={fixedSectionRefFigure05} className="fixed-section">
+        <div className={`fixed-background ${positionFigure05}`}>
+          <div className="chart_container_full">
+            <Figure05 ref={chartFigure05} setDataFirst={setFigure05DataFirst} setDataSecond={setFigure05DataSecond} />
+          </div>
+        </div>
+        <div className="scroll-elements">
+          <div className="scroll-content"><div><p>75 countrie are part of at least one.</p></div></div>
+          <div className="scroll-content full"><div><p>118 countries countries, primarily in the global South, are not parties to any of the sampled initiatives or instruments.</p></div></div>
+          <div className="scroll-content">
+            <div>
+              <p>And this is a huge.</p>
+              <p>Problem.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="content_container">
+        <div className="text_container">
+          <h2>Chapter 5: Global collaboration for inclusive and equitable AI</h2>
+          <div className="download_buttons_container">
+            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
+          </div>
+          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <div className="media_container"><div className="image_container"><img src="/assets/img/l/chapter5-min.jpg" alt="" /></div></div>
           <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
         </div>
       </div>

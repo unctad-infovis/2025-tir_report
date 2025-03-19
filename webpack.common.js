@@ -76,6 +76,8 @@ module.exports = {
         { from: 'assets/data/figure01 - data.csv', to: '../public/assets/data/2025-tir_report_figure01_data.csv', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
         { from: 'assets/data/figure02 - data.csv', to: '../public/assets/data/2025-tir_report_figure02_data.csv', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
         { from: 'assets/data/figure03 - data.csv', to: '../public/assets/data/2025-tir_report_figure03_data.csv', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
+        { from: 'assets/data/figure04 - data.csv', to: '../public/assets/data/2025-tir_report_figure04_data.csv', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
+        { from: 'assets/data/figure05 - data.csv', to: '../public/assets/data/2025-tir_report_figure05_data.csv', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
         { from: 'src/font/', to: '../public/font/', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }},
         { from: './favicon.png', to: '../public', noErrorOnMissing: true, globOptions: { dot: true, gitignore: true, ignore: ['**/.DS_Store'] }}
       ]
