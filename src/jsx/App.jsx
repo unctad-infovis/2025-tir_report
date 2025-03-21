@@ -1,5 +1,5 @@
 import React, {
-  useRef, useState, useEffect, useCallback
+  useRef, useState, useEffect, useCallback, useMemo
 } from 'react';
 import '../styles/styles.less';
 
@@ -13,6 +13,7 @@ import ShareContainer from './components/ShareContainer.jsx';
 
 import FigureIntro from './FigureIntro.jsx';
 import Figure01 from './Figure01.jsx';
+import Figure01Alt from './Figure01Alt.jsx';
 import Figure02 from './Figure02.jsx';
 import Figure03 from './Figure03.jsx';
 import Figure04 from './Figure04.jsx';
@@ -40,7 +41,7 @@ function App() {
   * FIGURE INTRO *
   *********** */
 
-  const [figureIntroData, setFigureIntroData] = useState(18.9);
+  const [figureIntroData, setFigureIntroData] = useState(19);
   const [figureIntroHighlight, setFigureIntroHighlight] = useState(false);
   const [positionFigureIntro, setPositionFigureIntro] = useState('');
   const aboveSwitchPointFigureIntro = useRef(true);
@@ -143,6 +144,124 @@ function App() {
     window.addEventListener('scroll', handleScrollFigure01);
     return () => window.removeEventListener('scroll', handleScrollFigure01);
   }, [handleScrollFigure01]);
+
+  /** *********
+  * FIGURE 1 ALT *
+  *********** */
+
+  const figure01_data = useMemo(() => ({
+    2023: [{
+      fill: '#fbaf17',
+      id: 1,
+      name: 'Internet of things',
+      percentage: 36,
+      value: 925
+    }, {
+      fill: '#004987',
+      id: 2,
+      name: 'Electric vehicles',
+      percentage: 15,
+      value: 388
+    }, {
+      fill: '#009edb',
+      id: 3,
+      name: 'Artificial intelligence',
+      percentage: 7,
+      value: 189
+    }, {
+      fill: '#b06e2a',
+      id: 4,
+      name: 'Solar photovoltaic',
+      percentage: 6,
+      value: 165
+    }, {
+      fill: '#aea29a',
+      id: 5,
+      name: 'Other',
+      percentage: 34,
+      value: 875
+    }],
+    2033: [{
+      fill: '#fbaf17',
+      id: 1,
+      name: 'Internet of things',
+      percentage: 19,
+      value: 3141
+    }, {
+      fill: '#004987',
+      id: 2,
+      name: 'Electric vehicles',
+      percentage: 9,
+      value: 1401
+    }, {
+      fill: '#009edb',
+      id: 3,
+      name: 'Artificial intelligence',
+      percentage: 29,
+      value: 4772
+    }, {
+      fill: '#b06e2a',
+      id: 6,
+      name: 'Blockchain',
+      percentage: 14,
+      value: 2350
+    }, {
+      fill: '#aea29a',
+      id: 5,
+      name: 'Other',
+      percentage: 29,
+      value: 4756
+    }]
+  }), []);
+  const [figure01AltData, setFigure01AltData] = useState(figure01_data['2023']);
+  const [positionFigure01Alt, setPositionFigure01Alt] = useState('');
+  const aboveSwitchPointFigure01Alt = useRef(true);
+  const fixedSectionRefFigure01Alt = useRef(null);
+  const chartFigure01Alt = useRef(null);
+
+  const handleScrollFigure01Alt = useCallback(() => {
+    fixedSectionRefFigure01Alt.current.style.height = '650vh';
+    const fixedTop = fixedSectionRefFigure01Alt.current.offsetTop;
+    const fixedBottom = fixedTop + fixedSectionRefFigure01Alt.current.offsetHeight - window.innerHeight;
+    const { scrollY } = window;
+    const relativeScroll = scrollY - fixedTop;
+    const switchPoint1 = window.innerHeight * 1.5;
+    const switchPoint2 = window.innerHeight * 1.5 * 2;
+    const switchPoint3 = window.innerHeight * 1.5 * 3;
+
+    // Determine position state
+    setPositionFigure01Alt(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed'
+          : 'absolute_bottom'
+    );
+
+    if (!fixedSectionRefFigure01Alt.current || !chartFigure01Alt.current) return;
+    // Define states for switch points
+    const isAbove1 = relativeScroll < switchPoint1;
+    const isAbove2 = relativeScroll < switchPoint2;
+    const isAbove3 = relativeScroll < switchPoint3;
+
+    // Store previous state to avoid unnecessary updates
+    const prevState = aboveSwitchPointFigure01Alt.current;
+    const newState = { isAbove1, isAbove2 };
+
+    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2 && prevState?.isAbove3 === isAbove3) return;
+
+    if (chartFigure01Alt.current) {
+      aboveSwitchPointFigure01Alt.current = newState;
+    }
+    if (isAbove2) {
+      setFigure01AltData(figure01_data['2023']);
+    } else {
+      setFigure01AltData(figure01_data['2033']);
+    }
+  }, [figure01_data]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollFigure01Alt);
+    return () => window.removeEventListener('scroll', handleScrollFigure01Alt);
+  }, [handleScrollFigure01Alt]);
 
   /** *********
   * FIGURE 2 *
@@ -685,6 +804,61 @@ function App() {
         <div className={`fixed-background ${positionFigure01}`}>
           <div className="chart_container_full">
             <Figure01 ref={chartFigure01} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
+          </div>
+        </div>
+        <div className="scroll-elements">
+          <div className="scroll-content">
+            <div>
+              <p>
+                In 2023, artificial intelligence accounted for just
+                <span style={{ color: '#0077b8' }}>9%</span>
+                {' '}
+                of the tech industry’s value.
+              </p>
+            </div>
+          </div>
+          <div className="scroll-content">
+            <div>
+              <p>
+                By
+                {' '}
+                <span style={{ color: '#0077b8' }}>2033</span>
+                , its influence is expected to more than
+                {' '}
+                <span style={{ color: '#0077b8' }}>triple</span>
+                , reshaping industries worldwide.
+              </p>
+            </div>
+          </div>
+          <div className="scroll-content">
+            <div>
+              <h3>How will this shift change the world?</h3>
+              <ul>
+                <li>
+                  Governments will adapt.
+                </li>
+                <li>
+                  Companies will innovate.
+                </li>
+                <li>
+                  What about you?
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="content_container">
+        <div className="text_container">
+          <TextHighlight text="Now that we have your attention…" />
+          <TextHighlight text="…and you've seen how fast AI is growing." />
+          <TextHighlight text="How does AI compare to other industries?" />
+        </div>
+      </div>
+      <div ref={fixedSectionRefFigure01Alt} className="fixed-section">
+        <div className={`fixed-background ${positionFigure01Alt}`}>
+          <div className="chart_container_full">
+            <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} />
           </div>
         </div>
         <div className="scroll-elements">
