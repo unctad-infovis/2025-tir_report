@@ -11,12 +11,14 @@ import scrollIntoView from 'scroll-into-view';
 // import DwChartContainer from './components/DwChartContainer.jsx';
 import ShareContainer from './components/ShareContainer.jsx';
 
+import FigureIntro from './FigureIntro.jsx';
 import Figure01 from './Figure01.jsx';
 import Figure02 from './Figure02.jsx';
 import Figure03 from './Figure03.jsx';
 import Figure04 from './Figure04.jsx';
 import Figure05 from './Figure05.jsx';
 import ChapterHeader from './components/ChapterHeader.jsx';
+import TextHighlight from './components/TextHighlight.jsx';
 
 function App() {
   const appRef = useRef();
@@ -35,6 +37,66 @@ function App() {
   // };
 
   /** *********
+  * FIGURE INTRO *
+  *********** */
+
+  const [figureIntroData, setFigureIntroData] = useState(18.9);
+  const [figureIntroHighlight, setFigureIntroHighlight] = useState(false);
+  const [positionFigureIntro, setPositionFigureIntro] = useState('');
+  const aboveSwitchPointFigureIntro = useRef(true);
+  const fixedSectionRefFigureIntro = useRef(null);
+  const chartFigureIntro = useRef(null);
+
+  const handleScrollFigureIntro = useCallback(() => {
+    fixedSectionRefFigureIntro.current.style.height = '650vh';
+    const fixedTop = fixedSectionRefFigureIntro.current.offsetTop;
+    const fixedBottom = fixedTop + fixedSectionRefFigureIntro.current.offsetHeight - window.innerHeight;
+    const { scrollY } = window;
+    const relativeScroll = scrollY - fixedTop;
+    const switchPoint1 = window.innerHeight * 1.5;
+    const switchPoint2 = window.innerHeight * 1.5 * 2;
+    const switchPoint3 = window.innerHeight * 1.5 * 3;
+
+    // Determine position state
+    setPositionFigureIntro(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed'
+          : 'absolute_bottom'
+    );
+
+    if (!fixedSectionRefFigureIntro.current || !chartFigureIntro.current) return;
+    // Define states for switch points
+    const isAbove1 = relativeScroll < switchPoint1;
+    const isAbove2 = relativeScroll < switchPoint2;
+    const isAbove3 = relativeScroll < switchPoint3;
+
+    // Store previous state to avoid unnecessary updates
+    const prevState = aboveSwitchPointFigureIntro.current;
+    const newState = { isAbove1, isAbove2 };
+
+    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2 && prevState?.isAbove3 === isAbove3) return;
+
+    if (chartFigureIntro.current) {
+      aboveSwitchPointFigureIntro.current = newState;
+    }
+    setFigureIntroHighlight(!isAbove1 && isAbove2);
+    if (isAbove2) {
+      setFigureIntroData(19);
+    } else if (isAbove3) {
+      if (figureIntroData !== 50 && figureIntroData !== 100 && figureIntroData !== 150 && figureIntroData !== 200) {
+        setFigureIntroData(19);
+      }
+    } else {
+      setFigureIntroData(477);
+    }
+  }, [figureIntroData]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollFigureIntro);
+    return () => window.removeEventListener('scroll', handleScrollFigureIntro);
+  }, [handleScrollFigureIntro]);
+
+  /** *********
   * FIGURE 1 *
   *********** */
 
@@ -46,12 +108,12 @@ function App() {
   const chartFigure01 = useRef(null);
 
   const handleScrollFigure01 = useCallback(() => {
-    fixedSectionRefFigure01.current.style.height = '400vh';
+    fixedSectionRefFigure01.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure01.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure01.current.offsetHeight - window.innerHeight;
     const { scrollY } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint = window.innerHeight;
+    const switchPoint = window.innerHeight * 1.5;
 
     // Determine position state
     setPositionFigure01(
@@ -93,13 +155,13 @@ function App() {
   const chartFigure02 = useRef(null);
 
   const handleScrollFigure02 = useCallback(() => {
-    fixedSectionRefFigure02.current.style.height = '350vh';
+    fixedSectionRefFigure02.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure02.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure02.current.offsetHeight - window.innerHeight;
     const { scrollY } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight;
-    const switchPoint2 = window.innerHeight * 2;
+    const switchPoint1 = window.innerHeight * 1.5;
+    const switchPoint2 = window.innerHeight * 1.5 * 2;
 
     // Determine position state
     setPositionFigure02(
@@ -161,7 +223,7 @@ function App() {
   const chartFigure03 = useRef(null);
 
   const handleScrollFigure03 = useCallback(() => {
-    fixedSectionRefFigure03.current.style.height = '850vh';
+    fixedSectionRefFigure03.current.style.height = '1250vh';
     const fixedTop = fixedSectionRefFigure03.current.offsetTop;
     const sectionHeight = fixedSectionRefFigure03.current.offsetHeight;
     const fixedBottom = fixedTop + sectionHeight - window.innerHeight;
@@ -169,7 +231,7 @@ function App() {
     const { scrollY } = window;
 
     // Define 6 evenly spaced switch points based on the section height
-    const step = window.innerHeight;
+    const step = window.innerHeight * 1.5;
     const switchPoint1 = fixedTop + step;
     const switchPoint2 = fixedTop + step * 2;
     const switchPoint3 = fixedTop + step * 3;
@@ -319,13 +381,13 @@ function App() {
   const chartFigure04 = useRef(null);
 
   const handleScrollFigure04 = useCallback(() => {
-    fixedSectionRefFigure04.current.style.height = '350vh';
+    fixedSectionRefFigure04.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure04.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure04.current.offsetHeight - window.innerHeight;
     const { scrollY } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight;
-    const switchPoint2 = window.innerHeight * 2;
+    const switchPoint1 = window.innerHeight * 1.5;
+    const switchPoint2 = window.innerHeight * 1.5 * 2;
 
     // Determine position state
     setPositionFigure04(
@@ -374,13 +436,13 @@ function App() {
   const chartFigure05 = useRef(null);
 
   const handleScrollFigure05 = useCallback(() => {
-    fixedSectionRefFigure05.current.style.height = '350vh';
+    fixedSectionRefFigure05.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure05.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure05.current.offsetHeight - window.innerHeight;
     const { scrollY } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight;
-    const switchPoint2 = window.innerHeight * 2;
+    const switchPoint1 = window.innerHeight * 1.5;
+    const switchPoint2 = window.innerHeight * 1.5 * 2;
 
     // Determine position state
     setPositionFigure05(
@@ -507,18 +569,41 @@ function App() {
       { /* Overview */}
       <div className="content_container">
         <div className="text_container">
-          <p>The Technology and Innovation Report 2025 highlights AI’s rapid growth and its impact on economies, industries, and societies. It explores AI-driven advancements in productivity, decision-making, and automation while addressing the risks of inequality, job displacement, and ethical concerns.</p>
-          <p>The report examines emerging AI trends, regulatory challenges, and opportunities for sustainable development. It provides insights for policymakers and industry leaders on harnessing AI responsibly to drive innovation while ensuring inclusivity and economic stability.</p>
-          <p>It examines five core themes:</p>
+          <p>Artificial intelligence (AI) is reshaping economies and societies faster than governments can respond. As the first technology capable of independent decision-making and idea generation, it challenges the idea that technology is neutral.</p>
+          <p>AI can accelerate progress toward the Sustainable Development Goals (SDGs), enabling smart agriculture, efficient energy grids, optimized production and supply chains, faster disease diagnosis, improved water management, better urban planning – and more. But without ethical oversight and equitable access, AI risks widening inequalities rather than bridging development gaps. </p>
+          <p>The Technology and Innovation Report 2025 helps policymakers navigate this complex and shifting landscape. It outlines policy priorities for infrastructure, data and skills.</p>
+          <p>The report calls for AI that puts people first, enhancing rather than replacing human work. It advocates for stronger global cooperation to fairly distribute AI’s benefits and ensure all countries have a say in how its governance.</p>
+          <p>The report explores five key themes:</p>
           <ul>
-            <li>AI and Economic Growth</li>
-            <li>Workforce and Automation</li>
-            <li>Ethics and Governance</li>
-            <li>AI for Sustainable Development</li>
-            <li>Global AI Divide</li>
+            <li>
+              <strong>AI at the technological frontier</strong>
+              {' '}
+              – understanding the breakthroughs shaping our future
+            </li>
+            <li>
+              <strong>AI for productivity and worker empowerment</strong>
+              {' '}
+              – Ensuring AI enhances, not displaces, human work.
+            </li>
+            <li>
+              <strong>Seizing AI opportunities</strong>
+              {' '}
+              – Preparing businesses and societies for AI-driven change.
+            </li>
+            <li>
+              <strong>Shaping national AI policies</strong>
+              {' '}
+              – Designing strategies for inclusive and sustainable AI development.
+            </li>
+            <li>
+              <strong>Global collaboration</strong>
+              {' '}
+              – Building a shared approach to equitable AI governance.
+            </li>
           </ul>
           <blockquote>
-            <div className="quote">AI is reshaping economies and societies—our challenge is to harness its power for inclusive and sustainable development.</div>
+            <img src="assets/img/rebeca_grynspan.png" className="sg_photo" alt="Rebeca Grynspan" />
+            <div className="quote">History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development..</div>
             <div className="author">
               <span className="name">Rebeca Grynspan</span>
               <span className="title">Secretary-General of UN Trade and Development (UNCTAD)</span>
@@ -528,20 +613,29 @@ function App() {
       </div>
 
       { /* Chapter 1 */ }
-      <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
-      <div ref={fixedSectionRefFigure01} className="fixed-section">
-        <div className={`fixed-background ${positionFigure01}`}>
+      <ChapterHeader chapter_number="1" title="chapter" />
+      <div ref={fixedSectionRefFigureIntro} className="fixed-section">
+        <div className={`fixed-background ${positionFigureIntro}`}>
           <div className="chart_container_full">
-            <Figure01 ref={chartFigure01} above={aboveSwitchPointFigure01.current} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
+            <FigureIntro ref={chartFigureIntro} node_count={figureIntroData} highlight_bool={figureIntroHighlight} />
           </div>
         </div>
         <div className="scroll-elements">
           <div className="scroll-content">
             <div>
               <p>
-                With intruction of chatGPT, year 2023 was the year of
+                This is the value of AI today:
                 {' '}
-                <span style={{ color: '#0077b8' }}>artificial intelligence</span>
+                <span style={{ color: '#0077b8' }}>$189&nbsp;billion.</span>
+              </p>
+            </div>
+          </div>
+          <div className="scroll-content">
+            <div>
+              <p>
+                Each circle represents
+                {' '}
+                <span style={{ color: '#0077b8' }}>$10&nbsp;billion</span>
                 .
               </p>
             </div>
@@ -549,20 +643,88 @@ function App() {
           <div className="scroll-content">
             <div>
               <p>
-                But by 2033
+                Can you guess how much AI will be worth in
                 {' '}
-                <span style={{ color: '#0077b8' }}>artificial intelligence</span>
-                {' '}
-                we foresee that the industry will be a $4.5 trillion business.
+                <span style={{ color: '#0077b8' }}>2033</span>
+                ?
+              </p>
+              <p>Take a guess</p>
+              <p>
+                <button type="button" onClick={() => setFigureIntroData(50)}>$500 billion</button>
+                <button type="button" onClick={() => setFigureIntroData(100)}>$1 trillion</button>
+                <button type="button" onClick={() => setFigureIntroData(150)}>$1.5 trillion</button>
+                <button type="button" onClick={() => setFigureIntroData(200)}>$2 trillion</button>
               </p>
             </div>
           </div>
           <div className="scroll-content">
             <div>
-              <h3>What does that mean…</h3>
-              <p>to goverments?</p>
-              <p>to companies</p>
-              <p>to you?</p>
+              <p>
+                It’s even more! 🚀
+                {' '}
+                <span style={{ color: '#0077b8' }}>Artificial&nbsp;intelligence</span>
+                {' '}
+                is projected to become a
+                {' '}
+                <span style={{ color: '#0077b8' }}>$4.5&nbsp;trillion</span>
+                {' '}
+                industry by 2033.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="content_container">
+        <div className="text_container">
+          <TextHighlight text="Now that we have your attention…" />
+          <TextHighlight text="…and you've seen how fast AI is growing." />
+          <TextHighlight text="How does AI compare to other industries?" />
+        </div>
+      </div>
+      <div ref={fixedSectionRefFigure01} className="fixed-section">
+        <div className={`fixed-background ${positionFigure01}`}>
+          <div className="chart_container_full">
+            <Figure01 ref={chartFigure01} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
+          </div>
+        </div>
+        <div className="scroll-elements">
+          <div className="scroll-content">
+            <div>
+              <p>
+                In 2023, artificial intelligence accounted for just
+                <span style={{ color: '#0077b8' }}>9%</span>
+                {' '}
+                of the tech industry’s value.
+              </p>
+            </div>
+          </div>
+          <div className="scroll-content">
+            <div>
+              <p>
+                By
+                {' '}
+                <span style={{ color: '#0077b8' }}>2033</span>
+                , its influence is expected to more than
+                {' '}
+                <span style={{ color: '#0077b8' }}>triple</span>
+                , reshaping industries worldwide.
+              </p>
+            </div>
+          </div>
+          <div className="scroll-content">
+            <div>
+              <h3>How will this shift change the world?</h3>
+              <ul>
+                <li>
+                  Governments will adapt.
+                </li>
+                <li>
+                  Companies will innovate.
+                </li>
+                <li>
+                  What about you?
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -573,14 +735,45 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p>The first chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <p className="intro">The first chapter of the Technology and Innovation Report 2025 explores how AI is driving the next wave of technological transformation. The market for frontier technologies stood at $2.5 trillion in 2023 and is projected to grow sixfold to $16.4 trillion by 2033, with AI leading the way at $4.8 trillion.</p>
+          <p className="intro">However, AI development is highly concentrated, with a few major corporations and countries – primarily the United States and China – dominating research, infrastructure, and investment. This growing AI divide threatens to widen technological inequalities, making it harder for developing nations to catch up.</p>
+          <p className="intro">
+            To foster inclusive AI-driven growth, the chapter highlights three key leverage points: infrastructure, data, and skills.
+            Countries must build computing power, invest in high-quality data, and develop AI expertise to harness its potential. With the right policies, AI can augment human work rather than replace it, ensuring that technological progress benefits all.
+          </p>
+
           <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter1-min.jpg" alt="" /></div></div>
-          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+          <p>Frontier technologies are reshaping the global economy, with the market valued at $2.5 trillion in 2023 and projected to grow sixfold to $16.4 trillion by 2033. AI is expected to lead this expansion, reaching a market size of $4.8 trillion.</p>
+          <p>Breakthroughs in AI are accelerating adoption across industries, from content creation and product development to automated coding and personalized customer service. This rapid growth is fueling the rise of tech giants. Apple, Nvidia, and Microsoft each have market capitalizations exceeding $3 trillion – comparable to the GDP of the entire African continent or the United Kingdom’s economy.</p>
+          <h3>A growing divide</h3>
+          <p>AI dominance is concentrated among a few corporations and countries. In 2022, just 100 companies accounted for 40% of all business-funded R&D, with nearly half based in the United States. China has risen as a key player, now home to 13% of these top R&D investors, surpassing countries like Germany, Japan, and South Korea. Yet, no other developing country is represented among the top 100.</p>
+          <p>This imbalance extends to AI infrastructure. The United States controls one-third of the world’s top supercomputers and more than half of global computational power. Most data centers are also concentrated in developed economies, leaving developing countries – aside from China, India, Brazil, and Russia – struggling to build AI capabilities.</p>
+          <h3>AI’s potential risks</h3>
+          <p>AI’s influence extends beyond business—it is transforming research, innovation, and economic structures. If leveraged well, AI can drive sustainable growth and support the Sustainable Development Goals (SDGs). But without intervention, AI-driven inequalities could widen, leaving developing nations behind.</p>
+          <p>Governments must act to balance innovation with inclusivity, ensuring AI serves both public and private interests. The report highlights three key leverage points that will shape AI’s future:</p>
+          <ul>
+            <li>
+              <strong>Infrastructure:</strong>
+              {' '}
+              Beyond electricity and internet access, countries need computing power and server capabilities to process AI models effectively
+            </li>
+            <li>
+              <strong>Data:</strong>
+              {' '}
+              AI depends on high-quality, diverse, and unbiased datasets to train algorithms and make reliable predictions.
+            </li>
+            <li>
+              <strong>Skills:</strong>
+              {' '}
+              From basic data literacy to advanced AI expertise, a broad talent pool is essential to harness AI for development.
+            </li>
+          </ul>
+          <p>AI has the potential to augment human work, not replace it. With the right policies, developing nations can retain their competitiveness, ensure fair AI access, and participate in shaping global AI governance. The Technology and Innovation Report 2025 provides a roadmap to navigate these challenges and unlock AI’s benefits for all.</p>
         </div>
       </div>
 
       { /* Chapter 2 */ }
-      <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
+      <ChapterHeader chapter_number="2" title="chapter" />
       <div ref={fixedSectionRefFigure02} className="fixed-section">
         <div className={`fixed-background ${positionFigure02}`}>
           <div className="chart_container_full">
@@ -588,12 +781,12 @@ function App() {
           </div>
         </div>
         <div className="scroll-elements">
-          <div className="scroll-content"><div><p>Jobs in all economies are affected by artificial intelligence.</p></div></div>
-          <div className="scroll-content"><div><p>But jobs in developed economies are the to get hit.</p></div></div>
+          <div className="scroll-content"><div><p>AI is reshaping jobs worldwide.</p></div></div>
+          <div className="scroll-content"><div><p>Advanced economies will feel the impact first.</p></div></div>
           <div className="scroll-content">
             <div>
-              <p>But developing economies are not far behind.</p>
-              <p>And therefore now is the time to take action.</p>
+              <p>But emerging and low-income countries aren’t far behind.</p>
+              <p>The time to act is now.</p>
             </div>
           </div>
         </div>
@@ -604,14 +797,48 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <p>Chapter 2 explores how AI is transforming work, boosting productivity, and reshaping labor markets. Unlike past technologies, AI can automate cognitive tasks, affecting 40% of global jobs. In advanced economies, one-third of jobs are at risk, while 27% could see AI enhance human work.</p>
+          <p>AI’s full impact will take years to unfold, but early adopters—mainly in developed countries—are already seeing productivity gains. Whether developing economies can harness similar benefits depends on their ability to invest in infrastructure, data, and skills.</p>
+          <p>To ensure AI empowers workers rather than replaces them, policymakers must navigate automation risks, accelerate AI adoption, and invest in reskilling and career development. With the right policies, AI can drive inclusive growth rather than deepen inequalities.</p>
+
           <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter2-min.jpg" alt="" /></div></div>
-          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+          <p>Unlike past technological waves that mainly automated routine tasks, AI is transforming cognitive work, impacting a wide range of jobs, from content creation and coding to data analysis and professional services. Generative AI (GenAI) can write, design, and identify patterns, offering new opportunities for businesses and workers.</p>
+          <p>Early research shows that firms using AI experience major productivity gains, especially in service industries and knowledge-based jobs. However, most studies focus on developed economies, and whether these benefits extend to developing countries remains unclear.</p>
+          <h3>A transforming workforce</h3>
+          <p>AI is set to affect 40% of global employment. In advanced economies, one-third of jobs are at risk of automation, while another 27% could see AI augment human work rather than replace it. Workers in high-income countries face greater exposure but also have more resources to adapt and benefit from AI. In lower-income economies, GenAI’s potential for worker augmentation could be even greater—helping increase productivity rather than eliminate jobs.</p>
+          <p>History shows that AI’s full impact may take years or decades to materialize. Successful adoption requires investment in infrastructure, data, and skills. Case studies in agriculture, manufacturing, and healthcare demonstrate how AI can enhance productivity and improve livelihoods—provided countries develop complementary resources and policies.</p>
+          <h3>Shaping AI for inclusive growth</h3>
+          <p>AI can drive productivity gains and higher incomes for some, while displacing others, reshaping labor markets and shifting value towards capital. The right policies can ensure AI enhances, rather than replaces, human capabilities.</p>
+          <p>Key policy priorities</p>
+          <ul>
+            <li>
+              <strong>Navigating workforce shifts:</strong>
+              {' '}
+              Policymakers must balance automation, augmentation, and job creation to ensure AI benefits are widely shared.
+            </li>
+            <li>
+              <strong>Accelerating AI adoption:</strong>
+              {' '}
+              Developing countries can lower barriers by using local infrastructure, alternative data sources, and simple AI interfaces while building partnerships for resources.
+            </li>
+            <li>
+              <strong>Empowering workers:</strong>
+              {' '}
+              AI should support digital literacy, reskilling, and upskilling, ensuring workers play a role in shaping AI-driven workplaces.
+            </li>
+            <li>
+              <strong>Strategic investment:</strong>
+              {' '}
+              Governments can fund R&D, leverage public procurement, and offer tax incentives to promote AI technologies that complement human work. Investing in career development pathways can also reduce the risk of brain drain.
+            </li>
+          </ul>
+          <p>With the right approach, AI can become a tool for worker empowerment and economic inclusion, rather than a driver of inequality.</p>
+
         </div>
       </div>
 
       { /* Chapter 3 */ }
-      <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
+      <ChapterHeader chapter_number="3" title="chapter" />
       <div ref={fixedSectionRefFigure03} className="fixed-section">
         <div className={`fixed-background ${positionFigure03}`}>
           <div className="chart_container_full">
@@ -662,14 +889,59 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <p>Chapter 3 examines how developing countries can position themselves to benefit from AI and other frontier technologies. UNCTAD’s Frontier Technologies Readiness Index ranks countries based on ICT deployment, skills, R&D, industrial capacity, and access to finance. While developed nations lead, Singapore (5th), China (21st), and India (36th) stand out among developing economies.</p>
+          <p>AI readiness depends on three key factors: infrastructure, data, and skills. Some countries, like China, India, and Brazil, are leveraging large AI talent pools and data resources, while others are improving digital infrastructure and internet access.</p>
+
+          <p>To catch up and compete, developing nations need strategic policies, investment in innovation, and stronger collaboration between governments and industry. With the right approach, AI can become a driver of inclusive growth rather than deepening global divides.</p>
+
           <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter3-min.jpg" alt="" /></div></div>
-          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+          <p>As AI and other frontier technologies rapidly reshape the global economy, developing countries must act now to position themselves for success. AI-driven transformation is not just a possibility—it is already underway, influencing industries, economies, and societies worldwide.</p>
+          <p>To measure how well countries are prepared to embrace these shifts, UNCTAD has developed the Frontier Technologies Readiness Index. This index assesses ICT deployment, skills, R&D activity, industrial capacity, and access to finance, providing a comprehensive snapshot of a country’s ability to adopt and benefit from frontier technologies.</p>
+          <h3>Who is leading the race?</h3>
+          <p>As expected, developed countries in Europe and North America top the rankings. However, some developing economies are making significant strides. Singapore ranks 5th, performing exceptionally well across all dimensions. China (21st), Russia (33rd), India (36th), Brazil (38th), and South Africa (52nd)—the BRICS economies—also demonstrate strong potential.</p>
+          <p>While higher-income countries generally have a readiness advantage, some outperform expectations relative to their GDP, signaling untapped potential to leverage AI for growth and development. A key factor in these high-performing nations is their investment in R&D and industrial capacity, which enables them to keep pace with technological advancements and even take the lead in certain sectors.</p>
+          <h3>Mapping AI readiness: Three leverage points</h3>
+          <p>Beyond the broader index, AI adoption and development depend on three critical factors: infrastructure, data, and skills. Based on these dimensions, countries can be grouped into four readiness categories, from those lagging behind to emerging leaders.</p>
+          <ul>
+            <li>Infrastructure: Robust computing power, internet access, and data centers are essential for AI-driven innovation.</li>
+            <li>Data: AI thrives on high-quality, diverse, and accessible datasets. Countries with affordable and abundant data—such as China—gain a strategic edge.</li>
+            <li>Skills: AI adoption depends on education and a skilled workforce. The proportion of AI developers on platforms like GitHub provides an indicator of AI development capacity.</li>
+          </ul>
+          <p>While developed nations consistently rank higher, exceptions exist. Hong Kong (China) and Singapore outperform many developed countries, demonstrating that strategic investments can accelerate AI readiness.</p>
+          <h3>Strategic positioning for AI-driven growth</h3>
+          <p>Size matters in AI adoption. Large economies, such as the United States, India, and China, have lower proportions of AI developers per capita but a vast talent pool in absolute numbers. This gives them a unique advantage in scaling AI capabilities.</p>
+          <p>Different countries will need different catch-up strategies:</p>
+          <ul>
+            <li>Some African and Southeast Asian nations have improved digital infrastructure to boost internet access and connectivity.</li>
+
+            <li>China has leveraged its vast data resources to gain a competitive edge.</li>
+            <li>India, China, and Brazil have cultivated large pools of AI developers, laying the groundwork for future growth.</li>
+          </ul>
+          <p>For developing nations, seizing AI opportunities requires more than just economic growth—it demands targeted policies, investments, and collaboration.</p>
+          <p>Key Policy Priorities</p>
+          <ul>
+            <li>
+              <strong>Strategic AI positioning.</strong>
+              {' '}
+              Governments must assess national AI capacities, pinpoint infrastructure, data, and skills gaps, and design catch-up strategies to accelerate development.
+            </li>
+            <li>
+              <strong>Strengthening innovation ecosystems.</strong>
+              {' '}
+              Countries should conduct technology assessments and build resilient innovation systems. UNCTAD’s STI Policy Review Programme supports this process.
+            </li>
+            <li>
+              <strong>Public-private collaboration.</strong>
+              {' '}
+              AI development requires coordinated action among governments, industry leaders, and research institutions to align AI strategies with national goals.
+            </li>
+          </ul>
+          <p>With the right policies and investments, developing nations can close the AI gap and unlock opportunities for inclusive and sustainable growth.</p>
         </div>
       </div>
 
       { /* Chapter 4 */ }
-      <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
+      <ChapterHeader chapter_number="4" title="chapter" />
       <div ref={fixedSectionRefFigure04} className="fixed-section">
         <div className={`fixed-background ${positionFigure04}`}>
           <div className="chart_container_full">
@@ -693,14 +965,73 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <p>Chapter 4 explores how developing countries can shape AI policies to drive innovation, competitiveness, and inclusive growth. While most AI strategies originate from developed economies, developing nations must design policies that fit their unique needs, rather than simply following global trends.</p>
+          <p>AI policies must balance adoption and development. Adoption policies support AI integration in businesses and workforce upskilling, while development policies focus on building infrastructure, data ecosystems, and AI talent.</p>
+          <p>To succeed, AI strategies must address three key areas:</p>
+          <ul>
+            <li>
+              <strong>Infrastructure:</strong>
+              {' '}
+              Expanding digital access, computing power, and AI-ready networks.
+            </li>
+            <li>
+              <strong>Data:</strong>
+              {' '}
+              Promoting open data, interoperability, and privacy protections.
+            </li>
+            <li>
+              <strong>Skills:</strong>
+              {' '}
+              Strengthening AI education, workforce training, and industry-academia collaboration.
+            </li>
+          </ul>
+          <p>A whole-of-government approach is needed to align AI with national development goals, integrating industry, education and regulatory policies. With strategic planning and investment, developing countries can harness AI for economic transformation and global competitiveness.</p>
+
           <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter4-min.jpg" alt="" /></div></div>
-          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+          <p>As digital technologies transform economies, developing countries must rethink industrial policies to stay competitive in an AI-driven world. The focus is shifting toward technology, innovation, and knowledge-intensive services, requiring policies that support AI adoption while fostering long-term development.</p>
+          <p>Since 2010, industrial policies worldwide have increasingly prioritized science, technology, and innovation (STI). R&D spending has grown, especially in advanced economies, where the private sector leads investments, but governments are also expanding support. AI policies now play a crucial role in guiding technological transformation, addressing market failures, and shaping the direction of innovation.</p>
+          <h3>The AI policy divide</h3>
+          <p>AI strategies remain heavily concentrated in developed economies. By the end of 2023, two-thirds of developed countries had a national AI strategy, compared to just six least developed countries (LDCs). This gap leaves developing nations vulnerable to policy spillovers from major economies, limiting their ability to shape AI to fit national priorities and development goals.</p>
+          <p>To compete, developing countries must craft AI policies that reflect their specific needs rather than simply following global trends. AI adoption policies should encourage businesses to integrate AI solutions and invest in worker upskilling. Meanwhile, AI development policies must focus on infrastructure, data ecosystems, and high-level technical skills to keep pace with global innovation.</p>
+          <h3>Balancing AI adoption and development</h3>
+          <p>For many developing countries, AI adoption is the most immediate priority, as it requires fewer resources and delivers faster economic gains. However, long-term success depends on investing in AI development, ensuring countries don’t remain consumers of AI but also creators of innovation.</p>
+          <p>Strategic AI policies should be built around three key leverage points:</p>
+          <ul>
+            <li>
+              <strong>Infrastructure:</strong>
+              {' '}
+              Equitable access to electricity, the internet, and computing power is essential for AI adoption. Governments should incentivize private investment in digital infrastructure while ensuring interoperability and harmonization of AI systems.
+            </li>
+            <li>
+              <strong>Data:</strong>
+              {' '}
+              Open data and data-sharing policies can boost AI adoption, enhance collaboration, and drive innovation. Countries must also ensure privacy, accountability, and intellectual property protections to balance innovation with human rights.
+            </li>
+            <li>
+              <strong>Skills:</strong>
+              {' '}
+              AI literacy must be integrated into education from early schooling to workforce training. Academia and private sector partnerships can help develop AI talent tailored to industry needs, strengthening national AI capabilities.
+            </li>
+          </ul>
+          <h3>A new approach to AI governance</h3>
+          <ul>
+            <li>
+              <strong>Rethinking industrial policies.</strong>
+              {' '}
+              As value shifts toward knowledge-based services, policymakers must support AI adoption, development, and knowledge dissemination to drive long-term growth.
+            </li>
+            <li>
+              <strong>A whole-of-government strategy:</strong>
+              {' '}
+              AI policies must go beyond tax incentives, incorporating regulation, consumer protection, digital platform oversight, and data governance. Effective AI strategies require coordination across STI, industry, education, infrastructure, and trade policies.
+            </li>
+          </ul>
+          <p>With AI reshaping economies at an unprecedented pace, countries that proactively design AI policies tailored to their development goals will be better positioned to harness AI’s benefits, mitigate risks, and drive inclusive growth.</p>
         </div>
       </div>
 
       { /* Chapter 5 */ }
-      <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
+      <ChapterHeader chapter_number="5" title="chapter" />
       <div ref={fixedSectionRefFigure05} className="fixed-section">
         <div className={`fixed-background ${positionFigure05}`}>
           <div className="chart_container_full">
@@ -724,9 +1055,82 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p>The second chapter of the Technology and Innovation Report 2025 examines how artificial intelligence (AI) is reshaping global economies. AI-driven automation is boosting productivity, streamlining industries, and transforming sectors such as healthcare, finance, and manufacturing. While these advancements promise economic growth, they also create disparities between nations that can leverage AI and those that lack the infrastructure and skills to do so. The chapter highlights the urgent need for policies that ensure AI benefits are widely shared, preventing a deepening of the global digital divide.</p>
+          <p>Chapter 5 highlights the need for international cooperation to ensure AI remains a public good that benefits all, not just a select few. While national policies can regulate AI, its cross-border nature demands global governance to prevent widening inequalities.</p>
+          <p>Currently, AI development is concentrated in a few multinational tech giants, and global governance remains fragmented. By 2024, 118 countries—mostly in the Global South—were excluded from major AI governance initiatives, limiting their ability to shape AI’s future.</p>
+          <p>To close this gap, stronger global cooperation is needed, including:</p>
+          <ul>
+            <li>
+              <strong>Industry accountability.</strong>
+              {' '}
+              Requiring AI companies to disclose risks and impacts, similar to ESG standards.
+            </li>
+            <li>
+              <strong>Public AI infrastructure.</strong>
+              {' '}
+              Governments and private sectors collaborating to expand access to AI resources.
+            </li>
+            <li>
+              <strong>Open innovation.</strong>
+              {' '}
+              Encouraging open-source AI and shared data platforms for greater inclusivity.
+            </li>
+            <li>
+              <strong>A global AI hub.</strong>
+              {' '}
+              A UN-backed center to support AI capacity-building and policy coordination.
+            </li>
+            <li>
+              <strong>South–South cooperation.</strong>
+              {' '}
+              Developing nations collaborating on AI technology, policies, and trade agreements.
+            </li>
+          </ul>
+          <p>With a more inclusive AI governance framework, AI can drive global progress rather than deepen inequalities.</p>
+
           <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter5-min.jpg" alt="" /></div></div>
-          <p>Additionally, the chapter explores how AI is shifting labor markets, with both job displacement and the creation of new roles requiring digital expertise. Countries that invest in education, innovation, and AI-friendly regulatory frameworks stand to gain significantly, while others risk economic stagnation. The report emphasizes that global cooperation is essential to managing AI’s disruptive effects and ensuring that technological progress leads to sustainable and inclusive development.</p>
+          <p>AI is a borderless technology, with its impacts reaching far beyond national policies. While governments can regulate AI at the national level, global collaboration is essential to ensure that AI remains a public good—accessible, equitable, and beneficial for all. Without coordinated efforts, AI risks becoming a tool of inequality, controlled by a few powerful corporations and countries.</p>
+          <h3>The global AI governance gap</h3>
+          <p>Currently, AI development is dominated by multinational tech giants, whose priorities are driven by profit rather than public interest. Without external oversight, there is little incentive for businesses to align AI with broader societal goals. Governments and international institutions must step in to guide AI development, ensuring it serves humanity rather than deepening inequalities.</p>
+          <p>Despite the growing urgency, global AI governance remains fragmented. By the end of 2024, only G7 countries participated in all major AI governance initiatives, while 118 nations—mostly from the Global South—were left out. This lack of representation is alarming, as developing countries are key users of AI but have little say in shaping its future.</p>
+          <p>The United Nations has been at the forefront of efforts to bridge this governance gap. In 2024, the General Assembly passed two key resolutions to promote safe, secure, and trustworthy AI for sustainable development and to strengthen global AI cooperation. The Pact for the Future further emphasizes the need for international collaboration, committing to a Global Dialogue on AI Governance and the creation of an Independent International Scientific Panel on AI.</p>
+          <h3>From principles to action: Rethinking AI governance</h3>
+          <p>Global discussions on AI governance have shifted from setting ethical principles to managing AI-related risks. Governments are now demanding greater industry accountability, requiring companies to ensure transparency, safety, and fairness across the AI lifecycle. However, for these commitments to have real impact, common standards and enforcement mechanisms must be established.</p>
+          <p>Key policy priorities for global AI collaboration</p>
+          <ul>
+            <li>
+              <strong>Industry accountability framework.</strong>
+              {' '}
+              Companies deploying large-scale AI systems should disclose their impact, risks, and decision-making processes, similar to environmental, social, and governance (ESG) standards. AI certification could evolve from voluntary to mandatory, backed by enforcement measures.
+            </li>
+            <li>
+              <strong>A multi-stakeholder approach.</strong>
+              {' '}
+              AI governance must balance innovation with public safety and trust. Policymakers must incorporate diverse voices, ensuring that AI policies protect vulnerable populations and promote inclusive development.
+            </li>
+            <li>
+              <strong>Shared digital public infrastructure.</strong>
+              {' '}
+              Governments can collaborate with the private sector to develop public AI infrastructure, modeled after CERN, to provide equitable access to AI resources.
+            </li>
+            <li>
+              <strong>Open Innovation for Inclusive AI.</strong>
+              {' '}
+              Open-source AI, shared data platforms, and interoperable knowledge hubs can democratize AI development, making AI more accessible to developing nations.
+            </li>
+            <li>
+              <strong>A global AI hub.</strong>
+              {' '}
+              A United Nations-backed AI center, similar to the Climate Technology Centre and Network, could serve as a global hub for AI capacity-building, technology transfer, and technical assistance.
+            </li>
+            <li>
+              <strong>South–south AI collaboration.</strong>
+              {' '}
+              Strengthening cooperation among developing nations can accelerate AI innovation and policy coordination. Regional trade agreements could include AI provisions, while regional institutions help develop coherent AI strategies.
+            </li>
+          </ul>
+          <p>
+            AI’s future should not be dictated by a handful of corporations or countries. A truly global approach is needed—one that ensures all nations have a voice in shaping AI’s development and impact. With stronger collaboration, AI can be a force for progress, rather than a driver of inequality.
+          </p>
         </div>
       </div>
     </div>

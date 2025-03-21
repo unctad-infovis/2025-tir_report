@@ -14,10 +14,8 @@ function ChapterHeader(props) {
       const rect = headerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Adjust animation to complete when 30% of the element is inside the screen
-      const triggerPoint = windowHeight * 0.7; // 30% of screen height
+      const triggerPoint = windowHeight * 0.7;
 
-      // Normalize visibility (0 when offscreen, 1 when 30% inside viewport)
       const visibility = Math.min(Math.max((windowHeight - rect.top) / (windowHeight - triggerPoint), 0), 1);
 
       setScrollPercentage(visibility);

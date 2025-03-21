@@ -60,6 +60,7 @@ const LineChart = forwardRef((props, ref) => {
 
           }
         },
+        spacingRight: 64,
         style: {
           color: '#fff',
           fontFamily: 'Inter',

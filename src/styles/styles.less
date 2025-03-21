@@ -88,12 +88,26 @@ hr {
   margin: auto auto 5px auto;
 }
 .chart_container_full {
+  align-content:center;
+  align-items:center;
   background-color: #000;
-  min-height: 100vh;
   display: flex;
-  .chart_container {
-    max-width: 700px;
-    margin: auto auto;
+  flex-wrap: wrap;
+  justify-content:center;
+  max-width: 100%;
+  min-height: 100vh;
+  width: 100%;
+  div {
+    width: 100%;
+    .svg_container {
+      text {
+        color: #fff;
+      }
+    }
+    .chart_container {
+      max-width: 700px;
+      margin: auto auto;
+    }
   }
 }
 .chart_container {
@@ -129,9 +143,6 @@ hr {
         line-height: 22px;
       }
     }
-  }
-  .highcharts-a11y-proxy-button {
-    cursor: default !important;
   }
   .highcharts-legend {
     pointer-events: none !important;
@@ -213,7 +224,7 @@ hr {
       align-items: center;
       background: transparent;
       display: flex;
-      height: 100vh;
+      height: 150vh;
       justify-content: center;
       position: relative;
       flex-direction: column;
@@ -221,6 +232,9 @@ hr {
       z-index: 2;
       &.full {
         div {
+          justify-content: center;
+          align-content: center;
+          flex-wrap: wrap;
           align-items: center;
           background-color: #fff;
           display: flex;
@@ -230,19 +244,20 @@ hr {
         }
       }
       div {
-        background-color: rgba(255, 203, 5, 1);
+        background-color: rgba(255, 203, 5, 0.95);
         box-shadow: 10px 10px 10px #000;
         max-width: 400px;
         box-sizing: border-box;
         padding: 20px 20px;
         text-align: center;
         h3 {
-          font-size: 24px;
+          font-size: 40px;
           font-weight: 800;
-          line-height: 30px;
-          margin: auto auto;
+          line-height: 40px;
+          margin: auto auto 20px auto;
           max-width: 700px;
         }
+        ul,
         ol {
           margin: auto auto;
           max-width: 200px;
@@ -251,16 +266,33 @@ hr {
           line-height: 30px;
         }
         p {
-          font-size: 24px;
-          line-height: 30px;
-          margin: auto auto;
+          font-size: 30px;
+          line-height: 40px;
+          margin: auto auto 20px auto;
           max-width: 700px;
           span {
             font-weight: 800;
           }
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+        button {
+          background-color: #009edb;
+          border: 0;
+          border: 2px solid transparent;
+          color: #fff;
+          width: 130px;
+          cursor: pointer;
+          font-size: 18px;
+          font-weight: bold;
+          padding: 7px 10px;
+          margin: 5px 5px 5px 5px;
+          &:hover {
+            border: 2px solid #000;
+          }
         }
       }
-
     }
   }
 }
@@ -512,7 +544,7 @@ hr {
     >.content_container {
     margin: 40px auto;
     background-color: #fff;
-    margin-bottom: 100px;
+    margin: 100px 0;
     .recommendations,
     .content {
       background-color: #fff;
@@ -534,8 +566,9 @@ hr {
       }
     }
     .chart_container {
-      max-width: 600px;
       margin: auto auto 20px auto;
+      max-width: 600px;
+      width: 100%;
     }
     .text_container {
       box-sizing: border-box;
@@ -579,11 +612,30 @@ hr {
           margin-bottom: 10px;
         }
       }
+      h2 {
+        font-size: 30px;
+      }
+      h3 {
+        font-size: 24px;
+      }
       p {
         font-size: 18px;
-        letter-spacing: 0 !important;
+        letter-spacing: 0;
         line-height: 24px;
-        margin: 0 0 20px 0 !important;
+        margin: 0 0 20px 0;
+        &.big {
+          background-color: #009edb;
+          color: #fff;
+          font-size: 40px;
+          font-weight: 600;
+          line-height: 40px;
+          margin: 200px auto;
+          padding: 40px;
+          text-align: center;
+        }
+        &.intro {
+          font-size: 18px;
+        }
       }
       blockquote {
         border: 0;
@@ -654,6 +706,7 @@ hr {
     background-color: #f4f9fd;
     margin: auto auto 20px auto;
     position: relative;
+    width: 100%;
     .chart {
       overflow: hidden;
     }

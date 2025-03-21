@@ -55,11 +55,9 @@ const ScatterPlotChart = forwardRef((props, ref) => {
           load() {
             const chart_this = this;
             chart_this.renderer.image('https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg', 20, 20, 44, 43.88).add();
-          },
-          render() {
-
           }
         },
+        spacingRight: 64,
         style: {
           color: '#fff',
           fontFamily: 'Inter',
@@ -269,6 +267,8 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       }
     });
     chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;
+    ref.current.reflow();
+
     return () => {
       if (ref.current) {
         ref.current.destroy(); // Cleanup on unmount

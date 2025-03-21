@@ -261,8 +261,8 @@ const Figure03 = forwardRef((props, ref) => {
           prefix=""
           ref={ref}
           source="UN Trade and Development (UNCTAD)"
-          subtitle="Subtitle"
-          title="Title"
+          subtitle="This subtitle follows the same long structure of the title. This is only for testing purposes."
+          title="This is a very long title and will continue for sometime"
         />
       )}
     </div>
