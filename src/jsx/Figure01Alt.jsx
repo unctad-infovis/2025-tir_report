@@ -47,6 +47,8 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
 
     const enterCircles = circles.enter().append('circle')
       .attr('r', 0)
+      .attr('stroke', '#fff')
+      .attr('stroke-width', '2px')
       .attr('fill', d => d.fill);
 
     // Merge and transition circles

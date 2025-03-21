@@ -19,6 +19,7 @@ import Figure03 from './Figure03.jsx';
 import Figure04 from './Figure04.jsx';
 import Figure05 from './Figure05.jsx';
 import ChapterHeader from './components/ChapterHeader.jsx';
+import ChapterHeaderAlt from './components/ChapterHeaderAlt.jsx';
 import TextHighlight from './components/TextHighlight.jsx';
 
 function App() {
@@ -903,9 +904,10 @@ function App() {
           </div>
         </div>
       </div>
+      <ChapterHeaderAlt title="Chapter 1" />
       <div className="content_container">
         <div className="text_container">
-          <h2>Chapter 1: AI at the technology frontier</h2>
+          <h2>AI at the technology frontier</h2>
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
