@@ -12,15 +12,17 @@ import scrollIntoView from 'scroll-into-view';
 import ShareContainer from './components/ShareContainer.jsx';
 
 import FigureIntro from './FigureIntro.jsx';
-import Figure01 from './Figure01.jsx';
+// import Figure01 from './Figure01.jsx';
 import Figure01Alt from './Figure01Alt.jsx';
 import Figure02 from './Figure02.jsx';
 import Figure03 from './Figure03.jsx';
 import Figure04 from './Figure04.jsx';
 import Figure05 from './Figure05.jsx';
 import ChapterHeader from './components/ChapterHeader.jsx';
-import ChapterHeaderAlt from './components/ChapterHeaderAlt.jsx';
-import TextHighlight from './components/TextHighlight.jsx';
+// import ChapterHeaderAlt from './components/ChapterHeaderAlt.jsx';
+// import TextHighlight from './components/TextHighlight.jsx';
+import ScrollingText from './components/ScrollingText.jsx';
+import ParallaxImage from './components/ParallaxImage.jsx';
 
 function App() {
   const appRef = useRef();
@@ -102,49 +104,49 @@ function App() {
   * FIGURE 1 *
   *********** */
 
-  const [figure01Data2023, setFigure01Data2023] = useState([]);
-  const [figure01Data2033, setFigure01Data2033] = useState([]);
-  const [positionFigure01, setPositionFigure01] = useState('');
-  const aboveSwitchPointFigure01 = useRef(true);
-  const fixedSectionRefFigure01 = useRef(null);
-  const chartFigure01 = useRef(null);
+  // const [figure01Data2023, setFigure01Data2023] = useState([]);
+  // const [figure01Data2033, setFigure01Data2033] = useState([]);
+  // const [positionFigure01, setPositionFigure01] = useState('');
+  // const aboveSwitchPointFigure01 = useRef(true);
+  // const fixedSectionRefFigure01 = useRef(null);
+  // const chartFigure01 = useRef(null);
 
-  const handleScrollFigure01 = useCallback(() => {
-    fixedSectionRefFigure01.current.style.height = '500vh';
-    const fixedTop = fixedSectionRefFigure01.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure01.current.offsetHeight - window.innerHeight;
-    const { scrollY } = window;
-    const relativeScroll = scrollY - fixedTop;
-    const switchPoint = window.innerHeight * 1.5;
+  // const handleScrollFigure01 = useCallback(() => {
+  //   fixedSectionRefFigure01.current.style.height = '500vh';
+  //   const fixedTop = fixedSectionRefFigure01.current.offsetTop;
+  //   const fixedBottom = fixedTop + fixedSectionRefFigure01.current.offsetHeight - window.innerHeight;
+  //   const { scrollY } = window;
+  //   const relativeScroll = scrollY - fixedTop;
+  //   const switchPoint = window.innerHeight * 1.5;
 
-    // Determine position state
-    setPositionFigure01(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed'
-          : 'absolute_bottom'
-    );
+  //   // Determine position state
+  //   setPositionFigure01(
+  //     scrollY < fixedTop ? 'absolute_top'
+  //       : scrollY < fixedBottom ? 'fixed'
+  //         : 'absolute_bottom'
+  //   );
 
-    if (!fixedSectionRefFigure01.current) return;
-    const isAbove = relativeScroll < switchPoint;
-    if (aboveSwitchPointFigure01.current === isAbove) return;
+  //   if (!fixedSectionRefFigure01.current) return;
+  //   const isAbove = relativeScroll < switchPoint;
+  //   if (aboveSwitchPointFigure01.current === isAbove) return;
 
-    if (chartFigure01.current) {
-      aboveSwitchPointFigure01.current = isAbove;
-    }
-    const newData = isAbove ? figure01Data2023 : figure01Data2033;
-    // eslint-disable-next-line no-irregular-whitespace
-    const newLabel = `${isAbove ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="60" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove ? '$2&nbsp;542' : '$16&nbsp;420'}</tspan>`;
+  //   if (chartFigure01.current) {
+  //     aboveSwitchPointFigure01.current = isAbove;
+  //   }
+  //   const newData = isAbove ? figure01Data2023 : figure01Data2033;
+  // eslint-disable-next-line no-irregular-whitespace
+  //   const newLabel = `${isAbove ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="60" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove ? '$2&nbsp;542' : '$16&nbsp;420'}</tspan>`;
 
-    if (!chartFigure01.current) return;
-    chartFigure01.current.series[0].setData(newData, false);
-    chartFigure01.current.options.chart.custom.label.text.element.innerHTML = newLabel;
-    chartFigure01.current.redraw();
-  }, [figure01Data2023, figure01Data2033]);
+  //   if (!chartFigure01.current) return;
+  //   chartFigure01.current.series[0].setData(newData, false);
+  //   chartFigure01.current.options.chart.custom.label.text.element.innerHTML = newLabel;
+  //   chartFigure01.current.redraw();
+  // }, [figure01Data2023, figure01Data2033]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScrollFigure01);
-    return () => window.removeEventListener('scroll', handleScrollFigure01);
-  }, [handleScrollFigure01]);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScrollFigure01);
+  //   return () => window.removeEventListener('scroll', handleScrollFigure01);
+  // }, [handleScrollFigure01]);
 
   /** *********
   * FIGURE 1 ALT *
@@ -152,25 +154,25 @@ function App() {
 
   const figure01_data = useMemo(() => ({
     2023: [{
-      fill: '#fbaf17',
+      fill: '#009edb',
       id: 1,
       name: 'Internet of things',
       percentage: 36,
       value: 925
     }, {
-      fill: '#004987',
+      fill: '#72bf44',
       id: 2,
       name: 'Electric vehicles',
       percentage: 15,
       value: 388
     }, {
-      fill: '#009edb',
+      fill: '#ffc800',
       id: 3,
       name: 'Artificial intelligence',
       percentage: 7,
       value: 189
     }, {
-      fill: '#b06e2a',
+      fill: '#e6efd0',
       id: 4,
       name: 'Solar photovoltaic',
       percentage: 6,
@@ -183,25 +185,25 @@ function App() {
       value: 875
     }],
     2033: [{
-      fill: '#fbaf17',
+      fill: '#009edb',
       id: 1,
       name: 'Internet of things',
       percentage: 19,
       value: 3141
     }, {
-      fill: '#004987',
+      fill: '#72bf44',
       id: 2,
       name: 'Electric vehicles',
       percentage: 9,
       value: 1401
     }, {
-      fill: '#009edb',
+      fill: '#ffc800',
       id: 3,
       name: 'Artificial intelligence',
       percentage: 29,
       value: 4772
     }, {
-      fill: '#b06e2a',
+      fill: '#c5dfef',
       id: 6,
       name: 'Blockchain',
       percentage: 14,
@@ -636,6 +638,28 @@ function App() {
   };
 
   useEffect(() => {
+    const paragraphs = document.querySelectorAll('.text_content p, .text_content ul, .text_content h3');
+
+    // Options for the observer (when the p tag is 50% in the viewport)
+    const options = {
+      threshold: 0.5, // Trigger when 50% of the paragraph is visible
+    };
+
+    // Callback function for when the intersection occurs
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+        // Add the visible class when the element is in view
+          entry.target.classList.add('visible');
+        }
+      });
+    };
+
+    // Create an IntersectionObserver instance with the callback and options
+    const observer = new IntersectionObserver(observerCallback, options);
+
+    // Observe each paragraph
+    paragraphs.forEach(p => observer.observe(p));
     setTimeout(() => {
       window.dispatchEvent(new Event('scroll'));
     }, 500); // A short delay ensures the DOM is ready
@@ -689,51 +713,29 @@ function App() {
       { /* Overview */}
       <div className="content_container">
         <div className="text_container">
-          <p>Artificial intelligence (AI) is reshaping economies and societies faster than governments can respond. As the first technology capable of independent decision-making and idea generation, it challenges the idea that technology is neutral.</p>
-          <p>AI can accelerate progress toward the Sustainable Development Goals (SDGs), enabling smart agriculture, efficient energy grids, optimized production and supply chains, faster disease diagnosis, improved water management, better urban planning – and more. But without ethical oversight and equitable access, AI risks widening inequalities rather than bridging development gaps. </p>
-          <p>The Technology and Innovation Report 2025 helps policymakers navigate this complex and shifting landscape. It outlines policy priorities for infrastructure, data and skills.</p>
-          <p>The report calls for AI that puts people first, enhancing rather than replacing human work. It advocates for stronger global cooperation to fairly distribute AI’s benefits and ensure all countries have a say in how its governance.</p>
-          <p>The report explores five key themes:</p>
-          <ul>
-            <li>
-              <strong>AI at the technological frontier</strong>
+          <div className="text_content">
+            <p><strong>Artificial Intelligence is the first technology that can make decisions and generate ideas, challenging the notion that technology is neutral.</strong></p>
+            <p>
+              <strong>AI can fast-track the Sustainable Development Goals (SDGs).</strong>
               {' '}
-              – understanding the breakthroughs shaping our future
-            </li>
-            <li>
-              <strong>AI for productivity and worker empowerment</strong>
-              {' '}
-              – Ensuring AI enhances, not displaces, human work.
-            </li>
-            <li>
-              <strong>Seizing AI opportunities</strong>
-              {' '}
-              – Preparing businesses and societies for AI-driven change.
-            </li>
-            <li>
-              <strong>Shaping national AI policies</strong>
-              {' '}
-              – Designing strategies for inclusive and sustainable AI development.
-            </li>
-            <li>
-              <strong>Global collaboration</strong>
-              {' '}
-              – Building a shared approach to equitable AI governance.
-            </li>
-          </ul>
-          <blockquote>
-            <img src="assets/img/rebeca_grynspan.png" className="sg_photo" alt="Rebeca Grynspan" />
-            <div className="quote">History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development..</div>
-            <div className="author">
-              <span className="name">Rebeca Grynspan</span>
-              <span className="title">Secretary-General of UN Trade and Development (UNCTAD)</span>
-            </div>
-          </blockquote>
+              It can power smart agriculture and energy grids, optimize production and supply chains improve water and city planning – and more. Case studies show AI’s potential to boost productivity and livelihoods – if backed by the right policies and skills.
+            </p>
+            <p><strong>But AI is evolving faster than governments can respond. Without the right oversight and fair access, it risks deepening global divides.</strong></p>
+            <p>The Technology and Innovation Report 2025 helps policymakers navigate AI’s fast-changing landscape, outlining key priorities for AI’s three leverage points: infrastructure, data and skills. </p>
+            <p><strong>Its message is clear: AI must put people first and be shaped through global cooperation, ensuring all countries have a say in its future.</strong></p>
+            <blockquote>
+              {/* <img src="assets/img/rebeca_grynspan.png" className="sg_photo" alt="Rebeca Grynspan" /> */}
+              <div className="quote">“History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development.”</div>
+              <div className="author">
+                <span className="name">Rebeca Grynspan</span>
+                <span className="title">Secretary-General of UN Trade and Development (UNCTAD)</span>
+              </div>
+            </blockquote>
+          </div>
         </div>
       </div>
 
       { /* Chapter 1 */ }
-      <ChapterHeader chapter_number="1" title="chapter" />
       <div ref={fixedSectionRefFigureIntro} className="fixed-section">
         <div className={`fixed-background ${positionFigureIntro}`}>
           <div className="chart_container_full">
@@ -744,18 +746,18 @@ function App() {
           <div className="scroll-content">
             <div>
               <p>
-                This is the value of AI today:
+                This is a representation of AI’s market value in 2023
                 {' '}
-                <span style={{ color: '#0077b8' }}>$189&nbsp;billion.</span>
+                <span style={{ color: '#ffc800' }}>$189&nbsp;billion.</span>
               </p>
             </div>
           </div>
           <div className="scroll-content">
             <div>
               <p>
-                Each circle represents
+                Each dot  represents
                 {' '}
-                <span style={{ color: '#0077b8' }}>$10&nbsp;billion</span>
+                <span style={{ color: '#ffc800' }}>$10&nbsp;billion</span>
                 .
               </p>
             </div>
@@ -763,45 +765,56 @@ function App() {
           <div className="scroll-content">
             <div>
               <p>
-                Can you guess how much AI will be worth in
+                How much will it be worth in
                 {' '}
-                <span style={{ color: '#0077b8' }}>2033</span>
+                <span style={{ color: '#ffc800' }}>2033</span>
                 ?
               </p>
-              <p>Take a guess</p>
+              <p>Take a quess.</p>
               <p>
-                <button type="button" onClick={() => setFigureIntroData(50)}>$500 billion</button>
-                <button type="button" onClick={() => setFigureIntroData(100)}>$1 trillion</button>
-                <button type="button" onClick={() => setFigureIntroData(150)}>$1.5 trillion</button>
-                <button type="button" onClick={() => setFigureIntroData(200)}>$2 trillion</button>
+                <button type="button" onClick={() => setFigureIntroData(50)}>
+                  <span className="number">$500</span>
+                  <br />
+                  billion
+                </button>
+                <button type="button" onClick={() => setFigureIntroData(100)}>
+                  <span className="number">$1</span>
+                  <br />
+                  trillion
+                </button>
+                <button type="button" onClick={() => setFigureIntroData(150)}>
+
+                  <span className="number">$1.5</span>
+                  <br />
+                  trillion
+                </button>
+                <button type="button" onClick={() => setFigureIntroData(200)}>
+                  <span className="number">$2</span>
+                  <br />
+                  trillion
+                </button>
               </p>
             </div>
           </div>
           <div className="scroll-content">
             <div>
               <p>
-                It’s even more! 🚀
+                It’s even higher.
                 {' '}
-                <span style={{ color: '#0077b8' }}>Artificial&nbsp;intelligence</span>
+                <span style={{ color: '#ffc800' }}>AI</span>
                 {' '}
-                is projected to become a
+                is projected to hit
                 {' '}
-                <span style={{ color: '#0077b8' }}>$4.5&nbsp;trillion</span>
+                <span style={{ color: '#ffc800' }}>$4.5&nbsp;trillion</span>
                 {' '}
-                industry by 2033.
+                by 2033. That’s more than a 20-fold increase.
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="content_container">
-        <div className="text_container">
-          <TextHighlight text="Now that we have your attention…" />
-          <TextHighlight text="…and you've seen how fast AI is growing." />
-          <TextHighlight text="How does AI compare to other industries?" />
-        </div>
-      </div>
-      <div ref={fixedSectionRefFigure01} className="fixed-section">
+      <ScrollingText texts={['Let’s put that in perspective.', 'And see how AI fits…', '…in the overall tech market.']} />
+      {/*      <div ref={fixedSectionRefFigure01} className="fixed-section">
         <div className={`fixed-background ${positionFigure01}`}>
           <div className="chart_container_full">
             <Figure01 ref={chartFigure01} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
@@ -811,10 +824,11 @@ function App() {
           <div className="scroll-content">
             <div>
               <p>
-                In 2023, artificial intelligence accounted for just
-                <span style={{ color: '#0077b8' }}>9%</span>
+                In 2023, AI made up
                 {' '}
-                of the tech industry’s value.
+                <span style={{ color: '#ffc800' }}>7%</span>
+                {' '}
+                of the tech industry’s total value.
               </p>
             </div>
           </div>
@@ -823,39 +837,20 @@ function App() {
               <p>
                 By
                 {' '}
-                <span style={{ color: '#0077b8' }}>2033</span>
-                , its influence is expected to more than
+                <span style={{ color: '#ffc800' }}>2033</span>
+                , its share could more than
                 {' '}
-                <span style={{ color: '#0077b8' }}>triple</span>
-                , reshaping industries worldwide.
+                <span style={{ color: '#ffc800' }}>triple to 29%.</span>
               </p>
             </div>
           </div>
           <div className="scroll-content">
             <div>
-              <h3>How will this shift change the world?</h3>
-              <ul>
-                <li>
-                  Governments will adapt.
-                </li>
-                <li>
-                  Companies will innovate.
-                </li>
-                <li>
-                  What about you?
-                </li>
-              </ul>
+              <p>Breakthroughs in AI are reshaping all industries – from content creation and product design to automated coding and customer service.</p>
             </div>
           </div>
         </div>
-      </div>
-      <div className="content_container">
-        <div className="text_container">
-          <TextHighlight text="Now that we have your attention…" />
-          <TextHighlight text="…and you've seen how fast AI is growing." />
-          <TextHighlight text="How does AI compare to other industries?" />
-        </div>
-      </div>
+      </div> */}
       <div ref={fixedSectionRefFigure01Alt} className="fixed-section">
         <div className={`fixed-background ${positionFigure01Alt}`}>
           <div className="chart_container_full">
@@ -866,90 +861,55 @@ function App() {
           <div className="scroll-content">
             <div>
               <p>
-                In 2023, artificial intelligence accounted for just
-                <span style={{ color: '#0077b8' }}>9%</span>
+                In 2023, AI made up
                 {' '}
-                of the tech industry’s value.
+                <span style={{ color: '#ffc800' }}>7%</span>
+                {' '}
+                of the tech industry’s total value.
               </p>
             </div>
           </div>
           <div className="scroll-content">
             <div>
               <p>
-                By
+                By 2033, its share could
                 {' '}
-                <span style={{ color: '#0077b8' }}>2033</span>
-                , its influence is expected to more than
-                {' '}
-                <span style={{ color: '#0077b8' }}>triple</span>
-                , reshaping industries worldwide.
+                <span style={{ color: '#ffc800' }}>more than triple to 29%.</span>
               </p>
             </div>
           </div>
           <div className="scroll-content">
-            <div>
-              <h3>How will this shift change the world?</h3>
-              <ul>
-                <li>
-                  Governments will adapt.
-                </li>
-                <li>
-                  Companies will innovate.
-                </li>
-                <li>
-                  What about you?
-                </li>
-              </ul>
-            </div>
+            <div />
           </div>
         </div>
       </div>
-      <ChapterHeaderAlt title="Chapter 1" />
+      {/* <ChapterHeaderAlt title="Chapter 1" /> */}
       <div className="content_container">
         <div className="text_container">
-          <h2>AI at the technology frontier</h2>
+          <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
           </div>
-          <p className="intro">The first chapter of the Technology and Innovation Report 2025 explores how AI is driving the next wave of technological transformation. The market for frontier technologies stood at $2.5 trillion in 2023 and is projected to grow sixfold to $16.4 trillion by 2033, with AI leading the way at $4.8 trillion.</p>
-          <p className="intro">However, AI development is highly concentrated, with a few major corporations and countries – primarily the United States and China – dominating research, infrastructure, and investment. This growing AI divide threatens to widen technological inequalities, making it harder for developing nations to catch up.</p>
-          <p className="intro">
-            To foster inclusive AI-driven growth, the chapter highlights three key leverage points: infrastructure, data, and skills.
-            Countries must build computing power, invest in high-quality data, and develop AI expertise to harness its potential. With the right policies, AI can augment human work rather than replace it, ensuring that technological progress benefits all.
-          </p>
+          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/chapter1-min.jpg" /></div></div>
+          <div className="text_content">
+            <p>
+              <strong>Breakthroughs in AI are reshaping all industries</strong>
+              {' '}
+              – from content creation and product design to automated coding and customer service.
+            </p>
+            <p><strong>But AI development is highly concentrated.</strong></p>
+            <p><strong>Just 100 companies funded 40% of AI research and development (R&D) in 2022.</strong></p>
+            <p>Nearly half are in the United States. While 13% are in China, none are based in other developing countries.</p>
+            <p><strong>This imbalance is also seen in AI infrastructure.</strong></p>
+            <p>AI needs more than electricity and the internet. It requires computing power, servers and high-quality data to train algorithms.</p>
+            <p><strong>The US holds one third of the top supercomputers and over half the world’s computating power. Most data centres are in developed countries.</strong></p>
+            <p><strong>Skills are also key – from data literacy to expert-level AI knowledge.</strong></p>
 
-          <div className="media_container"><div className="image_container"><img src="assets/img/l/chapter1-min.jpg" alt="" /></div></div>
-          <p>Frontier technologies are reshaping the global economy, with the market valued at $2.5 trillion in 2023 and projected to grow sixfold to $16.4 trillion by 2033. AI is expected to lead this expansion, reaching a market size of $4.8 trillion.</p>
-          <p>Breakthroughs in AI are accelerating adoption across industries, from content creation and product development to automated coding and personalized customer service. This rapid growth is fueling the rise of tech giants. Apple, Nvidia, and Microsoft each have market capitalizations exceeding $3 trillion – comparable to the GDP of the entire African continent or the United Kingdom’s economy.</p>
-          <h3>A growing divide</h3>
-          <p>AI dominance is concentrated among a few corporations and countries. In 2022, just 100 companies accounted for 40% of all business-funded R&D, with nearly half based in the United States. China has risen as a key player, now home to 13% of these top R&D investors, surpassing countries like Germany, Japan, and South Korea. Yet, no other developing country is represented among the top 100.</p>
-          <p>This imbalance extends to AI infrastructure. The United States controls one-third of the world’s top supercomputers and more than half of global computational power. Most data centers are also concentrated in developed economies, leaving developing countries – aside from China, India, Brazil, and Russia – struggling to build AI capabilities.</p>
-          <h3>AI’s potential risks</h3>
-          <p>AI’s influence extends beyond business—it is transforming research, innovation, and economic structures. If leveraged well, AI can drive sustainable growth and support the Sustainable Development Goals (SDGs). But without intervention, AI-driven inequalities could widen, leaving developing nations behind.</p>
-          <p>Governments must act to balance innovation with inclusivity, ensuring AI serves both public and private interests. The report highlights three key leverage points that will shape AI’s future:</p>
-          <ul>
-            <li>
-              <strong>Infrastructure:</strong>
-              {' '}
-              Beyond electricity and internet access, countries need computing power and server capabilities to process AI models effectively
-            </li>
-            <li>
-              <strong>Data:</strong>
-              {' '}
-              AI depends on high-quality, diverse, and unbiased datasets to train algorithms and make reliable predictions.
-            </li>
-            <li>
-              <strong>Skills:</strong>
-              {' '}
-              From basic data literacy to advanced AI expertise, a broad talent pool is essential to harness AI for development.
-            </li>
-          </ul>
-          <p>AI has the potential to augment human work, not replace it. With the right policies, developing nations can retain their competitiveness, ensure fair AI access, and participate in shaping global AI governance. The Technology and Innovation Report 2025 provides a roadmap to navigate these challenges and unlock AI’s benefits for all.</p>
+          </div>
         </div>
       </div>
 
       { /* Chapter 2 */ }
-      <ChapterHeader chapter_number="2" title="chapter" />
       <div ref={fixedSectionRefFigure02} className="fixed-section">
         <div className={`fixed-background ${positionFigure02}`}>
           <div className="chart_container_full">

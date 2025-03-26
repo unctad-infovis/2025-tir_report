@@ -50,7 +50,7 @@ const TreemapChart = forwardRef((props, ref) => {
         x: 0
       },
       chart: {
-        backgroundColor: '#000',
+        backgroundColor: '#222',
         height: props.chart_height,
         events: {
           load() {

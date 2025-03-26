@@ -14,7 +14,7 @@ function ChapterHeader(props) {
       const rect = headerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      const triggerPoint = windowHeight * 0.7;
+      const triggerPoint = windowHeight * 0.5;
 
       const visibility = Math.min(Math.max((windowHeight - rect.top) / (windowHeight - triggerPoint), 0), 1);
 
@@ -27,9 +27,16 @@ function ChapterHeader(props) {
 
   return (
     <div ref={headerRef} className="chapter_header">
-      <div className="content" style={{ opacity: scrollPercentage, transform: `translateX(${(1 - scrollPercentage) * -10}%)` }}>
-        <div className="chapter_number">{chapter_number}</div>
-        <div className="title">{title}</div>
+      <div className="" style={{ opacity: scrollPercentage, transform: `translateX(${-(1 - scrollPercentage) * 30}%)` }}>
+        <h2>
+          <div className="chapter">
+            Chapter
+            {chapter_number}
+          </div>
+          <div>
+            {title}
+          </div>
+        </h2>
       </div>
     </div>
   );

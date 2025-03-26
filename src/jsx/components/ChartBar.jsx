@@ -49,7 +49,7 @@ const BarChart = forwardRef((props, ref) => {
         x: 0
       },
       chart: {
-        backgroundColor: '#000',
+        backgroundColor: '#222',
         height: props.chart_height,
         events: {
           load() {
@@ -91,7 +91,7 @@ const BarChart = forwardRef((props, ref) => {
             duration: 500
           },
           borderRadius: 0,
-          borderWidth: 2,
+          borderWidth: 0,
           colorByPoint: true,
           cursor: 'default',
           colors: ['#009edb', '#009edb', '#009edb'],
@@ -208,13 +208,7 @@ const BarChart = forwardRef((props, ref) => {
         gridLineWidth: 1,
         gridLineDashStyle: 'shortdot',
         labels: {
-          rotation: 0,
-          style: {
-            color: 'rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Inter',
-            fontSize: '14px',
-            fontWeight: 400
-          }
+          enabled: false
         },
         endOnTick: false,
         lineColor: 'transparent',

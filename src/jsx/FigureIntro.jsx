@@ -50,14 +50,14 @@ const FigureIntro = forwardRef(({ highlight_bool, node_count }, ref) => {
       .attr('r', 0)
       .style('font-size', 0)
       .attr('text-anchor', 'middle')
-      .attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffcb05' : i > 19 ? '#72bf44' : '#00562E'));
+      .attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffc800' : i > 19 ? '#009edb' : '#c5dfef'));
 
     enter.transition()
       .delay((d, i) => Math.random() * i * 5)
       .attr('r', 10)
       .style('font-size', '30px');
 
-    circles.attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffcb05' : i > 19 ? '#72bf44' : '#00562E'));
+    circles.attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffc800' : i > 19 ? '#009edb' : '#c5dfef'));
 
     simulationRef.current = d3.forceSimulation()
       .nodes(nodes)

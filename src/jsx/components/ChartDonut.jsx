@@ -118,7 +118,7 @@ const DonutChart = forwardRef((props, ref) => {
         x: 0
       },
       chart: {
-        backgroundColor: '#000',
+        backgroundColor: '#222',
         custom: {},
         height: props.chart_height,
         events: {
