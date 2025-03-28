@@ -37,30 +37,11 @@ const BarChart = forwardRef((props, ref) => {
   const createChart = useCallback(() => {
     ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
       caption: {
-        align: 'left',
-        margin: 20,
-        style: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        text: `<em>Source:</em> ${props.source} ${props.note ? (`<br /><em>Note:</em> <span>${props.note}</span>`) : ''}`,
-        useHTML: true,
-        verticalAlign: 'bottom',
-        x: 0
+        text: undefined
       },
       chart: {
-        backgroundColor: '#222',
+        backgroundColor: 'transparent',
         height: props.chart_height,
-        events: {
-          load() {
-            const chart_this = this;
-            chart_this.renderer.image('https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg', 20, 20, 44, 43.88).add();
-          },
-          render() {
-
-          }
-        },
-        spacingRight: 64,
         style: {
           color: '#fff',
           fontFamily: 'Inter',
@@ -96,17 +77,17 @@ const BarChart = forwardRef((props, ref) => {
           cursor: 'default',
           colors: ['#009edb', '#009edb', '#009edb'],
           dataLabels: {
-            connectorColor: '#fff',
-            connectorWidth: 0,
+            color: '#fff',
             enabled: true,
+            format: '{y}%',
             inside: false,
             style: {
-              fontSize: 26,
-              fontWeight: 600
+              fontSize: 30,
+              fontWeight: 900
             }
           },
           enableMouseTracking: false,
-          groupPadding: 0.05, // The space between the bars.
+          groupPadding: 0.1, // The space between the bars.
           states: {
             hover: {
               enabled: false
@@ -143,39 +124,16 @@ const BarChart = forwardRef((props, ref) => {
         data: props.data[0]
       }],
       subtitle: {
-        align: 'left',
-        enabled: true,
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '16px',
-          fontWeight: 400,
-          lineHeight: '18px'
-        },
-        text: props.subtitle,
-        x: 64
+        text: undefined
       },
       title: {
-        align: 'left',
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '30px',
-          fontWeight: 700,
-          lineHeight: '34px'
-        },
-        text: props.title,
-        x: 64
+        text: undefined
       },
       tooltip: {
         enabled: false
       },
       xAxis: {
         categories: props.data[0].map(el => el.name),
-        crosshair: {
-          color: 'transparent',
-          width: 1
-        },
         labels: {
           distance: 10,
           padding: 0,
@@ -200,38 +158,14 @@ const BarChart = forwardRef((props, ref) => {
         }
       },
       yAxis: {
-        accessibility: {
-          description: 'Index'
-        },
-        allowDecimals: true,
-        gridLineColor: 'rgba(124, 112, 103, 0.2)',
-        gridLineWidth: 1,
-        gridLineDashStyle: 'shortdot',
+        gridLineWidth: 0,
         labels: {
           enabled: false
         },
-        endOnTick: false,
-        lineColor: 'transparent',
-        lineWidth: 0,
         max: 40,
-        opposite: true,
-        showFirstLabel: false,
-        startOnTick: false,
-        showLastLabel: true,
         title: {
-          enabled: true,
-          reserveSpace: true,
-          rotation: 0,
-          style: {
-            color: 'rgba(0, 0, 0, 0.8)',
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            fontWeight: 400
-          },
-          text: '',
-          verticalAlign: 'top',
-        },
-        type: 'linear'
+          enabled: false
+        }
       }
     });
     chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;
@@ -241,7 +175,7 @@ const BarChart = forwardRef((props, ref) => {
         ref.current = null;
       }
     };
-  }, [ref, props.idx, props.chart_height, props.data, props.source, props.subtitle, props.title, props.note]);
+  }, [ref, props.idx, props.chart_height, props.data]);
 
   useEffect(() => {
     if (isVisible === true) {
@@ -267,8 +201,4 @@ BarChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
   idx: PropTypes.string.isRequired,
-  note: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  source: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
 };

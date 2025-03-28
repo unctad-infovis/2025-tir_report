@@ -37,27 +37,11 @@ const ScatterPlotChart = forwardRef((props, ref) => {
   const createChart = useCallback(() => {
     ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
       caption: {
-        align: 'left',
-        margin: 20,
-        style: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        text: `<em>Source:</em> ${props.source} ${props.note ? (`<br /><em>Note:</em> <span>${props.note}</span>`) : ''}`,
-        useHTML: true,
-        verticalAlign: 'bottom',
-        x: 0
+        text: undefined
       },
       chart: {
         backgroundColor: '#222',
         height: props.chart_height,
-        events: {
-          load() {
-            const chart_this = this;
-            chart_this.renderer.image('https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg', 20, 20, 44, 43.88).add();
-          }
-        },
-        spacingRight: 64,
         style: {
           color: '#fff',
           fontFamily: 'Inter',
@@ -165,30 +149,10 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       },
       series: props.data,
       subtitle: {
-        align: 'left',
-        enabled: true,
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '16px',
-          fontWeight: 400,
-          lineHeight: '18px'
-        },
-        text: props.subtitle,
-        x: 64
+        text: undefined
       },
       title: {
-        align: 'left',
-        margin: 20,
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '30px',
-          fontWeight: 700,
-          lineHeight: '34px'
-        },
-        text: props.title,
-        x: 64
+        text: undefined
       },
       tooltip: {
         enabled: false
@@ -275,7 +239,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         ref.current = null;
       }
     };
-  }, [ref, props.idx, props.chart_height, props.data, props.source, props.subtitle, props.title, props.note]);
+  }, [ref, props.idx, props.chart_height, props.data]);
 
   useEffect(() => {
     if (isVisible === true) {
@@ -300,9 +264,5 @@ export default ScatterPlotChart;
 ScatterPlotChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
-  idx: PropTypes.string.isRequired,
-  note: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  source: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  idx: PropTypes.string.isRequired
 };

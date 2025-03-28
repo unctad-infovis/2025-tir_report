@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-function ScrollingText({ texts }) {
+function ScrollingText({ chapter_text, texts }) {
   const containerRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -24,10 +24,11 @@ function ScrollingText({ texts }) {
   }, []);
 
   return (
-    <div className="scrolling-text-container" ref={containerRef}>
+    <div className={`scrolling-text-container count_${texts.length}`} ref={containerRef}>
+      {(scrollProgress > 0 && scrollProgress < 1) && <div className="header">{chapter_text}</div>}
       {texts.map((text, index) => {
-        const baseOffset = 100 * (index + 1); // Increase initial offset
-        const translateX = baseOffset - scrollProgress * 400; // Increase movement range
+        const baseOffset = 100 * (index + 1) + 100;
+        const translateX = baseOffset - scrollProgress * 400;
         let opacity = 1;
         if (translateX > 30) {
           opacity = (1 - (translateX * 1.2 - 30) / 100);
@@ -35,14 +36,7 @@ function ScrollingText({ texts }) {
           opacity = (1 + (translateX * 1.2) / 100);
         }
         return (
-          <div
-            key={text}
-            className="scrolling-text"
-            style={{
-              transform: `translateX(${translateX}%)`,
-              opacity,
-            }}
-          >
+          <div key={text} className="scrolling-text" style={{ transform: `translateX(${translateX}%)`, opacity }}>
             <p>
               {text}
             </p>
@@ -54,7 +48,8 @@ function ScrollingText({ texts }) {
 }
 
 ScrollingText.propTypes = {
-  texts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  chapter_text: PropTypes.string.isRequired,
+  texts: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default ScrollingText;

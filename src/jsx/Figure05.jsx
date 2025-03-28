@@ -57,7 +57,7 @@ const Figure05 = forwardRef((props, ref) => {
       sortIndex: -6
     }, {
       id: '0/7',
-      name: '118 countries countries, primarily in the global South, are not parties to any of the sampled initiatives or instruments',
+      name: '118 countries are not parties to any of the sampled initiatives or instruments',
       sortIndex: -7,
       visible: false
     }];
@@ -68,7 +68,7 @@ const Figure05 = forwardRef((props, ref) => {
         data: values.map((e, j) => ({
           color: colors[labels[j]],
           id: `${labels[j]}_child`,
-          name: (labels[j] === '0/7' || labels[j] === '1/7') ? `${labels[j]} deals` : labels[j],
+          name: (labels[j] === '0/7' || labels[j] === '1/7') ? `${labels[j]} efforts` : labels[j],
           parent: labels[j],
           sortIndex: -j,
           value: e,

@@ -112,6 +112,7 @@
             cursor: pointer;
             height: auto;
             margin: 0;
+            outline: none;
             padding: 0;
             text-align: left;
             @media all and (max-width: 970px) {
@@ -227,6 +228,11 @@
                     height: 30px;
                     width: 30px;
                   }
+                  &:hover {
+                    &:before {
+                      opacity: 0.5;
+                    }
+                  }
                 }
               }
               &:hover {
@@ -250,10 +256,13 @@
   >.content_container {
     background-color: #fff;
     background-image: url('../assets/img/2025tir.jpg');
-    background-position: 0 -200px;
+    background-position: -200px -600px;
     background-repeat: no-repeat;
     background-size: auto auto;
     padding: 100px 0;
+    position: relative;
+    z-index: 3;
+    border-bottom: 40px solid #009edb;
     .recommendations,
     .content {
       background-color: #fff;
@@ -268,7 +277,6 @@
         text-align: center;
         width: 100%;
         img {
-          height: 250px;
           padding: 0;
           width: 100%;
         }
@@ -285,7 +293,8 @@
         max-width: 750px;
         margin: auto auto;
         h3 {
-          font-size: 24px;
+          font-size: 30px;
+          font-weight: 800;
         }
         ul {
           font-size: 20px;
@@ -295,7 +304,7 @@
           li {
             list-style-type: none;
             margin: 0 0 10px 0;
-            padding: 0 0 0 25px;
+            padding: 0 0 0 40px;
             position: relative;
             &:before {
               background-image: url(https://storage.unctad.org/2024-der_report/assets/img/2024-der_report_chevron_arrow_yellow.png);
@@ -304,11 +313,11 @@
               background-size: 100% 100%;
               content: '';
               display: inline-block;
-              height: 20px;
+              height: 30px;
               left: 0;
               position: absolute;
-              top: 2px;
-              width: 20px;
+              top: 10px;
+              width: 30px;
               z-index: 1;
             }
           }
@@ -332,8 +341,9 @@
             font-weight: 700;
           }
         }
-        p,
         h3,
+        p,
+        blockquote,
         ul {
           opacity: 0;
           &.visible {
@@ -388,16 +398,6 @@
           line-height: 30px;
         }
       }
-      p.big {
-        background-color: #009edb;
-        color: #fff;
-        font-size: 40px;
-        font-weight: 600;
-        line-height: 40px;
-        margin: 200px auto;
-        padding: 40px;
-        text-align: center;
-      }
     }
   }
   .scrolling-text-container {
@@ -409,21 +409,36 @@
     background-repeat: no-repeat;
     background-size: auto auto;
     display: flex;
-    height: 500vh; /* Enough space for the scrolling effect */
     justify-content: center;
     overflow: hidden;
     position: relative;
+    &.count_2 {
+      height: 250vh;
+    }
+    &.count_1 {
+      height: 150vh;
+    }
+    .header {
+      font-size: 40px;
+      text-transform: uppercase;
+      font-weight: 900;
+      left: 10px;
+      color: #0077b8;
+      line-height: 60px;
+      margin: 0 0 20px auto;
+      position: fixed;
+      top: 10px;
+    }
     .scrolling-text {
       font-size: 60px;
       font-weight: 900;
       font-weight: bold;
       height: 100vh;
-      position: fixed;
       top: 40vh;
+      position: fixed;
       width: 100%;
       p {
-      max-width: 700px;
-
+        max-width: 700px;
       }
     }
   }
@@ -432,15 +447,24 @@
     position: relative;
     .fixed-background {
       background-attachment: fixed;
-      // background-image: url('./../assets/img/image1.png');
       background-position: 50% 50%;
       background-repeat: no-repeat;
       height: 100vh;
       left: 0;
       position: absolute;
-      transition: background-image 0.2s ease-in-out;
       width: 100%;
       z-index: 1;
+      .overlay {
+        background-color: rgba(0, 0, 0, 0.8);
+        content: '';
+        height: 100vh;
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 2;
+        transition: background-color 0.5s ease-in-out;
+        width: 100%;
+      }
       &.absolute_bottom {
         bottom: 0;
         position: absolute;
@@ -481,20 +505,20 @@
       }
     }
     .scroll-elements {
-      height: 100%;
+      position: relative;
+      top: 20vh;
       .scroll-content {
         align-content: center;
         align-items: center;
         background: transparent;
         display: flex;
-        height: 150vh;
+        height: 130vh;
         justify-content: center;
         position: relative;
         flex-direction: column;
-        top: 50vh;
         z-index: 2;
         &.full {
-          div {
+          >div {
             justify-content: center;
             align-content: center;
             flex-wrap: wrap;
@@ -506,15 +530,15 @@
             width: 100%;
           }
         }
-        div {
-          // background-color: rgba(255, 203, 5, 0.95);
+        >div {
+          // background-color: rgba(0, 0, 0, 0.5);
+          box-sizing: border-box;
           color: #fff;
           font-weight: 900;
-          box-sizing: border-box;
-          position: relative;
           padding: 20px 20px;
+          position: relative;
           text-align: center;
-          text-shadow: -5px -5px 40px #000;
+          text-shadow: 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000, 0px 0px 20px #000;
           h3 {
             font-size: 40px;
             font-weight: 800;
@@ -531,8 +555,8 @@
             line-height: 30px;
           }
           p {
-            font-size: 50px;
-            line-height: 60px;
+            font-size: 55px;
+            line-height: 70px;
             margin: auto auto 20px auto;
             max-width: 700px;
             span {
@@ -542,7 +566,7 @@
               margin-bottom: 0;
             }
           }
-          button {
+          .guess_button {
             font-family: Inter, Helvetica, Arial, sans-serif;
             background-color: #ffc800;
             border: 0;
@@ -556,15 +580,35 @@
             margin: 5px 5px 5px 5px;
             padding: 7px 10px;
             width: 130px;
-            span {
-              font-size: 30px;
-              font-weight: 900;
+            font-size: 30px;
+            font-weight: 900;
+            div {
+              background-color: transparent;
+              margin: 0;
+            }
+            &.selected {
+              background-color: #009edb;
+              color: #fff;
             }
             &:hover {
               background-color: #009edb;
               border: 2px solid #000;
             }
           }
+           .skip_button {
+            background-color: #009edb;
+            border: 0;
+            border: 2px solid transparent;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 20px;
+            &:hover {
+              background-color: #ffc800;
+              border: 2px solid transparent;
+            }
+
+           }
         }
       }
     }

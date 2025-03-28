@@ -170,7 +170,7 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
     const enterAmountLabel = amountLabel.enter()
       .append('text')
       .attr('class', 'amount-label')
-      .attr('text-anchor', 'middle') // Center text horizontally
+      .attr('text-anchor', 'right') // Center text horizontally
       .style('font-size', '70px') // Adjust size
       .style('fill', '#fff') // Adjust color
       .style('font-weight', '900');
@@ -178,7 +178,7 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
     enterAmountLabel.merge(amountLabel)
       .transition()
       .duration(1000)
-      .attr('x', width / 2 - 200) // Center horizontally in the middle of the page
+      .attr('x', width / 2 - 300) // Center horizontally in the middle of the page
       .attr('y', height / 2) // Center vertically
       .tween('text', (d, i, amount_nodes) => {
         let interpolate;
@@ -206,45 +206,45 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
           const interpolatedAmount = interpolate(t); // Get the interpolated value at time t
           d3.select(element).selectAll('tspan').remove(); // Remove old tspans if any
 
-          const formattedAmount = new Intl.NumberFormat().format(Math.round(interpolatedAmount)).replace(/,/g, ' ');
+          const formattedAmount = new Intl.NumberFormat().format(Math.round(interpolatedAmount));
 
           // Split the year into characters for custom styling
           const yearString = `${year}`;
           const yearParts = yearString.split('');
 
           // Create the lines for the text
-          const lines = [
-            `in ${yearParts[0]}${yearParts[1]}`, // First part of the year
-            yearParts[2], // Third character in the year (styled)
-            yearParts[3], // Fourth character of the year
-            `$${formattedAmount}` // Amount line
-          ];
+          const lines = ['Total value', `in ${yearParts[0]}${yearParts[1]}`, yearParts[2], yearParts[3], `$${formattedAmount}`];
 
-          // Append the first part of the year (in 20)
           d3.select(element).append('tspan')
-            .attr('class', 'year-part') // Apply class for styling
-            .attr('x', width / 2 - 200)
-            .attr('dy', 0) // No line break between first two characters
+            .attr('class', 'label-part')
+            .attr('x', width / 2 - 300)
+            .style('font-size', '46px')
+            .attr('dy', 0)
             .text(lines[0]);
-
-          // Append the styled third character in the year (colored)
           d3.select(element).append('tspan')
-            .attr('class', 'highlighted') // Apply class for styling
-            .attr('dy', 0) // Stay on the same line as the previous one
+            .attr('class', 'year-part')
+            .attr('x', width / 2 - 300)
+            .style('font-size', '46px')
+            .attr('dy', '1.2em')
             .text(lines[1]);
 
-          // Append the last character of the year (33)
           d3.select(element).append('tspan')
-            .attr('class', 'year-part') // Apply class for styling
-            .attr('dy', 0) // Stay on the same line
+            .attr('class', 'highlighted')
+            .style('font-size', '46px')
+            .attr('dy', 0)
             .text(lines[2]);
 
-          // Add a line break and append the amount
           d3.select(element).append('tspan')
-            .attr('class', 'amount') // Apply class for styling
-            .attr('x', width / 2 - 200)
-            .attr('dy', '1.2em') // Line break before the amount
-            .text(lines[3]); // Amount line
+            .attr('class', 'year-part')
+            .style('font-size', '46px')
+            .attr('dy', 0)
+            .text(lines[3]);
+
+          d3.select(element).append('tspan')
+            .attr('class', 'amount')
+            .attr('x', width / 2 - 300)
+            .attr('dy', '1.2em')
+            .text(lines[4]);
         };
       });
   }, [dimensions]);

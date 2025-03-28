@@ -38,16 +38,7 @@ const TreemapChart = forwardRef((props, ref) => {
   const createChart = useCallback(() => {
     ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
       caption: {
-        align: 'left',
-        margin: 20,
-        style: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        text: `<em>Source:</em> ${props.source} ${props.note ? (`<br /><em>Note:</em> <span>${props.note}</span>`) : ''}`,
-        useHTML: true,
-        verticalAlign: 'bottom',
-        x: 0
+        text: undefined
       },
       chart: {
         backgroundColor: '#222',
@@ -156,29 +147,10 @@ const TreemapChart = forwardRef((props, ref) => {
         }]
       },
       subtitle: {
-        align: 'left',
-        enabled: true,
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '16px',
-          fontWeight: 400,
-          lineHeight: '18px'
-        },
-        text: props.subtitle,
-        x: 64
+        text: undefined
       },
       title: {
-        align: 'left',
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '30px',
-          fontWeight: 700,
-          lineHeight: '34px'
-        },
-        text: props.title,
-        x: 64
+        text: undefined
       },
       tooltip: {
         enabled: false
@@ -191,7 +163,7 @@ const TreemapChart = forwardRef((props, ref) => {
         ref.current = null;
       }
     };
-  }, [ref, props.idx, props.chart_height, props.data, props.source, props.subtitle, props.title, props.note]);
+  }, [ref, props.idx, props.chart_height, props.data]);
 
   useEffect(() => {
     if (isVisible === true) {
@@ -216,9 +188,5 @@ export default TreemapChart;
 TreemapChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
-  idx: PropTypes.string.isRequired,
-  note: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  source: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  idx: PropTypes.string.isRequired
 };

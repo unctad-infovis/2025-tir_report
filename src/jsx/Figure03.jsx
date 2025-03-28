@@ -68,7 +68,7 @@ const Figure03 = forwardRef((props, ref) => {
     const formattedDataStage7 = structuredClone(createEmptyFormattedData());
     const formattedDataStage8 = structuredClone(createEmptyFormattedData());
 
-    [formattedDataStage2, formattedDataStage3, formattedDataStage4, formattedDataStage5, formattedDataStage6, formattedDataStage7].forEach(stage => {
+    [formattedDataStage2, formattedDataStage3, formattedDataStage4, formattedDataStage5, formattedDataStage6].forEach(stage => {
       ['Leaders', 'Practitioners', 'Laggards', 'Creators'].forEach(groupName => {
         const group = stage.find(g => g.name === groupName);
         if (group) {
@@ -171,20 +171,20 @@ const Figure03 = forwardRef((props, ref) => {
       }
       if (group7) {
         group7.data.push({
-          color: group7.color,
+          color: group8.color,
           dataLabels: {
             allowOverlap: true,
             enabled: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name),
             padding: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 10 : 5
           },
           marker: {
-            enabled: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name),
+            enabled: true,
             lineWidth: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 2 : 0,
             radius: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 6 : 3
           },
           name: item.Name,
-          x: item['Share of developers compared to working age population'] === 'null' ? null : parseFloat(item['Share of developers compared to working age population']),
-          y: item['Share of working age population with advanced degree'] === 'null' ? null : parseFloat(item['Share of working age population with advanced degree']),
+          x: item['Gross domestic product per capita‚ PPP'] === 'null' ? null : parseFloat(item['Gross domestic product per capita‚ PPP']),
+          y: item.Index === 'null' ? null : parseFloat(item.Index),
         });
       }
       if (group8) {
