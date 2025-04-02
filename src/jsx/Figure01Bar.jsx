@@ -8,7 +8,7 @@ import { transpose } from 'csv-transpose';
 
 // Load helpers.
 import CSVtoJSON from './helpers/CSVtoJSON.js';
-import ChartDonut from './components/ChartDonut.jsx';
+import ChartBar from './components/ChartBar.jsx';
 
 const colors = {
   'Internet of things‚ 2023': '#fbaf17',
@@ -33,10 +33,6 @@ const Figure01 = forwardRef((props, ref) => {
     const output = {
       data: values.map((e, j) => ({
         color: colors[labels[j]],
-        dataLabels: {
-          // enabled: (labels[j] === 'AI‚ 2023' || labels[j] === 'AI‚ 2033')
-          // enabled: (labels[j] === 'AI‚ 2023' || labels[j] === 'AI‚ 2033')
-        },
         name: labels[j].replace('‚ 2023', '').replace('‚ 2033', ''),
         selected: (labels[j] === 'Artificial intelligence‚ 2023' || labels[j] === 'Artificial intelligence 2033'),
         sliced: (labels[j] === 'Artificial intelligence‚ 2023' || labels[j] === 'Artificial intelligence‚ 2033'),
@@ -70,7 +66,7 @@ const Figure01 = forwardRef((props, ref) => {
   return (
     <div className="app">
       {dataFigure && (
-      <ChartDonut
+      <ChartBar
         chart_height={800}
         data={dataFigure}
         idx="01"

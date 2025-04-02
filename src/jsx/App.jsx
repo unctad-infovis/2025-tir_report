@@ -12,7 +12,8 @@ import scrollIntoView from 'scroll-into-view';
 import ShareContainer from './components/ShareContainer.jsx';
 
 import FigureIntro from './FigureIntro.jsx';
-import Figure01 from './Figure01.jsx';
+import Figure01Donut from './Figure01Donut.jsx';
+import Figure01Bar from './Figure01Bar.jsx';
 import Figure01Alt from './Figure01Alt.jsx';
 import Figure02 from './Figure02.jsx';
 import Figure03 from './Figure03.jsx';
@@ -46,17 +47,17 @@ function App() {
   const [figureIntroData, setFigureIntroData] = useState(19);
   const [figureIntroHighlight, setFigureIntroHighlight] = useState(false);
   const [positionFigureIntro, setPositionFigureIntro] = useState('');
-  const aboveSwitchPointFigureIntro = useRef({ isAbove1: true, isAbove2: true, isAbove3: true });
+  const aboveSwitchPointFigureIntro = useRef({ isAbove1: null, isAbove2: null, isAbove3: null });
   const fixedSectionRefFigureIntro = useRef(null);
   const chartFigureIntro = useRef(null);
 
   const handleScrollFigureIntro = useCallback(() => {
     if (!fixedSectionRefFigureIntro.current || !chartFigureIntro.current) return;
 
-    // 4 screens.
-    fixedSectionRefFigureIntro.current.style.height = '600vh';
     const { offsetTop, offsetHeight } = fixedSectionRefFigureIntro.current;
     const { scrollY, innerHeight } = window;
+    // 4 screens.
+    fixedSectionRefFigureIntro.current.style.height = `${4 * 130 + 80}vh`;
 
     const fixedBottom = offsetTop + offsetHeight - innerHeight;
     const relativeScroll = scrollY - offsetTop;
@@ -65,13 +66,14 @@ function App() {
     setPositionFigureIntro(scrollY < offsetTop ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
 
     // Define switch points
-    const switchPoints = [innerHeight * 1, innerHeight * 2.3, innerHeight * 3.6];
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8, innerHeight * 2.9 + innerHeight * 0.8];
 
     const newState = {
       isAbove1: relativeScroll < switchPoints[0],
       isAbove2: relativeScroll < switchPoints[1],
       isAbove3: relativeScroll < switchPoints[2],
     };
+
     if (newState.isAbove1) {
       fixedSectionRefFigureIntro.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     } else {
@@ -83,57 +85,128 @@ function App() {
     aboveSwitchPointFigureIntro.current = newState;
 
     setFigureIntroHighlight(!newState.isAbove1 && newState.isAbove2);
+    const selected_value = parseInt(document.querySelector('.selected.guess_button')?.value, 10);
 
-    setFigureIntroData(newState.isAbove2 ? 19 : newState.isAbove3 && ![80, 210, 477].includes(figureIntroData) ? 19 : 477);
-  }, [figureIntroData]);
+    setFigureIntroData(newState.isAbove2 ? 19 : !newState.isAbove3 ? 477 : newState.isAbove3 && [60, 120, 240].includes(selected_value) ? selected_value : 19);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScrollFigureIntro);
     return () => window.removeEventListener('scroll', handleScrollFigureIntro);
   }, [handleScrollFigureIntro]);
 
-  /** *********
-  * FIGURE 1 *
-  *********** */
-  const [figure01Data2023, setFigure01Data2023] = useState([]);
-  const [figure01Data2033, setFigure01Data2033] = useState([]);
-  const [positionFigure01, setPositionFigure01] = useState('');
-  const aboveSwitchPointFigure01 = useRef(true);
   const fixedSectionRefFigure01 = useRef(null);
-  const chartFigure01 = useRef(null);
+  const [positionFigure01, setPositionFigure01] = useState('');
+  /** **************
+  * FIGURE DONUT 1 *
+  ***************** */
+  const [figure01DonutData2023, setFigure01DonutData2023] = useState([]);
+  const [figure01DonutData2033, setFigure01DonutData2033] = useState([]);
+  const aboveSwitchPointFigure01Donut = useRef(({ isAbove1: true, isAbove2: true }));
+  const chartFigure01Donut = useRef(null);
 
-  const handleScrollFigure01 = useCallback(() => {
-    fixedSectionRefFigure01.current.style.height = '500vh';
-    const fixedTop = fixedSectionRefFigure01.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure01.current.offsetHeight - window.innerHeight;
-    const { scrollY } = window;
+  const handleScrollFigure01Donut = useCallback(() => {
+    const fixedElement = fixedSectionRefFigure01.current;
+
+    if (!fixedElement) return;
+
+    fixedElement.style.height = `${3 * 130 + 80}vh`;
+
+    const { scrollY, innerHeight } = window;
+    const fixedTop = fixedElement.offsetTop;
+    const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint = window.innerHeight * 1.5;
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
-    // Determine position state
-    setPositionFigure01(scrollY < fixedTop ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    // Determine fixed position state
+    setPositionFigure01(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
+    );
 
-    if (!fixedSectionRefFigure01.current) return;
-    const isAbove = relativeScroll < switchPoint;
-    if (aboveSwitchPointFigure01.current === isAbove) return;
+    const isAbove1 = relativeScroll < switchPoints[0];
+    const isAbove2 = relativeScroll < switchPoints[1];
 
-    if (chartFigure01.current) {
-      aboveSwitchPointFigure01.current = isAbove;
+    const prevState = aboveSwitchPointFigure01Donut.current;
+    if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
+
+    if (isAbove1) {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    } else {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
-    const newData = isAbove ? figure01Data2023 : figure01Data2033;
-    // eslint-disable-next-line no-irregular-whitespace
-    const newLabel = `${isAbove ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="60" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove ? '$2&nbsp;542' : '$16&nbsp;420'}</tspan>`;
 
-    if (!chartFigure01.current) return;
-    chartFigure01.current.series[0].setData(newData, false);
-    chartFigure01.current.options.chart.custom.label.text.element.innerHTML = newLabel;
-    chartFigure01.current.redraw();
-  }, [figure01Data2023, figure01Data2033]);
+    if (chartFigure01Donut.current) {
+      aboveSwitchPointFigure01Donut.current = { isAbove1, isAbove2 };
+    }
+    const newData = isAbove2 ? figure01DonutData2023 : figure01DonutData2033;
+    // eslint-disable-next-line no-irregular-whitespace
+    const newLabel = `${isAbove2 ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="1.2em" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
+
+    if (!chartFigure01Donut.current) return;
+    chartFigure01Donut.current.series[0].setData(newData, false);
+    chartFigure01Donut.current.options.chart.custom.label.text.element.innerHTML = newLabel;
+    chartFigure01Donut.current.redraw();
+  }, [figure01DonutData2023, figure01DonutData2033]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScrollFigure01);
-    return () => window.removeEventListener('scroll', handleScrollFigure01);
-  }, [handleScrollFigure01]);
+    window.addEventListener('scroll', handleScrollFigure01Donut);
+    return () => window.removeEventListener('scroll', handleScrollFigure01Donut);
+  }, [handleScrollFigure01Donut]);
+
+  /** **************
+  * FIGURE BAR 1 *
+  ***************** */
+  const [figure01BarData2023, setFigure01BarData2023] = useState([]);
+  const [figure01BarData2033, setFigure01BarData2033] = useState([]);
+  const aboveSwitchPointFigure01Bar = useRef(({ isAbove1: true, isAbove2: true }));
+  const chartFigure01Bar = useRef(null);
+
+  const handleScrollFigure01Bar = useCallback(() => {
+    const fixedElement = fixedSectionRefFigure01.current;
+
+    if (!fixedElement) return;
+
+    fixedElement.style.height = `${3 * 130 + 80}vh`;
+
+    const { scrollY, innerHeight } = window;
+    const fixedTop = fixedElement.offsetTop;
+    const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
+    const relativeScroll = scrollY - fixedTop;
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
+
+    // Determine fixed position state
+    setPositionFigure01(
+      scrollY < fixedTop ? 'absolute_top'
+        : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
+    );
+
+    const isAbove1 = relativeScroll < switchPoints[0];
+    const isAbove2 = relativeScroll < switchPoints[1];
+
+    const prevState = aboveSwitchPointFigure01Bar.current;
+    if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
+
+    if (isAbove1) {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    } else {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    }
+
+    if (chartFigure01Bar.current) {
+      aboveSwitchPointFigure01Bar.current = { isAbove1, isAbove2 };
+    }
+    const newData = isAbove2 ? figure01BarData2023 : figure01BarData2033;
+
+    if (!chartFigure01Bar.current) return;
+    chartFigure01Bar.current.series[0].setData(newData, false);
+    chartFigure01Bar.current.redraw();
+  }, [figure01BarData2023, figure01BarData2033]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollFigure01Bar);
+    return () => window.removeEventListener('scroll', handleScrollFigure01Bar);
+  }, [handleScrollFigure01Bar]);
 
   /** *********
   * FIGURE 1 ALT *
@@ -172,27 +245,25 @@ function App() {
   }), []);
 
   const [figure01AltData, setFigure01AltData] = useState(figure01_data[2023]);
-  const [positionFigure01Alt, setPositionFigure01Alt] = useState('');
-  const aboveSwitchPointFigure01Alt = useRef({});
-  const fixedSectionRefFigure01Alt = useRef(null);
+  const aboveSwitchPointFigure01Alt = useRef(({ isAbove1: null, isAbove2: null }));
   const chartFigure01Alt = useRef(null);
 
   const handleScrollFigure01Alt = useCallback(() => {
-    const fixedElement = fixedSectionRefFigure01Alt.current;
+    const fixedElement = fixedSectionRefFigure01.current;
     const chartElement = chartFigure01Alt.current;
 
     if (!fixedElement || !chartElement) return;
 
-    fixedElement.style.height = '480vh';
+    fixedElement.style.height = `${3 * 130 + 80}vh`;
 
     const { scrollY, innerHeight } = window;
     const fixedTop = fixedElement.offsetTop;
     const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoints = [innerHeight * 1, innerHeight * 2.3];
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
     // Determine fixed position state
-    setPositionFigure01Alt(
+    setPositionFigure01(
       scrollY < fixedTop ? 'absolute_top'
         : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
     );
@@ -200,14 +271,14 @@ function App() {
     const isAbove1 = relativeScroll < switchPoints[0];
     const isAbove2 = relativeScroll < switchPoints[1];
 
-    if (isAbove1) {
-      fixedSectionRefFigure01Alt.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-    } else {
-      fixedSectionRefFigure01Alt.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
-    }
-
     const prevState = aboveSwitchPointFigure01Alt.current;
     if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
+
+    if (isAbove1) {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    } else {
+      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    }
 
     aboveSwitchPointFigure01Alt.current = { isAbove1, isAbove2 };
     setFigure01AltData(isAbove2 ? figure01_data[2023] : figure01_data[2033]);
@@ -223,18 +294,19 @@ function App() {
   *********** */
   const [figure02Data, setFigure02Data] = useState([]);
   const [positionFigure02, setPositionFigure02] = useState('absolute_bottom');
-  const aboveSwitchPointFigure02 = useRef({ isAbove1: false, isAbove2: false });
+  const aboveSwitchPointFigure02 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure02 = useRef(null);
   const chartFigure02 = useRef(null);
 
   const handleScrollFigure02 = useCallback(() => {
-    fixedSectionRefFigure02.current.style.height = '500vh';
+    fixedSectionRefFigure02.current.style.height = `${3 * 130 + 80}vh`;
+
+    const { scrollY, innerHeight } = window;
     const fixedTop = fixedSectionRefFigure02.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure02.current.offsetHeight - window.innerHeight;
-    const { scrollY } = window;
+    const fixedBottom = fixedTop + fixedSectionRefFigure02.current.offsetHeight - innerHeight;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight;
-    const switchPoint2 = window.innerHeight * 2.3;
+    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
+    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
     // Determine position state
     setPositionFigure02(
@@ -258,7 +330,6 @@ function App() {
       aboveSwitchPointFigure02.current = newState;
     }
 
-    console.log(isAbove1);
     if (isAbove1) {
       fixedSectionRefFigure02.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
@@ -273,7 +344,7 @@ function App() {
       chartFigure02.current.update({
         plotOptions: { bar: { animation: { duration: 0 } } }
       });
-      newColors = isAbove2 ? ['#fbaf17', '#009edb', '#009edb'] : ['#009edb', '#fbaf17', '#fbaf17'];
+      newColors = isAbove2 ? ['#fbaf17', '#009edb', '#009edb'] : ['#fbaf17', '#009edb', '#009edb'];
     }
     chartFigure02.current.update({
       plotOptions: { bar: { colors: newColors } }
@@ -297,27 +368,26 @@ function App() {
   const [figure03DataStage7, setFigure03DataStage7] = useState([]);
   const [figure03DataStage8, setFigure03DataStage8] = useState([]);
   const [positionFigure03, setPositionFigure03] = useState('');
-  const aboveSwitchPointFigure03 = useRef(true);
+  const aboveSwitchPointFigure03 = useRef(null);
   const fixedSectionRefFigure03 = useRef(null);
   const chartFigure03 = useRef(null);
 
   const handleScrollFigure03 = useCallback(() => {
-    fixedSectionRefFigure03.current.style.height = '1250vh';
+    fixedSectionRefFigure03.current.style.height = `${8 * 130 + 80}vh`;
+    const { scrollY, innerHeight } = window;
     const fixedTop = fixedSectionRefFigure03.current.offsetTop;
     const sectionHeight = fixedSectionRefFigure03.current.offsetHeight;
-    const fixedBottom = fixedTop + sectionHeight - window.innerHeight;
+    const fixedBottom = fixedTop + sectionHeight - innerHeight;
 
-    const { scrollY } = window;
+    const relativeScroll = scrollY - fixedTop;
 
-    // Define 6 evenly spaced switch points based on the section height
-    const step = window.innerHeight * 1.3;
-    const switchPoint1 = fixedTop + step;
-    const switchPoint2 = fixedTop + step * 2;
-    const switchPoint3 = fixedTop + step * 3;
-    const switchPoint4 = fixedTop + step * 4;
-    const switchPoint5 = fixedTop + step * 5;
-    const switchPoint6 = fixedTop + step * 6;
-    const switchPoint7 = fixedTop + step * 7;
+    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
+    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
+    const switchPoint3 = innerHeight * 2.9 + innerHeight * 0.8;
+    const switchPoint4 = innerHeight * 4.2 + innerHeight * 0.8;
+    const switchPoint5 = innerHeight * 5.5 + innerHeight * 0.8;
+    const switchPoint6 = innerHeight * 6.8 + innerHeight * 0.8;
+    const switchPoint7 = innerHeight * 8.1 + innerHeight * 0.8;
 
     // Determine position state
     let newPosition;
@@ -334,25 +404,25 @@ function App() {
     // Determine data stage
     let newData;
     let position = false;
-    if (scrollY < switchPoint1) {
+    if (relativeScroll < switchPoint1) {
       position = 1;
       newData = figure03DataStage1;
-    } else if (scrollY < switchPoint2) {
+    } else if (relativeScroll < switchPoint2) {
       position = 2;
       newData = figure03DataStage2;
-    } else if (scrollY < switchPoint3) {
+    } else if (relativeScroll < switchPoint3) {
       position = 3;
       newData = figure03DataStage3;
-    } else if (scrollY < switchPoint4) {
+    } else if (relativeScroll < switchPoint4) {
       position = 4;
       newData = figure03DataStage4;
-    } else if (scrollY < switchPoint5) {
+    } else if (relativeScroll < switchPoint5) {
       position = 5;
       newData = figure03DataStage5;
-    } else if (scrollY < switchPoint6) {
+    } else if (relativeScroll < switchPoint6) {
       position = 6;
       newData = figure03DataStage6;
-    } else if (scrollY < switchPoint7) {
+    } else if (relativeScroll < switchPoint7) {
       position = 7;
       newData = figure03DataStage7;
     } else {
@@ -390,7 +460,7 @@ function App() {
       }]
     }, false);
 
-    if (position > 6) {
+    if (position > 5) {
       chartFigure03.current.series[3].setVisible(true, false);
       chartFigure03.current.xAxis[0].update({
         max: 5.2,
@@ -407,7 +477,7 @@ function App() {
         tickInterval: 0.2,
         title: {
           enabled: true,
-          text: 'Index'
+          text: 'Frontier Technologies Readiness Index'
         }
       });
     } else {
@@ -453,9 +523,10 @@ function App() {
   * FIGURE 4 *
   *********** */
 
-  const [figure04Data, setFigure04Data] = useState([]);
+  const [figure04DataFirst, setFigure04DataFirst] = useState([]);
+  const [figure04DataSecond, setFigure04DataSecond] = useState([]);
   const [positionFigure04, setPositionFigure04] = useState('absolute_bottom');
-  const aboveSwitchPointFigure04 = useRef({ isAbove1: false, isAbove2: false });
+  const aboveSwitchPointFigure04 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure04 = useRef(null);
   const chartFigure04 = useRef(null);
 
@@ -463,10 +534,11 @@ function App() {
     fixedSectionRefFigure04.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure04.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure04.current.offsetHeight - window.innerHeight;
-    const { scrollY } = window;
+    const { scrollY, innerHeight } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight * 1.5;
-    const switchPoint2 = window.innerHeight * 1.5 * 2;
+
+    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
+    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
     // Determine position state
     setPositionFigure04(
@@ -485,10 +557,39 @@ function App() {
     const newState = { isAbove1, isAbove2 };
 
     if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
+    if (!isAbove2) {
+      chartFigure04.current.series[0].update({ lineWidth: 6 }, false);
+      chartFigure04.current.series[2].update({ lineWidth: 10 }, false);
+      chartFigure04.current.series[0].update({ opacity: 0.1 }, false);
+      chartFigure04.current.series[1].update({ opacity: 0.1 }, false);
+      chartFigure04.current.series[2].update({ opacity: 1 }, false);
+      chartFigure04.current.series[0].setData(figure04DataSecond[0].data, false);
+      chartFigure04.current.series[1].setData(figure04DataSecond[1].data, false);
+      chartFigure04.current.series[2].setData(figure04DataSecond[2].data, false);
+      chartFigure04.current.redraw();
+    } else if (!isAbove1) {
+      chartFigure04.current.series[0].update({ lineWidth: 10 }, false);
+      chartFigure04.current.series[2].update({ lineWidth: 6 }, false);
+      chartFigure04.current.series[0].update({ opacity: 1 }, false);
+      chartFigure04.current.series[1].update({ opacity: 0.1 }, false);
+      chartFigure04.current.series[2].update({ opacity: 0.1 }, false);
+      chartFigure04.current.series[0].setData(figure04DataSecond[0].data, false);
+      chartFigure04.current.series[1].setData(figure04DataSecond[1].data, false);
+      chartFigure04.current.series[2].setData(figure04DataSecond[2].data, false);
+      chartFigure04.current.redraw();
+    } else {
+      chartFigure04.current.series[0].update({ lineWidth: 6 }, false);
+      chartFigure04.current.series[2].update({ lineWidth: 6 }, false);
+      chartFigure04.current.series[0].update({ opacity: 1 }, false);
+      chartFigure04.current.series[1].update({ opacity: 1 }, false);
+      chartFigure04.current.series[2].update({ opacity: 1 }, false);
+      chartFigure04.current.series[0].setData(figure04DataFirst[0].data, false);
+      chartFigure04.current.series[1].setData(figure04DataFirst[1].data, false);
+      chartFigure04.current.series[2].setData(figure04DataFirst[2].data, false);
+      chartFigure04.current.redraw();
+    }
 
     aboveSwitchPointFigure04.current = newState;
-
-    if (!figure04Data) return;
 
     if (!isAbove1) {
       chartFigure04.current.update({
@@ -496,7 +597,7 @@ function App() {
     }
     chartFigure04.current.update({
     });
-  }, [figure04Data]);
+  }, [figure04DataFirst, figure04DataSecond]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScrollFigure04);
@@ -509,8 +610,9 @@ function App() {
 
   const [figure05DataFirst, setFigure05DataFirst] = useState([]);
   const [figure05DataSecond, setFigure05DataSecond] = useState([]);
+  const [figure05DataThird, setFigure05DataThird] = useState([]);
   const [positionFigure05, setPositionFigure05] = useState('absolute_bottom');
-  const aboveSwitchPointFigure05 = useRef({ isAbove1: false, isAbove2: false });
+  const aboveSwitchPointFigure05 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure05 = useRef(null);
   const chartFigure05 = useRef(null);
 
@@ -518,10 +620,10 @@ function App() {
     fixedSectionRefFigure05.current.style.height = '500vh';
     const fixedTop = fixedSectionRefFigure05.current.offsetTop;
     const fixedBottom = fixedTop + fixedSectionRefFigure05.current.offsetHeight - window.innerHeight;
-    const { scrollY } = window;
+    const { scrollY, innerHeight } = window;
     const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = window.innerHeight * 1.3;
-    const switchPoint2 = window.innerHeight * 1.3 * 2;
+    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
+    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
     // Determine position state
     setPositionFigure05(
@@ -545,15 +647,14 @@ function App() {
       aboveSwitchPointFigure05.current = newState;
     }
 
-    const newData = isAbove2 ? figure05DataFirst : figure05DataSecond;
-    // eslint-disable-next-line
+    const newData = isAbove1 ? figure05DataFirst : (isAbove2) ? figure05DataSecond : figure05DataThird;
 
     if (!chartFigure05.current) return;
     const newDataCopy = structuredClone(newData);
     chartFigure05.current.series[0].setData(newDataCopy, false);
 
     chartFigure05.current.redraw();
-  }, [figure05DataFirst, figure05DataSecond]);
+  }, [figure05DataFirst, figure05DataSecond, figure05DataThird]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScrollFigure05);
@@ -623,10 +724,28 @@ function App() {
   }, []);
 
   const [selectedButton, setSelectedButton] = useState(null);
-  const handleClick = (button, index) => {
-    setFigureIntroData(button.value);
+  const handleClick = (value, index) => {
+    setFigureIntroData(value);
     setSelectedButton(index);
   };
+
+  const [offset, setOffset] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setOffset(window.pageYOffset);
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const [sectionProgress, setSectionProgress] = useState(0);
+
+  const chaptersContainerRef = useRef();
+
+  useEffect(() => {
+    const windowHeight = 0;
+    setSectionProgress((offset > chaptersContainerRef.current.offsetTop - windowHeight) ? (Math.min(((offset - (chaptersContainerRef.current.offsetTop - windowHeight)) / chaptersContainerRef.current.offsetHeight) * 100, 100)) : 0);
+  }, [offset]);
 
   return (
     <div className="app" ref={appRef}>
@@ -648,8 +767,10 @@ function App() {
             <div className="share_wrapper"><ShareContainer url={window.location.href} /></div>
           </h2>
           <div className="download_buttons_container">
-            <a href="/system/files/official-document/tir2024overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="overview">Overview</a>
-            <a href="/system/files/official-document/tir2024_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Full report</a>
+            <a href="/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
+            <a href="/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
+            <button type="button" className="video" onClick={() => scrollTo('.footer_override')}>Media</button>
+            <button type="button" className="podcast" onClick={() => scrollTo('.footer_override')}>Podcast</button>
           </div>
           <div className="chapters_navigation_container">
             {
@@ -663,7 +784,7 @@ function App() {
                         {i + 1}
                         .
                       </div>
-                      <a href={`/system/files/official-document/tir2024ch${i + 1}_en.pdf`} target="_blank" onClick={(event) => downloadDocument(event)} className="chapter_download_button" aria-label="Download" rel="noreferrer" />
+                      <a href={`/system/files/official-document/tir2025ch${i + 1}_en.pdf`} target="_blank" onClick={(event) => downloadDocument(event)} className="chapter_download_button" aria-label={`Download Chapter ${i + 1}`} rel="noreferrer" />
                     </div>
                   </div>
                 </button>
@@ -680,7 +801,13 @@ function App() {
             <h3>Artificial Intelligence (AI) is the first technology that can make decisions and generate ideas, challenging the notion that technology is neutral.</h3>
             <p>AI can fast-track the Sustainable Development Goals (SDGs), powering smart agriculture and energy grids, optimizing production and supply chains, improving water and city planning – and more. Case studies show AI boosts productivity and improves livelihoods – if supported by the right policies and skills.</p>
             <p>But AI is evolving much faster than governments can respond. Without the right oversight and fair access, it risks deepening global divides.</p>
-            <p>The Technology and Innovation Report 2025 calls for AI that puts people first and is shaped through global cooperation in which all countries have a say. It outlines key policy priorities for the three key leverage points: infrastructure, data and skills.</p>
+            <p>The Technology and Innovation Report 2025 calls for AI that puts people first and is shaped through global cooperation in which all countries have a say.</p>
+            <p>It outlines policy priorities for the three key AI leverage points:</p>
+            <ul>
+              <li className="oneliner"><strong>Infrastructure</strong></li>
+              <li className="oneliner"><strong>Data</strong></li>
+              <li className="oneliner"><strong>Skills </strong></li>
+            </ul>
             <blockquote>
               {/* <img src="assets/img/rebeca_grynspan.png" className="sg_photo" alt="Rebeca Grynspan" /> */}
               <div className="quote">“History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development.”</div>
@@ -693,381 +820,379 @@ function App() {
         </div>
       </div>
 
-      { /* Chapter 1 */ }
-      <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
-      <div ref={fixedSectionRefFigureIntro} className="fixed-section">
-        <div className={`fixed-background ${positionFigureIntro}`}>
-          <div className="overlay" />
-          <div className="chart_container_full">
-            <FigureIntro ref={chartFigureIntro} node_count={figureIntroData} highlight_bool={figureIntroHighlight} />
+      <div className="chapters_container" ref={chaptersContainerRef}>
+        { /* Chapter 1 */ }
+        <div className="progress_indicator_container">
+          <div className="section">
+            <div className="progress_bar" style={{ width: `${sectionProgress}%` }} />
           </div>
         </div>
-        <div className="scroll-elements">
-          <div className="scroll-content">
-            <div>
-              <p>
-                These dots represent AI’s estimated market value in 2023.
-                <br />
-                <br />
-                <span style={{ color: '#ffc800' }}>$189&nbsp;billion.</span>
-              </p>
+        <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
+        <div ref={fixedSectionRefFigureIntro} className="fixed-section">
+          <div className={`fixed-background ${positionFigureIntro}`}>
+            <div className="overlay" />
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              <FigureIntro ref={chartFigureIntro} node_count={figureIntroData} highlight_bool={figureIntroHighlight} />
             </div>
           </div>
-          <div className="scroll-content">
-            <div>
-              <p>
-                Each dot =
-                {' '}
-                <span style={{ color: '#ffc800' }}>$10&nbsp;billion.</span>
-              </p>
-            </div>
-          </div>
-          <div className="scroll-content">
-            <div>
-              <p>
-                How much will it be worth in
-                {' '}
-                <span style={{ color: '#ffc800' }}>2033?</span>
-              </p>
-              <p>Take a guess.</p>
+          <div className="scroll-elements">
+            <div className="scroll-content">
               <div>
-                {[{ value: 80, label: '$800', unit: 'billion' },
-                  { value: 210, label: '$2.1', unit: 'trillion' },
-                  { value: 477, label: '$4.8', unit: 'trillion' }].map((button, index) => (
-                    <button key={button.label} type="button" className={`${selectedButton === index ? 'selected' : ''} guess_button`} onClick={() => handleClick(button, index)}>
-                      <div className="number">{button.label}</div>
-                      <div>{button.unit}</div>
-                    </button>
-                ))}
+                <p>
+                  These dots represent AI’s estimated market value in 2023.
+                  <br />
+                  <br />
+                  <span style={{ color: '#ffc800' }}>$189&nbsp;billion.</span>
+                </p>
               </div>
-              <div><button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip')}>Skip</button></div>
             </div>
-          </div>
-          <div className="scroll-content scroll-content-skip">
-            <div>
-              <p>
-                AI is projected to hit
-                {' '}
-                <span style={{ color: '#ffc800' }}>$4.8&nbsp;trillion</span>
-                {' '}
-                by 2033.
-              </p>
-              <p>
-                That’s a
-                {' '}
-                <span style={{ color: '#ffc800' }}>25x increase</span>
-                {' '}
-                in just 10 years.
-              </p>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Each dot =
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>$10&nbsp;billion.</span>
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <ScrollingText texts={['Let’s put that in perspective.', 'How will AI’s share of the tech market change?']} chapter_text="Chapter 1" />
-      <div ref={fixedSectionRefFigure01} className="fixed-section" style={{ display: 'none' }}>
-        <div className={`fixed-background ${positionFigure01}`}>
-          <div className="chart_container_full">
-            <Figure01 ref={chartFigure01} setData2023={setFigure01Data2023} setData2033={setFigure01Data2033} />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content">
-            <div>
-              <p>
-                Global tech market in 2023
-              </p>
-              <p>$2.542 trillion</p>
-              <p>In 2023, AI made up 7% of the global tech market.</p>
-              <p>By 2033, its share could triple to 29% – propelling it to the top.</p>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  How much will it be worth in
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>2033?</span>
+                </p>
+                <p>Take a guess.</p>
+                <div>
+                  {[{ value: 60, label: '$600', unit: 'billion' },
+                    { value: 120, label: '$1.2', unit: 'trillion' },
+                    { value: 240, label: '$2.4', unit: 'trillion' },
+                    { value: 477, label: '$4.8', unit: 'trillion' }].map((button, index) => (
+                      <button key={button.label} type="button" className={`${selectedButton === index ? 'selected' : ''} guess_button`} value={button.value} onClick={() => handleClick(button.value, index)}>
+                        <div className="number">{button.label}</div>
+                        <div>{button.unit}</div>
+                      </button>
+                  ))}
+                </div>
+                <div>
+                  <button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip')}>Skip</button>
+                  {' '}
+                  <button type="button" className="skip_button" onClick={() => handleClick(19, -1)}>Reset</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="scroll-content" />
-          <div className="scroll-content" />
-        </div>
-      </div>
-      <div ref={fixedSectionRefFigure01Alt} className="fixed-section">
-        <div className={`fixed-background ${positionFigure01Alt}`}>
-          <div className="overlay" />
-          <div className="chart_container_full">
-            <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content">
-            <div>
-              <p>
-                In 2023, AI made up
-                {' '}
-                <span style={{ color: '#ffc800' }}>7%</span>
-                {' '}
-                of the global tech market.
-              </p>
-              <p>
-                By 2033, its
-                {' '}
-                <span style={{ color: '#ffc800' }}>29%</span>
-                {' '}
-                – propelling it to the top.
-              </p>
-            </div>
-          </div>
-          <div className="scroll-content"><div><p /></div></div>
-          <div className="scroll-content"><div><p /></div></div>
-        </div>
-      </div>
-      <div className="content_container chapter_header_1">
-        <div className="text_container">
-          <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
-          <div className="download_buttons_container">
-            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
-          </div>
-          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
-          <div className="text_content">
-            <h3>Breakthroughs in AI are reshaping all industries – from content creation and product design to automated coding and customer service.</h3>
-            <p>But AI development is highly concentrated. Just 100 companies funded 40% of AI research and development (R&D) in 2022 – nearly half in the United States and 13% in China. 0% are based in other developing countries.</p>
-            <p>This imbalance is also seen in AI infrastructure. AI needs more than electricity and the internet. It requires computing power, servers and high-quality data to train algorithms.</p>
-            <p>The US holds one third of the top supercomputers and over half the world’s computing power. Most data centres are in developed countries.</p>
-            <p>Skills are also key – from data literacy to expert-level AI knowledge. But these skills are unevenly distributed.</p>
-          </div>
-        </div>
-      </div>
-
-      { /* Chapter 2 */ }
-      <ScrollingText texts={['AI is reshaping how we work.', 'How will it affect jobs in different countries?']} chapter_text="Chapter 2" />
-      <div ref={fixedSectionRefFigure02} className="fixed-section">
-        <div className={`fixed-background ${positionFigure02}`}>
-          <div className="overlay" />
-          <div className="chart_container_full">
-            <Figure02 ref={chartFigure02} setData={setFigure02Data} />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content"><div><p>AI can automate cognitive tasks like writing, coding and data analysis.</p></div></div>
-          <div className="scroll-content"><div><p>Up to one third of jobs in advanced economies are exposed.</p></div></div>
-          <div className="scroll-content"><div><p>But the exposure is not limited to advanced economies.</p></div></div>
-        </div>
-      </div>
-      <div className="content_container">
-        <div className="text_container">
-          <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
-          <div className="download_buttons_container">
-            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
-          </div>
-          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
-          <div className="text_content">
-            <h3>AI could affect 40% of jobs worldwide.</h3>
-            <p>But it’s not all about potential job loss.</p>
-            <p>In advanced economies, 27% of jobs could be enhanced by AI – boosting human skills rather than replacing workers.</p>
-            <p>Generative AI can unlock major productivity gains – especially in services and knowledge work.</p>
-            <p>Whether developing economies can harness the benefits depends on their ability to invest in infrastructure, data and skills.</p>
-            <p><strong>Key policy priorities</strong></p>
-            <ul>
-              <li>
-                <strong>Understand workforce dynamics.</strong>
-                {' '}
-                AI’s impact depends on a complex mix of automation, augmentation and new job creation. Policymakers must grasp these dynamics to ensure fair distribution of benefits and smooth transitions.
-              </li>
-              <li>
-                <strong>Accelerate AI adoption by workers.</strong>
-                {' '}
-                Developing countries can speed up AI use by adapting solutions to local infrastructure, using alternative data sources, simplifying interfaces and building strategic partnerships to access key resources.
-              </li>
-              <li>
-                <strong>Empower workers.</strong>
-                {' '}
-                Inclusive AI must centre on people. That means promoting digital literacy, supporting reskilling and upskilling, and involving workers in designing AI tools for their jobs.
-              </li>
-              <li>
-                <strong>Leverage financial tools.</strong>
-                {' '}
-                Public R&D funding, smart procurement and tax incentives can promote AI that complements human work. Clear career paths and better job opportunities can reduce the risk of brain drain.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      { /* Chapter 3 */ }
-      <ScrollingText texts={['AI readiness levels vary.', 'But how uneven is the playing field?']} chapter_text="Chapter 3" />
-      <div ref={fixedSectionRefFigure03} className="fixed-section">
-        <div className={`fixed-background ${positionFigure03}`}>
-          <div className="chart_container_full">
-            <Figure03
-              ref={chartFigure03}
-              setDataStage1={setFigure03DataStage1}
-              setDataStage2={setFigure03DataStage2}
-              setDataStage3={setFigure03DataStage3}
-              setDataStage4={setFigure03DataStage4}
-              setDataStage5={setFigure03DataStage5}
-              setDataStage6={setFigure03DataStage6}
-              setDataStage7={setFigure03DataStage7}
-              setDataStage8={setFigure03DataStage8}
-            />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content"><div><p>This graph shows how ready countries are.</p></div></div>
-          <div className="scroll-content"><div><p>Countries are ranked as a laggard, practitioner, creator or leader, based on the AI-related skills.</p></div></div>
-          <div className="scroll-content"><div><p>Most developed countries are leaders.</p></div></div>
-          <div className="scroll-content"><div><p>Least developed countries lag furthest behind.</p></div></div>
-          <div className="scroll-content"><div><p>Developing countries are most spread across all categories.</p></div></div>
-          <div className="scroll-content"><div><p>But let’s zoom in on four countries.</p></div></div>
-          <div className="scroll-content"><div><p>This is how they rank in UNCTAD’s Frontier Technologies Readiness Index.</p></div></div>
-          <div className="scroll-content"><div><p>High-income countries are generally more prepared.</p></div></div>
-          <div className="scroll-content"><div><p>But Brazil, China, India and the Philippines punch above their economic weight. </p></div></div>
-        </div>
-      </div>
-      <div className="content_container">
-        <div className="text_container">
-          <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
-          <div className="download_buttons_container">
-            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
-          </div>
-          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_03_.jpg" /></div></div>
-          <div className="text_content">
-            <h3>Advanced economies have a larger talent pool of workers with advanced degrees and coding skills – giving them a head start and edge in scaling AI.</h3>
-            <p>But Brazil, China, India and the Philippines outperforming expectations based on GDP, showing strong potential to harness AI for development.</p>
-            <p>What can others learn from these overachievers?</p>
-            <p>A key factor that has set them apart is strong investment in R&D and industrial capacity. This has helped them keep up with technological advancements – and even take the lead in certain sectors.</p>
-
-            <p><strong>Key policy priorities</strong></p>
-            <ul>
-              <li>
-                <strong>Position strategically.</strong>
-                {' '}
-                Governments should assess national AI capacity – in infrastructure, data and skills – identify gaps and set priorities for action. Targeted catch-up strategies can guide progress towards long-term development goals.
-              </li>
-              <li>
-                <strong>Strengthen innovation systems.</strong>
-                {' '}
-                Countries can assess AI opportunities and challenges through technology foresight and evaluation, identifying ways to strengthen innovation systems. UNCTAD can support this through its technology assessments and STI Policy Reviews.
-              </li>
-              <li>
-                <strong>Collaborate with stakeholders.</strong>
-                {' '}
-                Coordinated action across government agencies and institutions – especially those in industry, education and science, technology and innovation – is key to shaping AI strategies that align with national goals.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      { /* Chapter 4 */ }
-      <ScrollingText texts={['National strategies are key.', 'Developing countries must speed up.']} chapter_text="Chapter 4" />
-      <div ref={fixedSectionRefFigure04} className="fixed-section">
-        <div className={`fixed-background ${positionFigure04}`}>
-          <div className="chart_container_full">
-            <Figure04 ref={chartFigure04} setData={setFigure04Data} />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content"><div><p>In 2017, only a few countries had a national AI strategy.</p></div></div>
-          <div className="scroll-content"><div><p>But by 2023, two thirds of developed economies had one.</p></div></div>
-          <div className="scroll-content"><div><p>Compared to just six least developed countries.</p></div></div>
-        </div>
-      </div>
-      <div className="content_container">
-        <div className="text_container">
-          <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
-          <div className="download_buttons_container">
-            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
-          </div>
-          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_02_.jpg" /></div></div>
-          <div className="text_content">
-            <h3>To be competitive in an AI-driven world, developing countries must rethink industrial policy. They should shift the focus to technology, innovation and knowledge-intensive services.</h3>
-            <p>But most still lag behind in designing national AI strategies, leaving them vulnerable to policy spillovers from major economies.</p>
-            <p>Effective strategies require a whole-of-government approach, coordinating across agencies and institutions working on science, technology and innovation, as well as industry, education, infrastructure and trade.</p>
-            <p><strong>National policies should prioritize the three AI leverage points.</strong></p>
-            <ul>
-              <li>
-                <strong>Infrastructure:</strong>
-                {' '}
-                Upgrade infrastructure to ensure equitable access to electricity, internet and computing power. Encourage private investment and ensure interoperability across systems to support AI development.
-              </li>
-              <li>
-                <strong>Data:</strong>
-                {' '}
-                Promote open data and sharing to improve storage, access and collaboration. Ensure privacy, accountability and IP protections to balance innovation with human rights.
-              </li>
-              <li>
-                <strong>Skills:</strong>
-                {' '}
-                Build population-wide AI literacy by integrating STEM and AI into education from early schooling to lifelong learning. Foster academia–industry partnerships to develop talent aligned with industry needs.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      { /* Chapter 5 */ }
-      <ScrollingText texts={['What about governance?', 'Who is deciding AI’s future?']} chapter_text="Chapter 4" />
-      <div ref={fixedSectionRefFigure05} className="fixed-section">
-        <div className={`fixed-background ${positionFigure05}`}>
-          <div className="chart_container_full">
-            <Figure05 ref={chartFigure05} setDataFirst={setFigure05DataFirst} setDataSecond={setFigure05DataSecond} />
-          </div>
-        </div>
-        <div className="scroll-elements">
-          <div className="scroll-content"><div><p>By 2024, only the G7 countries were active in all seven major AI governance efforts.</p></div></div>
-          <div className="scroll-content"><div><p>75 countries were involved in at least one.</p></div></div>
-          <div className="scroll-content">
-            <div>
-              <p>Meanwhile, 118 nations are not involved in any. Most of them are developing countries</p>
+            <div className="scroll-content scroll-content-skip">
+              <div>
+                <p>
+                  AI is projected to hit
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>$4.8&nbsp;trillion</span>
+                  {' '}
+                  by 2033.
+                </p>
+                <p>
+                  That’s a
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>25x increase</span>
+                  {' '}
+                  in just 10 years.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="content_container">
-        <div className="text_container">
-          <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
-          <div className="download_buttons_container">
-            <a href="/system/files/official-document/tdr2024ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download">Download</a>
+        <ScrollingText texts={['Let’s put that in perspective.', 'What will AI’s share of the frontier technologies market look like?']} chapter_text="Chapter 1" />
+        <div ref={fixedSectionRefFigure01} className="fixed-section">
+          <div className={`fixed-background ${positionFigure01}`}>
+            <div className="overlay" />
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              {
+                window.innerWidth > 800 ? <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} /> : window.innerWidth > 600 ? <Figure01Donut ref={chartFigure01Donut} setData2023={setFigure01DonutData2023} setData2033={setFigure01DonutData2033} /> : <Figure01Bar ref={chartFigure01Bar} setData2023={setFigure01BarData2023} setData2033={setFigure01BarData2033} />
+              }
+            </div>
           </div>
-          <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
-          <div className="text_content">
-            <h3>AI is a borderless technology.</h3>
-            <p>While governments can regulate AI at the national level, global collaboration is essential to ensure it serves the public good. </p>
-            <p>Today, multinational tech giants dominate AI development – driven more by profit than public interest. Without oversight, there’s little incentive to align AI with global development goals.</p>
-            <p>Governments and international institutions must act to ensure AI serves people and the planet.</p>
-            <p>But collaboration must be inclusive. People in developing countries are major users of AI, but they have little or no voice in shaping its future.</p>
-            <p>The United Nations is leading efforts to close this gap.</p>
-            <p>In 2024, the UN General Assembly passed two key resolutions to promote safe, secure and trustworthy AI and to strengthen global AI cooperation. It calls for a Global Dialogue on AI Governance and a new Independent International Scientific Panel on AI.</p>
-            <p>But such commitments require common standards and enforcement mechanisms.</p>
-            <p><strong>Key priorities for global collaboration</strong></p>
-            <ul>
-              <li>
-                <strong>Industry accountability framework.</strong>
-                {' '}
-                Companies using large-scale AI systems should disclose their impact, risks and decision-making processes – like environmental, social and governance (ESG) standards. AI certification could evolve from voluntary to mandatory, with enforcement mechanisms.
-              </li>
-              <li>
-                <strong>An inclusive approach.</strong>
-                {' '}
-                AI governance must balance innovation with public safety and trust. Policymakers must incorporate diverse voices, ensuring that AI policies protect vulnerable populations.
-              </li>
-              <li>
-                <strong>Shared public digital infrastructure.</strong>
-                {' '}
-                Governments can collaborate with the private sector to develop public AI infrastructure. A global facility – modelled on how CERN was built as an international scientific research centre – could provide equitable access to AI infrastructure.
-              </li>
-              <li>
-                <strong>Open innovation.</strong>
-                {' '}
-                Open data and open-source models can unlock knowledge and resources, fuelling inclusive AI innovation. Interoperable, standards-based repositories can expand access and strengthen the global knowledge base through trusted, secure hubs.
-              </li>
-              <li>
-                <strong>A global AI hub.</strong>
-                {' '}
-                An AI-focused centre and network – modelled after the UN Climate Technology Centre and Network – could serve as a global hub for AI capacity-building, technology transfer, and technical assistance for developing countries.
-              </li>
-              <li>
-                <strong>South–South collaboration.</strong>
-                {' '}
-                Enhanced science and technology cooperation can help developing countries tackle common AI challenges. Trade agreements could include AI provisions, while regional institutions can promote best practices and help shape coherent strategies.
-              </li>
-            </ul>
-            <h3>AI’s future must be shaped by all nations – not just a few.</h3>
-            <h3>With stronger global cooperation, AI can drive inclusive progress – not inequality.</h3>
+          <div className="scroll-elements">
+            <div className="scroll-content">
+              <div>
+                <p>
+                  In 2023, AI made up
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>7%</span>
+                  {' '}
+                  of the global tech market.
+                </p>
+                <br />
+                <p>
+                  By 2033, its share could reach
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>29%</span>
+                  {' '}
+                  – propelling it to the top.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="content_container chapter_header_1">
+          <div className="text_container">
+            <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
+            <div className="download_buttons_container">
+              <a href="/system/files/official-document/tdr2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
+            </div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
+            <div className="text_content">
+              <h3>Breakthroughs in AI are reshaping all industries – from content creation and product design to automated coding and customer service.</h3>
+              <p>But AI development is highly concentrated. Just 100 companies funded 40% of research and development (R&D) in 2022. None of them are based in developing countries except China. The United States and China account for about 33% of AI publications and 60% of AI patents.</p>
+              <p>TThis imbalance is also seen in AI infrastructure. AI needs more than electricity and the internet. It requires computing power, servers and high-quality data to train models.</p>
+              <p>The US holds one third of the top supercomputers and over half the world’s computing power. Most supercomputers and data centres are in developed countries.</p>
+              <p>Skills are also key – from data literacy to expert-level AI knowledge. But these skills are unevenly distributed.</p>
+            </div>
+          </div>
+        </div>
+
+        { /* Chapter 2 */ }
+        <ScrollingText texts={['AI is reshaping how we work.', 'How will it affect jobs in different countries?']} chapter_text="Chapter 2" />
+        <div ref={fixedSectionRefFigure02} className="fixed-section">
+          <div className={`fixed-background ${positionFigure02}`}>
+            <div className="overlay" />
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              <Figure02 ref={chartFigure02} setData={setFigure02Data} />
+            </div>
+          </div>
+          <div className="scroll-elements">
+            <div className="scroll-content"><div><p>AI can automate cognitive tasks like writing, coding and data analysis.</p></div></div>
+            <div className="scroll-content"><div><p>Up to one third of jobs in advanced economies are at risk.</p></div></div>
+            <div className="scroll-content"><div><p>But they are also better positioned to harness AI’s benefits.</p></div></div>
+          </div>
+        </div>
+        <div className="content_container chapter_header_2">
+          <div className="text_container">
+            <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
+            <div className="download_buttons_container">
+              <a href="/system/files/official-document/tdr2025ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 2">Download</a>
+            </div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
+            <div className="text_content">
+              <h3>AI could affect 40% of jobs worldwide. But it’s not all about potential job loss.</h3>
+              <p>In advanced economies, 27% of jobs could be enhanced by AI – boosting human skills rather than replacing workers.</p>
+              <p>Generative AI can unlock major productivity gains – especially in services and knowledge work.</p>
+              <p>Tech history shows that AI’s full impact will take years – if not decades – to unfold.</p>
+              <p>Whether developing economies can harness the benefits depends on their ability to invest in infrastructure, data and skills.</p>
+              <p><strong>Key policy priorities</strong></p>
+              <ul>
+                <li>
+                  <strong>Understand workforce dynamics. </strong>
+                  {' '}
+                  AI’s impact depends on a complex mix of automation, augmentation and new job creation. Policymakers must grasp these dynamics to ensure fair distribution of benefits and smooth transitions.
+                </li>
+                <li>
+                  <strong>Accelerate AI adoption. </strong>
+                  {' '}
+                  Developing countries can speed up AI use by adapting solutions to local infrastructure, using alternative data sources, simplifying interfaces and building strategic partnerships to access key resources.
+                </li>
+                <li>
+                  <strong>Empower workers. </strong>
+                  {' '}
+                  Inclusive AI must centre on people. That means promoting digital literacy, supporting reskilling and upskilling, and involving workers in designing AI tools for their jobs.
+                </li>
+                <li>
+                  <strong>Promote human-complementary AI. </strong>
+                  {' '}
+                  Public R&D funding, smart procurement and tax incentives can promote AI that complements human work. Clear career paths and better job opportunities can reduce the risk of brain drain.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        { /* Chapter 3 */ }
+        <ScrollingText texts={['AI readiness levels vary.', 'But how uneven is the playing field?']} chapter_text="Chapter 3" />
+        <div ref={fixedSectionRefFigure03} className="fixed-section">
+          <div className={`fixed-background ${positionFigure03}`}>
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              <Figure03
+                ref={chartFigure03}
+                setDataStage1={setFigure03DataStage1}
+                setDataStage2={setFigure03DataStage2}
+                setDataStage3={setFigure03DataStage3}
+                setDataStage4={setFigure03DataStage4}
+                setDataStage5={setFigure03DataStage5}
+                setDataStage6={setFigure03DataStage6}
+                setDataStage7={setFigure03DataStage7}
+                setDataStage8={setFigure03DataStage8}
+              />
+            </div>
+          </div>
+          <div className="scroll-elements">
+            <div className="scroll-content"><div><p>This graph shows how ready countries are for AI.</p></div></div>
+            <div className="scroll-content"><div><p>Each is ranked as a laggard, practitioner, creator or leader based on AI-related skills.</p></div></div>
+            <div className="scroll-content"><div><p>Most developed countries are leaders.</p></div></div>
+            <div className="scroll-content"><div><p>Least developed countries lag furthest behind.</p></div></div>
+            <div className="scroll-content"><div><p>Developing countries are spread across all categories.</p></div></div>
+            <div className="scroll-content"><div><p>Let’s take a look at UNCTAD’s Frontier Technologies Readiness Index.</p></div></div>
+            <div className="scroll-content"><div><p>High-income countries are generally more prepared.</p></div></div>
+            <div className="scroll-content"><div><p>But Brazil, China, India and the Philippines punch above their economic development.</p></div></div>
+          </div>
+        </div>
+        <div className="content_container chapter_header_3">
+          <div className="text_container">
+            <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
+            <div className="download_buttons_container">
+              <a href="/system/files/official-document/tdr2025ch3_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 3">Download</a>
+            </div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_03_.jpg" /></div></div>
+            <div className="text_content">
+              <h3>Advanced economies have a larger talent pool of workers with advanced degrees and coding skills – giving them a head start and edge in scaling AI.</h3>
+              <p>Brazil, China, India and the Philippines have made progress in harnessing AI for development.</p>
+              <p>China excels in data affordability and volume and, along with India and Brazil, has built large pools of AI developers. These three countries trail only the US in total GitHub developers. Meanwhile, the Philippines’ pool of AI developers surged 30% between 2022 and 2023.</p>
+              <p>All four nations have strengthened infrastructure to support internet access and cross-border connectivity.</p>
+              <p><strong>What can others learn from these overachievers?</strong></p>
+              <p>A key factor setting them apart is strong investment in R&D and industrial capacity – helping them keep up with technological changes and even take the lead in certain sectors.</p>
+              <p><strong>Key policy priorities</strong></p>
+              <ul>
+                <li>
+                  <strong>Position strategically.</strong>
+                  {' '}
+                  Governments should assess national AI capacity – in infrastructure, data and skills – identify gaps and set priorities for action. Targeted catch-up strategies can guide progress towards long-term development goals.
+                </li>
+                <li>
+                  <strong>Strengthen innovation systems.</strong>
+                  {' '}
+                  Countries can assess AI opportunities and challenges through technology foresight and evaluation, identifying ways to strengthen innovation systems. UNCTAD can support this through its technology assessments and STI Policy Reviews.
+                </li>
+                <li>
+                  <strong>• Align national policies.</strong>
+                  {' '}
+                  Coordinated action across government agencies and institutions – especially those in industry, education and science, technology and innovation – is key to shaping AI strategies that align with national goals.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        { /* Chapter 4 */ }
+        <ScrollingText texts={['National strategies are key.', 'Developing countries must speed up.']} chapter_text="Chapter 4" />
+        <div ref={fixedSectionRefFigure04} className="fixed-section">
+          <div className={`fixed-background ${positionFigure04}`}>
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              <Figure04 ref={chartFigure04} setDataFirst={setFigure04DataFirst} setDataSecond={setFigure04DataSecond} />
+            </div>
+          </div>
+          <div className="scroll-elements">
+            <div className="scroll-content"><div><p>In 2017, only a few countries had a national AI strategy.</p></div></div>
+            <div className="scroll-content"><div><p>By 2023, two thirds of developed economies had one.</p></div></div>
+            <div className="scroll-content"><div><p>Compared to just six least developed countries.</p></div></div>
+          </div>
+        </div>
+        <div className="content_container chapter_header_4">
+          <div className="text_container">
+            <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
+            <div className="download_buttons_container">
+              <a href="/system/files/official-document/tdr2025ch4_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 4">Download</a>
+            </div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_02_.jpg" /></div></div>
+            <div className="text_content">
+              <h3>To be competitive in an AI-driven world, developing countries must rethink industrial policy. They should shift the focus to technology, innovation and knowledge-intensive services.</h3>
+              <p>Developing countries must act quickly to set their AI strategies, aligning them with their own development goals. Simply following others’ paths may not meet their unique needs and priorities.</p>
+              <p>Effective strategies require a whole-of-government approach, coordinating across agencies and institutions working on science, technology and innovation, as well as industry, education, infrastructure and trade.</p>
+              <p><strong>National policies should prioritize the three AI leverage points.</strong></p>
+              <ul>
+                <li>
+                  <strong>Infrastructure:</strong>
+                  {' '}
+                  Upgrade infrastructure to ensure equitable access to electricity, the internet and computing power. Encourage private investment and ensure interoperability across systems to support AI development.
+                </li>
+                <li>
+                  <strong>Data:</strong>
+                  {' '}
+                  Promote open data and sharing to improve storage, access and collaboration. Ensure privacy, accountability and IP protections to balance innovation with human rights.
+                </li>
+                <li>
+                  <strong>Skills:</strong>
+                  {' '}
+                  Build population-wide AI literacy by integrating STEM and AI into education from early schooling to lifelong learning. Foster academia–industry partnerships to develop talent aligned with industry needs.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        { /* Chapter 5 */ }
+        <ScrollingText texts={['What about governance?', 'Who is deciding AI’s future?']} chapter_text="Chapter 5" />
+        <div ref={fixedSectionRefFigure05} className="fixed-section">
+          <div className={`fixed-background ${positionFigure05}`}>
+            <div className="scroll-indicator"><div className="arrow" /></div>
+            <div className="chart_container_full">
+              <Figure05 ref={chartFigure05} setDataFirst={setFigure05DataFirst} setDataSecond={setFigure05DataSecond} setDataThird={setFigure05DataThird} />
+            </div>
+          </div>
+          <div className="scroll-elements">
+            <div className="scroll-content"><div><p>By 2024, only the G7 countries were active in all seven major governance initiatives.</p></div></div>
+            <div className="scroll-content"><div><p>75 countries were involved in at least one.</p></div></div>
+            <div className="scroll-content">
+              <div>
+                <p>Meanwhile, 118 nations are not involved in any. Most of them are developing countries.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="content_container chapter_header_5">
+          <div className="text_container">
+            <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
+            <div className="download_buttons_container">
+              <a href="/system/files/official-document/tdr2025ch5_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 5">Download</a>
+            </div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
+            <div className="text_content">
+              <h3>AI is a borderless technology.</h3>
+              <p>While governments can regulate AI at the national level, global collaboration is essential to ensure it serves the public good.</p>
+              <p>Today, multinational tech giants dominate AI development – driven more by profit than public interest. Without oversight, there’s little incentive to align AI with global development goals.</p>
+              <p>Governments and international institutions must act to ensure AI serves people and the planet.</p>
+              <p>But collaboration must be inclusive. People in developing countries will be affected by AI but have little or no say in shaping its future.</p>
+              <p><strong>The United Nations is leading efforts to close this gap.</strong></p>
+              <p>In 2024, UN Member States adopted the Pact for the Future and the Global Digital Compact, setting a series of commitments to enhance international AI governance for the benefit of humanity.</p>
+              <p>UN Trade and Development advocates for multi-stakeholder cooperation to steer AI towards shared goals and values.</p>
+              <h3>Key priorities for global collaboration</h3>
+              <ul>
+                <li>
+                  <strong>Industry accountability framework.</strong>
+                  {' '}
+                  Companies using large-scale AI systems should disclose their impact, risks and decision-making processes – like environmental, social and governance (ESG) standards. AI certification could evolve from voluntary to mandatory, with enforcement mechanisms.
+                </li>
+                <li>
+                  <strong>An inclusive approach.</strong>
+                  {' '}
+                  AI governance must balance innovation with public safety and trust. Policymakers must incorporate diverse voices, ensuring that AI policies protect vulnerable populations.
+                </li>
+                <li>
+                  <strong>Shared public digital infrastructure.</strong>
+                  {' '}
+                  Governments can collaborate with the private sector to develop public AI infrastructure. A global facility – modelled on how CERN was built as an international scientific research centre – could provide equitable access to AI infrastructure.
+                </li>
+                <li>
+                  <strong>Open innovation.</strong>
+                  {' '}
+                  Open data and open-source models can unlock knowledge and resources, fuelling inclusive AI innovation. Interoperable, standards-based repositories can expand access and strengthen the global knowledge base through trusted, secure hubs.
+                </li>
+                <li>
+                  <strong>A global AI hub.</strong>
+                  {' '}
+                  An AI-focused centre and network – modelled after the UN Climate Technology Centre and Network – could serve as a global hub for AI capacity-building, technology transfer, and technical assistance for developing countries.
+                </li>
+                <li>
+                  <strong>South–South collaboration.</strong>
+                  {' '}
+                  Enhanced science and technology cooperation can help developing countries tackle common AI challenges. Trade agreements could include AI provisions, while regional institutions can promote best practices and help shape coherent strategies.
+                </li>
+              </ul>
+              <h3>AI’s future must be shaped by all – not just a few.</h3>
+              <p>Stronger global cooperation in AI can drive inclusive progress – rather than deepen inequalities.</p>
+            </div>
           </div>
         </div>
       </div>

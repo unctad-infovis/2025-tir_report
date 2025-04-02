@@ -179,24 +179,24 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
       .transition()
       .duration(1000)
       .attr('x', width / 2 - 300) // Center horizontally in the middle of the page
-      .attr('y', height / 2) // Center vertically
+      .attr('y', height / 2 + 150) // Center vertically
       .tween('text', (d, i, amount_nodes) => {
         let interpolate;
         if (d3.select('.amount').empty()) {
           if (d === 16420) {
             interpolate = d3.interpolateNumber(2542, 16420); // Interpolate between start and end amounts
           } else {
-            interpolate = d3.interpolateNumber(16420, 2542); // Interpolate between start and end amounts
+            interpolate = d3.interpolateNumber(0, 2542); // Interpolate between start and end amounts
           }
         } else {
           const text = d3.select('.amount').text();
-          if (d === 16420 && text !== '$16 420') {
+          if (d === 16420 && text !== '$16.4tn') {
             interpolate = d3.interpolateNumber(2542, 16420); // Interpolate between start and end amounts
-          } else if (d === 2542 && text !== '$2 542') {
+          } else if (d === 2542 && text !== '$2.5tn') {
             interpolate = d3.interpolateNumber(16420, 2542); // Interpolate between start and end amounts
-          } else if (d === 16420 && text === '$16 420') {
+          } else if (d === 16420 && text === '$16.4tn') {
             interpolate = d3.interpolateNumber(16420, 16420);
-          } else if (d === 2542 && text === '$2 542') {
+          } else if (d === 2542 && text === '$2.5tn') {
             interpolate = d3.interpolateNumber(2542, 2542); // Interpolate between start and end amounts
           }
         }
@@ -206,45 +206,51 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
           const interpolatedAmount = interpolate(t); // Get the interpolated value at time t
           d3.select(element).selectAll('tspan').remove(); // Remove old tspans if any
 
-          const formattedAmount = new Intl.NumberFormat().format(Math.round(interpolatedAmount));
+          const formattedAmount = new Intl.NumberFormat(undefined, {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+          }).format(interpolatedAmount / 1000);
 
           // Split the year into characters for custom styling
           const yearString = `${year}`;
           const yearParts = yearString.split('');
 
           // Create the lines for the text
-          const lines = ['Total value', `in ${yearParts[0]}${yearParts[1]}`, yearParts[2], yearParts[3], `$${formattedAmount}`];
+          const lines = ['Global frontier', 'tech market', `in ${yearParts[0]}${yearParts[1]}`, yearParts[2], yearParts[3], `$${formattedAmount}tn`];
 
           d3.select(element).append('tspan')
             .attr('class', 'label-part')
-            .attr('x', width / 2 - 300)
+            .attr('x', width / 2 - 10)
             .style('font-size', '46px')
             .attr('dy', 0)
             .text(lines[0]);
           d3.select(element).append('tspan')
-            .attr('class', 'year-part')
-            .attr('x', width / 2 - 300)
+            .attr('class', 'label-part')
+            .attr('x', width / 2 - 10)
             .style('font-size', '46px')
             .attr('dy', '1.2em')
             .text(lines[1]);
-
+          d3.select(element).append('tspan')
+            .attr('class', 'year-part')
+            .attr('x', width / 2 - 10)
+            .style('font-size', '46px')
+            .attr('dy', '1.2em')
+            .text(lines[2]);
           d3.select(element).append('tspan')
             .attr('class', 'highlighted')
             .style('font-size', '46px')
             .attr('dy', 0)
-            .text(lines[2]);
-
+            .text(lines[3]);
           d3.select(element).append('tspan')
             .attr('class', 'year-part')
             .style('font-size', '46px')
             .attr('dy', 0)
-            .text(lines[3]);
-
+            .text(lines[4]);
           d3.select(element).append('tspan')
             .attr('class', 'amount')
-            .attr('x', width / 2 - 300)
+            .attr('x', width / 2 - 10)
             .attr('dy', '1.2em')
-            .text(lines[4]);
+            .text(lines[5]);
         };
       });
   }, [dimensions]);

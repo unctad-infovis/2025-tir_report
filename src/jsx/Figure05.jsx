@@ -25,41 +25,72 @@ const Figure05 = forwardRef((props, ref) => {
   // Data states.
   const [dataFigure, setDataFigure] = useState(false);
 
-  const { setDataFirst, setDataSecond } = props;
+  const { setDataFirst, setDataSecond, setDataThird } = props;
   const cleanData = useCallback((data) => {
     const chart_data = [{
       id: '7/7',
-      name: '7',
-      sortIndex: 0
+      name: 'Only the G7 countries',
+      sortIndex: 0,
+      dataLabels: {
+        color: '#fff',
+        enabled: true
+      }
     }, {
       id: '6/7',
       name: '2',
-      sortIndex: -1
+      sortIndex: -1,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '5/7',
       name: '5',
-      sortIndex: -2
+      sortIndex: -2,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '4/7',
       name: '7',
-      sortIndex: -3
+      sortIndex: -3,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '3/7',
       name: '10',
-      sortIndex: -4
+      sortIndex: -4,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '2/7',
       name: '23',
-      sortIndex: -5
+      sortIndex: -5,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '1/7',
       name: '21 countries',
-      sortIndex: -6
+      sortIndex: -6,
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }, {
       id: '0/7',
       name: '118 countries are not parties to any of the sampled initiatives or instruments',
       sortIndex: -7,
-      visible: false
+      visible: false,
+      dataLabels: {
+        enabled: true
+      }
     }];
     const tmp_data = data.map(el => {
       const labels = Object.keys(el).filter(val => val !== 'Name');
@@ -68,10 +99,13 @@ const Figure05 = forwardRef((props, ref) => {
         data: values.map((e, j) => ({
           color: colors[labels[j]],
           id: `${labels[j]}_child`,
-          name: (labels[j] === '0/7' || labels[j] === '1/7') ? `${labels[j]} efforts` : labels[j],
+          name: (labels[j] === '0/7' || labels[j] === '1/7' || labels[j] === '7/7') ? `${labels[j]} initiatives` : labels[j],
           parent: labels[j],
           sortIndex: -j,
           value: e,
+          dataLabels: {
+            enabled: true
+          },
           visible: labels[j] !== '0/7'
         }))
       };
@@ -84,24 +118,46 @@ const Figure05 = forwardRef((props, ref) => {
     if (!dataFigure) return;
     const dataCopy = structuredClone(dataFigure);
     setDataFirst(structuredClone(dataCopy.map((item) => {
-      if (item.id === '0/7_child') {
-        item.visible = false;
-      }
-      if (item.id === '0/7') {
+      if (item.id === '7/7_child') {
+        item.visible = true;
+      } else if (item.id === '7/7') {
+        item.visible = true;
+      } else {
         item.visible = false;
       }
       return item;
     }).map(item => ({ ...item }))));
     setDataSecond(structuredClone(dataCopy.map((item) => {
       if (item.id === '0/7_child') {
+        item.visible = false;
+      } else if (item.id === '0/7') {
+        item.visible = false;
+      } else {
         item.visible = true;
       }
-      if (item.id === '0/7') {
-        item.visible = true;
+      if (item.id === '7/7_child') {
+        item.name = '7/7';
+      }
+      if (item.id === '7/7') {
+        item.name = 'G7 countries';
       }
       return item;
     }).map(item => ({ ...item }))));
-  }, [dataFigure, setDataFirst, setDataSecond]);
+    setDataThird(structuredClone(dataCopy.map((item) => {
+      if (item.id === '0/7_child') {
+        item.visible = true;
+      } else if (item.id === '0/7') {
+        item.visible = true;
+      } else {
+        item.dataLabels.enabled = false;
+      }
+      if (item.id === '7/7') {
+        item.name = 'G7';
+        item.dataLabels.enabled = true;
+      }
+      return item;
+    }).map(item => ({ ...item }))));
+  }, [dataFigure, setDataFirst, setDataSecond, setDataThird]);
 
   useEffect(() => {
     const data_file = `${(window.location.href.includes('unctad.org')) ? 'https://storage.unctad.org/2025-tir_report/' : './'}assets/data/2025-tir_report_figure05_data.csv`;
@@ -140,6 +196,7 @@ const Figure05 = forwardRef((props, ref) => {
 Figure05.propTypes = {
   setDataFirst: PropTypes.func.isRequired, // Ensure it's a function and required
   setDataSecond: PropTypes.func.isRequired, // Ensure it's a function and required
+  setDataThird: PropTypes.func.isRequired // Ensure it's a function and required
 };
 
 export default Figure05;

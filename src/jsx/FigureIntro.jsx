@@ -39,8 +39,10 @@ const FigureIntro = forwardRef(({ highlight_bool, node_count }, ref) => {
     if (!svgRef.current) return;
     const svg = d3.select(svgRef.current);
     const circles = svg.selectAll('circle').data(nodes, d => d.id); // or text
-
-    circles.exit().transition().delay((d, i) => Math.random() * i * 1)
+    const r = (dimensions.width > 578) ? 10 : 5;
+    circles.exit()
+      .transition()
+      .delay((d, i) => Math.random() * i * 1)
       .attr('r', 0)
       .style('font-size', 0)
       .remove();
@@ -52,18 +54,32 @@ const FigureIntro = forwardRef(({ highlight_bool, node_count }, ref) => {
       .attr('text-anchor', 'middle')
       .attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffc800' : i > 19 ? '#009edb' : '#c5dfef'));
 
-    enter.transition()
+    enter
+      .transition()
       .delay((d, i) => Math.random() * i * 5)
-      .attr('r', 10)
+      .attr('r', r)
       .style('font-size', '30px');
 
+    enter.merge(circles)
+      .transition()
+      .delay((d, i) => Math.random() * i * 5)
+      .attr('r', r);
+
     circles.attr('fill', (d, i) => (d.id === 5 && highlight ? '#ffc800' : i > 19 ? '#009edb' : '#c5dfef'));
+
+    const collide = dimensions.width > 578
+      ? d3.forceCollide().radius(d => (count === 19 ? (d.id === 5 && highlight) ? 40 : d.radius + 8 + Math.random() * 10 : (d.id === 5 && highlight) ? d.radius + 8 : d.radius + 8 + Math.random() * 10)).iterations(1)
+      : d3.forceCollide().radius(d => (count === 19 ? (d.id === 5 && highlight) ? 40 : d.radius - 2 + Math.random() * 10 : (d.id === 5 && highlight) ? d.radius - 2 : d.radius - 2 + Math.random() * 10)).iterations(1);
+
+    const radial = dimensions.width > 578
+      ? d3.forceRadial(radius).strength((count === 19 ? 0.05 : 0.0005))
+      : d3.forceRadial(radius).strength((count === 19 ? 0.05 : 0.01));
 
     simulationRef.current = d3.forceSimulation()
       .nodes(nodes)
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide().radius(d => (count === 19 ? (d.id === 5 && highlight) ? 40 : d.radius + 8 + Math.random() * 10 : (d.id === 5 && highlight) ? d.radius + 8 : d.radius + 8 + Math.random() * 10)).iterations(1))
-      .force('radial', d3.forceRadial(radius).strength((count === 19 ? 0.05 : 0.0005)))
+      .force('collide', collide)
+      .force('radial', radial)
       .on('tick', () => {
         svg.selectAll('circle')
           .attr('cx', d => d.x)

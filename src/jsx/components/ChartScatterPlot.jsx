@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import Highcharts from 'highcharts';
 import 'highcharts/modules/accessibility';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
 
 // https://www.npmjs.com/package/react-is-visible
 import 'intersection-observer';
@@ -52,16 +50,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
       credits: {
         enabled: false
       },
-      exporting: {
-        buttons: {
-          contextButton: {
-            menuItems: ['viewFullscreen', 'separator', 'downloadPNG', 'downloadPDF', 'separator', 'downloadCSV'],
-            symbol: 'download',
-            symbolFill: '#fff'
-          }
-        },
-        enabled: false
-      },
       legend: {
         align: 'left',
         enabled: true,
@@ -70,10 +58,15 @@ const ScatterPlotChart = forwardRef((props, ref) => {
             return false;
           }
         },
+        itemHoverStyle: {
+          color: '#fff'
+        },
         itemDistance: 10,
         itemStyle: {
           color: '#fff',
-          fontSize: '14px'
+          cursor: 'default',
+          fontSize: '16px',
+          fontWeight: 400
         },
         squareSymbol: false,
         symbolHeight: 12,
@@ -99,6 +92,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
             }
           },
           enableMouseTracking: false,
+          legendSymbol: 'rectangle',
           marker: {
             radius: 3,
             symbol: 'circle',
@@ -127,25 +121,6 @@ const ScatterPlotChart = forwardRef((props, ref) => {
           },
           groupPadding: 0.1
         }
-      },
-      responsive: {
-        rules: [{
-          chartOptions: {
-            legend: {
-              layout: 'horizontal'
-            },
-            title: {
-              margin: 20,
-              style: {
-                fontSize: '26px',
-                lineHeight: '30px'
-              }
-            }
-          },
-          condition: {
-            maxWidth: 500
-          }
-        }]
       },
       series: props.data,
       subtitle: {
@@ -187,7 +162,9 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         title: {
           enabled: true,
           style: {
+            color: '#fff',
             fontFamily: 'Inter',
+            fontSize: '15px',
             fontWeight: 400
           },
           text: 'Share of developers compared to working age population'
@@ -222,7 +199,9 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         title: {
           enabled: true,
           style: {
+            color: '#fff',
             fontFamily: 'Inter',
+            fontSize: '15px',
             fontWeight: 400
           },
           text: 'Share of working age population with advanced degree'

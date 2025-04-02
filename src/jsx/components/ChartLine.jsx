@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import Highcharts from 'highcharts';
 import 'highcharts/modules/accessibility';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
 
 // https://www.npmjs.com/package/react-is-visible
 import 'intersection-observer';
@@ -52,28 +50,24 @@ const LineChart = forwardRef((props, ref) => {
       credits: {
         enabled: false
       },
-      exporting: {
-        buttons: {
-          contextButton: {
-            menuItems: ['viewFullscreen', 'separator', 'downloadPNG', 'downloadPDF', 'separator', 'downloadCSV'],
-            symbol: 'download',
-            symbolFill: '#fff'
-          }
-        },
-        enabled: false
-      },
       legend: {
         align: 'left',
         alignColumns: false,
         enabled: true,
-        itemStyle: {
-          color: '#fff',
-          fontSize: '14px'
-        },
         events: {
           itemClick() {
             return false;
           }
+        },
+        itemHoverStyle: {
+          color: '#fff'
+        },
+        itemDistance: 10,
+        itemStyle: {
+          color: '#fff',
+          cursor: 'default',
+          fontSize: '16px',
+          fontWeight: 400
         },
         margin: 30,
         verticalAlign: 'top'
@@ -86,14 +80,7 @@ const LineChart = forwardRef((props, ref) => {
           },
           cursor: 'pointer',
           dataLabels: {
-            connectorColor: '#fff',
-            connectorWidth: 0,
-            enabled: false,
-            inside: false,
-            style: {
-              fontSize: 26,
-              fontWeight: 600
-            }
+            enabled: false
           },
           enableMouseTracking: false,
           lineWidth: 6,
@@ -109,25 +96,6 @@ const LineChart = forwardRef((props, ref) => {
             }
           }
         }
-      },
-      responsive: {
-        rules: [{
-          chartOptions: {
-            legend: {
-              layout: 'horizontal'
-            },
-            title: {
-              margin: 20,
-              style: {
-                fontSize: '26px',
-                lineHeight: '30px'
-              }
-            }
-          },
-          condition: {
-            maxWidth: 500
-          }
-        }]
       },
       series: props.data,
       subtitle: {
@@ -169,9 +137,6 @@ const LineChart = forwardRef((props, ref) => {
         }
       },
       yAxis: {
-        accessibility: {
-          description: 'Index'
-        },
         allowDecimals: true,
         gridLineColor: '#555',
         gridLineWidth: 1,

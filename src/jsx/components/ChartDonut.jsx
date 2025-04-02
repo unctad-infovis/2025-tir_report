@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import Highcharts from 'highcharts';
 import 'highcharts/modules/accessibility';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
 
 // https://www.npmjs.com/package/react-is-visible
 import 'intersection-observer';
@@ -106,26 +104,12 @@ const DonutChart = forwardRef((props, ref) => {
   const createChart = useCallback(() => {
     ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
       caption: {
-        align: 'left',
-        margin: 20,
-        style: {
-          color: '#fff',
-          fontSize: '14px'
-        },
-        text: `<em>Source:</em> ${props.source} ${props.note ? (`<br /><em>Note:</em> <span>${props.note}</span>`) : ''}`,
-        useHTML: true,
-        verticalAlign: 'bottom',
-        x: 0
+        text: undefined
       },
       chart: {
-        backgroundColor: '#222',
+        backgroundColor: 'transparent',
         custom: {},
-        height: props.chart_height,
         events: {
-          load() {
-            const chart_this = this;
-            chart_this.renderer.image('https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg', 20, 20, 44, 43.88).add();
-          },
           render() {
             const chart_el = this;
             const series = chart_el.series[0];
@@ -133,7 +117,7 @@ const DonutChart = forwardRef((props, ref) => {
 
             if (!customLabel) {
               chart_el.options.chart.custom.label = chart_el.renderer.label(
-                'In 2023<br/><strong>$2&nbsp;542</strong>'
+                'In 2023<br/><strong>$2.5tn</strong>'
               ).css({
                 color: '#fff',
                 display: 'none',
@@ -148,11 +132,11 @@ const DonutChart = forwardRef((props, ref) => {
               y
             });
             customLabel.css({
-              fontSize: `${series.center[2] / 12}px` // Set font size based on chart diameter
+              fontSize: `${series.center[2] / 15}px` // Set font size based on chart diameter
             });
           }
         },
-        spacingRight: 64,
+        height: props.chart_height,
         style: {
           color: '#fff',
           fontFamily: 'Inter',
@@ -163,22 +147,13 @@ const DonutChart = forwardRef((props, ref) => {
       credits: {
         enabled: false
       },
-      exporting: {
-        buttons: {
-          contextButton: {
-            menuItems: ['viewFullscreen', 'separator', 'downloadPNG', 'downloadPDF', 'separator', 'downloadCSV'],
-            symbol: 'download',
-            symbolFill: '#fff'
-          }
-        },
-        enabled: false
-      },
       legend: {
         align: 'left',
+        alignColumns: true,
         enabled: true,
         itemStyle: {
           color: '#fff',
-          fontSize: '14px'
+          fontSize: '16px'
         },
         events: {
           itemClick() {
@@ -231,52 +206,27 @@ const DonutChart = forwardRef((props, ref) => {
           }
         }
       },
-      responsive: {
-        rules: [{
-          chartOptions: {
-            legend: {
-              layout: 'horizontal'
-            },
-            title: {
-              margin: 20,
-              style: {
-                fontSize: '26px',
-                lineHeight: '30px'
-              }
+      rules: [{
+        condition: {
+          maxWidth: 500
+        },
+        // Make the labels less space demanding on mobile
+        chartOptions: {
+          series: {
+            dataLabels: {
+              enabled: false
             }
-          },
-          condition: {
-            maxWidth: 500
           }
-        }]
-      },
+        }
+      }],
       series: [{
         data: props.data[0].slice(0, 5)
       }],
       subtitle: {
-        align: 'left',
-        enabled: true,
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '16px',
-          fontWeight: 400,
-          lineHeight: '18px'
-        },
-        text: props.subtitle,
-        x: 64
+        text: undefined
       },
       title: {
-        align: 'left',
-        minScale: 1,
-        style: {
-          color: '#fff',
-          fontSize: '30px',
-          fontWeight: 700,
-          lineHeight: '34px'
-        },
-        text: props.title,
-        x: 64
+        text: undefined
       },
       tooltip: {
         enabled: false
@@ -289,7 +239,7 @@ const DonutChart = forwardRef((props, ref) => {
         ref.current = null;
       }
     };
-  }, [ref, props.idx, props.chart_height, props.data, props.source, props.subtitle, props.title, props.note]);
+  }, [ref, props.idx, props.chart_height, props.data]);
 
   useEffect(() => {
     if (isVisible === true) {
@@ -315,8 +265,4 @@ DonutChart.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   chart_height: PropTypes.number.isRequired,
   idx: PropTypes.string.isRequired,
-  note: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  source: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
 };

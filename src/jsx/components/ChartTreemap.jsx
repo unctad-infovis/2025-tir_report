@@ -6,10 +6,8 @@ import PropTypes from 'prop-types';
 // https://www.highcharts.com/
 
 import Highcharts from 'highcharts';
-import 'highcharts/modules/treemap';
 import 'highcharts/modules/accessibility';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
+import 'highcharts/modules/treemap';
 
 // https://www.npmjs.com/package/react-is-visible
 import 'intersection-observer';
@@ -44,15 +42,7 @@ const TreemapChart = forwardRef((props, ref) => {
         backgroundColor: '#222',
         height: props.chart_height,
         events: {
-          load() {
-            const chart_this = this;
-            chart_this.renderer.image('https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg', 20, 20, 44, 43.88).add();
-          },
-          render() {
-
-          }
         },
-        spacingRight: 64,
         style: {
           color: '#fff',
           fontFamily: 'Inter',
@@ -61,16 +51,6 @@ const TreemapChart = forwardRef((props, ref) => {
         type: 'treemap'
       },
       credits: {
-        enabled: false
-      },
-      exporting: {
-        buttons: {
-          contextButton: {
-            menuItems: ['viewFullscreen', 'separator', 'downloadPNG', 'downloadPDF', 'separator', 'downloadCSV'],
-            symbol: 'download',
-            symbolFill: '#fff'
-          }
-        },
         enabled: false
       },
       legend: {
@@ -127,25 +107,6 @@ const TreemapChart = forwardRef((props, ref) => {
         },
         type: 'treemap'
       }],
-      responsive: {
-        rules: [{
-          chartOptions: {
-            legend: {
-              layout: 'horizontal'
-            },
-            title: {
-              margin: 20,
-              style: {
-                fontSize: '26px',
-                lineHeight: '30px'
-              }
-            }
-          },
-          condition: {
-            maxWidth: 500
-          }
-        }]
-      },
       subtitle: {
         text: undefined
       },

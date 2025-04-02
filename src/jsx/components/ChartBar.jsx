@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import Highcharts from 'highcharts';
 import 'highcharts/modules/accessibility';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
 
 // https://www.npmjs.com/package/react-is-visible
 import 'intersection-observer';
@@ -41,6 +39,26 @@ const BarChart = forwardRef((props, ref) => {
       },
       chart: {
         backgroundColor: 'transparent',
+        custom: {
+          text: ''
+        },
+        events: {
+          render() {
+            const chart_el = this;
+            let customLabel = chart_el.options.chart.custom.label;
+
+            if (!customLabel) {
+              chart_el.options.chart.custom.label = chart_el.renderer.label(
+                'In 2023<br/><strong>$2.5tn</strong>'
+              ).css({
+                color: '#fff',
+                display: 'none',
+                textAnchor: 'middle'
+              }).add();
+              customLabel = chart_el.options.chart.custom.label;
+            }
+          }
+        },
         height: props.chart_height,
         style: {
           color: '#fff',
@@ -50,16 +68,6 @@ const BarChart = forwardRef((props, ref) => {
         type: 'bar'
       },
       credits: {
-        enabled: false
-      },
-      exporting: {
-        buttons: {
-          contextButton: {
-            menuItems: ['viewFullscreen', 'separator', 'downloadPNG', 'downloadPDF', 'separator', 'downloadCSV'],
-            symbol: 'download',
-            symbolFill: '#fff'
-          }
-        },
         enabled: false
       },
       legend: {
@@ -81,9 +89,11 @@ const BarChart = forwardRef((props, ref) => {
             enabled: true,
             format: '{y}%',
             inside: false,
+            align: 'right',
             style: {
               fontSize: 30,
-              fontWeight: 900
+              fontWeight: 900,
+              textOutline: 'none'
             }
           },
           enableMouseTracking: false,
@@ -101,25 +111,6 @@ const BarChart = forwardRef((props, ref) => {
           }
         }
       },
-      responsive: {
-        rules: [{
-          chartOptions: {
-            legend: {
-              layout: 'horizontal'
-            },
-            title: {
-              margin: 20,
-              style: {
-                fontSize: '26px',
-                lineHeight: '30px'
-              }
-            }
-          },
-          condition: {
-            maxWidth: 500
-          }
-        }]
-      },
       series: [{
         data: props.data[0]
       }],
@@ -135,23 +126,18 @@ const BarChart = forwardRef((props, ref) => {
       xAxis: {
         categories: props.data[0].map(el => el.name),
         labels: {
-          distance: 10,
-          padding: 0,
+          distance: 5,
           rotation: 0,
           style: {
             color: '#fff',
             fontFamily: 'Inter',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: 400
           }
         },
         lineColor: 'transparent',
         lineWidth: 0,
-        opposite: false,
-        plotLines: null,
         reserveSpace: true,
-        showFirstLabel: true,
-        showLastLabel: true,
         tickWidth: 0,
         title: {
           enabled: false

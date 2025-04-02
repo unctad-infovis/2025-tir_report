@@ -20,7 +20,8 @@ const Figure04 = forwardRef((props, ref) => {
   // Data states.
   const [dataFigure, setDataFigure] = useState(false);
 
-  const { setData } = props;
+  const { setDataFirst } = props;
+  const { setDataSecond } = props;
   const cleanData = useCallback((data) => data.map(el => {
     const labels = Object.keys(el).filter(val => val !== 'Name');
     const values = Object.values(el).map(val => parseFloat(val * 100)).filter(val => !Number.isNaN(val));
@@ -39,8 +40,17 @@ const Figure04 = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!dataFigure) return;
-    setData(dataFigure);
-  }, [dataFigure, setData]);
+    setDataSecond(structuredClone(dataFigure));
+    setDataFirst(structuredClone(dataFigure).map(el => {
+      el.data = el.data.filter((year, i) => {
+        if (i > 1) {
+          year.y = null;
+        }
+        return year;
+      });
+      return el;
+    }));
+  }, [dataFigure, setDataFirst, setDataSecond]);
 
   useEffect(() => {
     const data_file = `${(window.location.href.includes('unctad.org')) ? 'https://storage.unctad.org/2025-tir_report/' : './'}assets/data/2025-tir_report_figure04_data.csv`;
@@ -77,7 +87,8 @@ const Figure04 = forwardRef((props, ref) => {
 });
 
 Figure04.propTypes = {
-  setData: PropTypes.func.isRequired, // Ensure it's a function and required
+  setDataFirst: PropTypes.func.isRequired, // Ensure it's a function and required
+  setDataSecond: PropTypes.func.isRequired // Ensure it's a function and required
 };
 
 export default Figure04;

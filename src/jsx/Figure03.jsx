@@ -68,7 +68,7 @@ const Figure03 = forwardRef((props, ref) => {
     const formattedDataStage7 = structuredClone(createEmptyFormattedData());
     const formattedDataStage8 = structuredClone(createEmptyFormattedData());
 
-    [formattedDataStage2, formattedDataStage3, formattedDataStage4, formattedDataStage5, formattedDataStage6].forEach(stage => {
+    [formattedDataStage2, formattedDataStage3, formattedDataStage4, formattedDataStage5].forEach(stage => {
       ['Leaders', 'Practitioners', 'Laggards', 'Creators'].forEach(groupName => {
         const group = stage.find(g => g.name === groupName);
         if (group) {
@@ -79,7 +79,7 @@ const Figure03 = forwardRef((props, ref) => {
       });
     });
 
-    [formattedDataStage1, formattedDataStage8].forEach(stage => {
+    [formattedDataStage1, formattedDataStage6, formattedDataStage7, formattedDataStage8].forEach(stage => {
       ['Leaders', 'Practitioners', 'Laggards', 'Creators'].forEach(groupName => {
         const group = stage.find(g => g.name === groupName);
         if (group) {
@@ -154,34 +154,17 @@ const Figure03 = forwardRef((props, ref) => {
       if (group6) {
         group6.data.push({
           color: group6.color,
-          dataLabels: {
-            allowOverlap: true,
-            enabled: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name),
-            padding: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 10 : 5
-          },
-          marker: {
-            enabled: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name),
-            lineWidth: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 2 : 0,
-            radius: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 6 : 3
-          },
+          dataLabels: { enabled: false },
           name: item.Name,
-          x: item['Share of developers compared to working age population'] === 'null' ? null : parseFloat(item['Share of developers compared to working age population']),
-          y: item['Share of working age population with advanced degree'] === 'null' ? null : parseFloat(item['Share of working age population with advanced degree']),
+          x: item['Gross domestic product per capita‚ PPP'] === 'null' ? null : parseFloat(item['Gross domestic product per capita‚ PPP']),
+          y: item.Index === 'null' ? null : parseFloat(item.Index),
         });
       }
       if (group7) {
         group7.data.push({
-          color: group8.color,
-          dataLabels: {
-            allowOverlap: true,
-            enabled: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name),
-            padding: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 10 : 5
-          },
-          marker: {
-            enabled: true,
-            lineWidth: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 2 : 0,
-            radius: ['China', 'Brazil', 'India', 'Philippines'].includes(item.Name) ? 6 : 3
-          },
+          color: group7.color,
+          dataLabels: { enabled: group3.name === 'Developed countries', style: { fontSize: 12 } },
+          marker: { lineWidth: 0, enabled: group5.name === 'Developed countries' },
           name: item.Name,
           x: item['Gross domestic product per capita‚ PPP'] === 'null' ? null : parseFloat(item['Gross domestic product per capita‚ PPP']),
           y: item.Index === 'null' ? null : parseFloat(item.Index),

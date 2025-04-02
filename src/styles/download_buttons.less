@@ -1,5 +1,5 @@
 #app-root-2025-tir_report .app {
-  >.content_container .text_container,
+  >.chapters_container >.content_container .text_container,
   >.header_container .content_bottom {
     .download_buttons_container {
       margin: 0 0 20px 0;
@@ -17,6 +17,8 @@
         position: relative;
         text-decoration: none;
         &:before {
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
           background-size: 100%;
           content:'';
           display: block;
@@ -46,6 +48,49 @@
           &:hover {
             background-color: #004987;
             color: #fff;
+          }
+        }
+      }
+      button {
+        background: #004987;
+        border-radius: 20px;
+        border: 0;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 22px;
+        margin: 0 10px 0 0;
+        padding: 8px 20px 8px 40px;
+        position: relative;
+        text-decoration: none;
+        &:before {
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          background-size: 100% auto;
+          content:'';
+          display: block;
+          height: 30px;
+          left: 6px;
+          position: absolute;
+          top: 4px;
+          width: 30px;
+        }
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+        &.video {
+          &:before {
+            background-image: url('./../assets/img/icons/video.png');
+          }
+        }
+        &.podcast {
+          padding-left: 35px;
+          &:before {
+            background-size: 20px auto;
+            background-image: url('./../assets/img/icons/podcast.png');
           }
         }
       }
