@@ -178,7 +178,7 @@ const Figure05 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
       <ChartTreemap
-        chart_height={600}
+        chart_height={Math.min(window.innerHeight, 700)}
         data={dataFigure}
         idx="05"
         note=""

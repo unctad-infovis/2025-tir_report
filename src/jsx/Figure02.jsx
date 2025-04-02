@@ -51,15 +51,13 @@ const Figure01 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
       <ChartBar
-        chart_height={600}
+        data_label_align="right"
+        animation_duration={500}
+        chart_height={Math.min(window.innerHeight, 700)}
         data={dataFigure}
         idx="02"
-        note=""
-        prefix=""
         ref={ref}
-        source="UN Trade and Development (UNCTAD), IMF Cazzaniga et al. (2024)"
-        subtitle="Exposure to automation"
-        title="Developed economies are most exposed but are not alone"
+        y_max={40}
       />
       )}
     </div>

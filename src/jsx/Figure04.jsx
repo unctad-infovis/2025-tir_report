@@ -71,7 +71,7 @@ const Figure04 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
       <ChartLine
-        chart_height={600}
+        chart_height={Math.min(window.innerHeight, 700)}
         data={dataFigure}
         idx="04"
         note=""

@@ -34,12 +34,10 @@ const Figure01 = forwardRef((props, ref) => {
       data: values.map((e, j) => ({
         color: colors[labels[j]],
         name: labels[j].replace('‚ 2023', '').replace('‚ 2033', ''),
-        selected: (labels[j] === 'Artificial intelligence‚ 2023' || labels[j] === 'Artificial intelligence 2033'),
-        sliced: (labels[j] === 'Artificial intelligence‚ 2023' || labels[j] === 'Artificial intelligence‚ 2033'),
         y: e
       }))
     };
-    return output.data;
+    return output.data.sort();
   }), []);
 
   useEffect(() => {
@@ -67,15 +65,14 @@ const Figure01 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
       <ChartBar
-        chart_height={800}
+        data_label_align="left"
+        animation_duration={500}
+        chart_height={Math.min(window.innerHeight, 700)}
         data={dataFigure}
         idx="01"
-        note=""
         prefix=""
         ref={ref}
-        source="UN Trade and Development (UNCTAD)"
-        subtitle="Top areas of industry, 2023 and 2033"
-        title="The next decade is the era of AI"
+        y_max={50}
       />
       )}
     </div>

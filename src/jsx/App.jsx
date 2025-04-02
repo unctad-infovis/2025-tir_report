@@ -87,7 +87,7 @@ function App() {
     setFigureIntroHighlight(!newState.isAbove1 && newState.isAbove2);
     const selected_value = parseInt(document.querySelector('.selected.guess_button')?.value, 10);
 
-    setFigureIntroData(newState.isAbove2 ? 19 : !newState.isAbove3 ? 477 : newState.isAbove3 && [60, 120, 240].includes(selected_value) ? selected_value : 19);
+    setFigureIntroData(newState.isAbove2 ? 19 : !newState.isAbove3 ? 477 : newState.isAbove3 && [60, 120, 250].includes(selected_value) ? selected_value : 19);
   }, []);
 
   useEffect(() => {
@@ -141,12 +141,16 @@ function App() {
     }
     const newData = isAbove2 ? figure01DonutData2023 : figure01DonutData2033;
     // eslint-disable-next-line no-irregular-whitespace
-    const newLabel = `${isAbove2 ? 'In 2023' : 'In 2033'}<tspan class="highcharts-br" dy="1.2em" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
+    const newLabel = `<tspan style="font-size: 22px">Global frontier</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan>${isAbove2 ? '<tspan style="font-size: 22px">tech market</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan><tspan style="font-size: 22px">in 20</tspan><tspan style="fill: #ffc800; font-size: 22px;">2</tspan><tspan style="font-size: 22px">3</tspan>' : '<tspan style="font-size: 22px">tech market</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan><tspan style="font-size: 22px">in 20</tspan><tspan style="fill: #ffc800; font-size: 22px;">3</tspan><tspan style="font-size: 22px">3</tspan>'}<tspan class="highcharts-br" dy="44" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
 
     if (!chartFigure01Donut.current) return;
-    chartFigure01Donut.current.series[0].setData(newData, false);
-    chartFigure01Donut.current.options.chart.custom.label.text.element.innerHTML = newLabel;
-    chartFigure01Donut.current.redraw();
+    try {
+      chartFigure01Donut.current.series[0].setData(newData, false);
+      chartFigure01Donut.current.options.chart.custom.label.text.element.innerHTML = newLabel;
+      chartFigure01Donut.current.redraw();
+    } catch {
+      fixedElement.style.height = `${3 * 130 + 80}vh`;
+    }
   }, [figure01DonutData2023, figure01DonutData2033]);
 
   useEffect(() => {
@@ -197,10 +201,20 @@ function App() {
       aboveSwitchPointFigure01Bar.current = { isAbove1, isAbove2 };
     }
     const newData = isAbove2 ? figure01BarData2023 : figure01BarData2033;
+    // eslint-disable-next-line no-irregular-whitespace
+    const newLabel = `<tspan>Global frontier</tspan><tspan class="highcharts-br" dy="1.2em" x="3">​</tspan>${isAbove2 ? '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">2</tspan><tspan>3</tspan>' : '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">3</tspan><tspan>3</tspan>'}<tspan class="highcharts-br" dy="1.6em" x="3">​</tspan><tspan style="font-size: 40px; font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
 
     if (!chartFigure01Bar.current) return;
-    chartFigure01Bar.current.series[0].setData(newData, false);
-    chartFigure01Bar.current.redraw();
+    try {
+      chartFigure01Bar.current.series[0].setData(newData.sort((a, b) => b.y - a.y), false);
+      chartFigure01Bar.current.xAxis[0].update({
+        categories: newData.map(el => el.name)
+      }, false);
+      chartFigure01Bar.current.options.chart.custom.label.text.element.innerHTML = newLabel;
+      chartFigure01Bar.current.redraw();
+    } catch {
+      fixedElement.style.height = `${3 * 130 + 80}vh`;
+    }
   }, [figure01BarData2023, figure01BarData2033]);
 
   useEffect(() => {
@@ -867,7 +881,7 @@ function App() {
                 <div>
                   {[{ value: 60, label: '$600', unit: 'billion' },
                     { value: 120, label: '$1.2', unit: 'trillion' },
-                    { value: 240, label: '$2.4', unit: 'trillion' },
+                    { value: 250, label: '$2.4', unit: 'trillion' },
                     { value: 477, label: '$4.8', unit: 'trillion' }].map((button, index) => (
                       <button key={button.label} type="button" className={`${selectedButton === index ? 'selected' : ''} guess_button`} value={button.value} onClick={() => handleClick(button.value, index)}>
                         <div className="number">{button.label}</div>
@@ -1132,7 +1146,7 @@ function App() {
             </div>
           </div>
           <div className="scroll-elements">
-            <div className="scroll-content"><div><p>By 2024, only the G7 countries were active in all seven major governance initiatives.</p></div></div>
+            <div className="scroll-content"><div><p>By 2025, only the G7 countries were active in all seven major governance initiatives.</p></div></div>
             <div className="scroll-content"><div><p>75 countries were involved in at least one.</p></div></div>
             <div className="scroll-content">
               <div>
@@ -1155,7 +1169,7 @@ function App() {
               <p>Governments and international institutions must act to ensure AI serves people and the planet.</p>
               <p>But collaboration must be inclusive. People in developing countries will be affected by AI but have little or no say in shaping its future.</p>
               <p><strong>The United Nations is leading efforts to close this gap.</strong></p>
-              <p>In 2024, UN Member States adopted the Pact for the Future and the Global Digital Compact, setting a series of commitments to enhance international AI governance for the benefit of humanity.</p>
+              <p>In 2025, UN Member States adopted the Pact for the Future and the Global Digital Compact, setting a series of commitments to enhance international AI governance for the benefit of humanity.</p>
               <p>UN Trade and Development advocates for multi-stakeholder cooperation to steer AI towards shared goals and values.</p>
               <h3>Key priorities for global collaboration</h3>
               <ul>

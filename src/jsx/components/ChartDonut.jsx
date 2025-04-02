@@ -79,7 +79,12 @@ Highcharts.SVGRenderer.prototype.symbols.download = (x, y, w, h) => {
                     }
                   }
                 });
-                document.querySelector('.highcharts-label').style.display = 'block';
+                try {
+                  document.querySelector('.highcharts-label').style.display = 'block';
+                } catch {
+                  return true;
+                }
+                return true;
               }
             );
           }
@@ -102,137 +107,143 @@ const DonutChart = forwardRef((props, ref) => {
   const isVisible = useIsVisible(chartRef, { once: true });
 
   const createChart = useCallback(() => {
-    ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
-      caption: {
-        text: undefined
-      },
-      chart: {
-        backgroundColor: 'transparent',
-        custom: {},
-        events: {
-          render() {
-            const chart_el = this;
-            const series = chart_el.series[0];
-            let customLabel = chart_el.options.chart.custom.label;
+    try {
+      ref.current = Highcharts.chart(`chartIdx${props.idx}`, {
+        caption: {
+          text: undefined
+        },
+        chart: {
+          backgroundColor: 'transparent',
+          custom: {},
+          events: {
+            render() {
+              const chart_el = this;
+              const series = chart_el.series[0];
+              let customLabel = chart_el.options.chart.custom.label;
 
-            if (!customLabel) {
-              chart_el.options.chart.custom.label = chart_el.renderer.label(
-                'In 2023<br/><strong>$2.5tn</strong>'
-              ).css({
-                color: '#fff',
-                display: 'none',
-                textAnchor: 'middle'
-              }).add();
-              customLabel = chart_el.options.chart.custom.label;
+              if (!customLabel) {
+                chart_el.options.chart.custom.label = chart_el.renderer.label(
+                  '<span style="font-size: 22px;">Global frontier</span><br /><span style="font-size: 22px;">tech market</span><br /><span style="font-size: 22px;">in 20</span><span style="fill: #ffc800; font-size: 22px;">2</span><span style="font-size: 22px;">3</span><br/><strong>$2.5tn</strong>'
+                ).css({
+                  color: '#fff',
+                  display: 'none',
+                  fontWeight: 600,
+                  textAnchor: 'middle'
+                }).add();
+                customLabel = chart_el.options.chart.custom.label;
+              }
+              const x = series.center[0] + chart_el.plotLeft;
+              const y = series.center[1] + chart_el.plotTop - (customLabel.attr('height') / 2);
+              customLabel.attr({
+                x,
+                y
+              });
+              customLabel.css({
+                fontSize: `${series.center[2] / 15}px` // Set font size based on chart diameter
+              });
             }
-            const x = series.center[0] + chart_el.plotLeft;
-            const y = series.center[1] + chart_el.plotTop - (customLabel.attr('height') / 2);
-            customLabel.attr({
-              x,
-              y
-            });
-            customLabel.css({
-              fontSize: `${series.center[2] / 15}px` // Set font size based on chart diameter
-            });
-          }
-        },
-        height: props.chart_height,
-        style: {
-          color: '#fff',
-          fontFamily: 'Inter',
-          fontWeight: 400
-        },
-        type: 'pie'
-      },
-      credits: {
-        enabled: false
-      },
-      legend: {
-        align: 'left',
-        alignColumns: true,
-        enabled: true,
-        itemStyle: {
-          color: '#fff',
-          fontSize: '16px'
-        },
-        events: {
-          itemClick() {
-            return false;
-          }
-        },
-        verticalAlign: 'top'
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: false,
-          animation: {
-            duration: 1000
           },
-          borderRadius: 0,
-          borderWidth: 2,
-          cursor: 'default',
-          dataLabels: {
-            connectorColor: '#fff',
-            connectorWidth: 0,
-            enabled: true,
-            formatter() {
-              const el = this;
-              return `${(formatNr(roundNr(el.percentage, 0)))}%`;
-            },
-            distance: -50,
-            style: {
-              fontSize: 20,
-              fontWeight: 600,
-              textOutline: 'none'
-            },
-            y: 8
+          height: props.chart_height,
+          style: {
+            color: '#fff',
+            fontFamily: 'Inter',
+            fontWeight: 400
           },
-          dataSorting: {
-            enabled: false
+          type: 'pie'
+        },
+        credits: {
+          enabled: false
+        },
+        legend: {
+          align: 'left',
+          alignColumns: true,
+          enabled: true,
+          itemStyle: {
+            color: '#fff',
+            fontSize: '16px'
           },
-          enableMouseTracking: false,
-          showInLegend: true,
-          slicedOffset: 30,
-          states: {
-            hover: {
-              enabled: false
-            },
-            inactive: {
-              opacity: 1
-            },
-            select: {
-              enabled: false
+          events: {
+            itemClick() {
+              return false;
             }
-          }
-        }
-      },
-      rules: [{
-        condition: {
-          maxWidth: 500
+          },
+          verticalAlign: 'top'
         },
-        // Make the labels less space demanding on mobile
-        chartOptions: {
-          series: {
+        plotOptions: {
+          pie: {
+            allowPointSelect: false,
+            animation: {
+              duration: 1000
+            },
+            borderRadius: 0,
+            borderWidth: 2,
+            cursor: 'default',
             dataLabels: {
+              connectorColor: '#fff',
+              connectorWidth: 0,
+              enabled: true,
+              formatter() {
+                const el = this;
+                return `${(formatNr(roundNr(el.percentage, 0)))}%`;
+              },
+              distance: -50,
+              style: {
+                fontSize: 20,
+                fontWeight: 600,
+                textOutline: 'none'
+              },
+              y: 8
+            },
+            dataSorting: {
               enabled: false
+            },
+            enableMouseTracking: false,
+            showInLegend: true,
+            slicedOffset: 30,
+            states: {
+              hover: {
+                enabled: false
+              },
+              inactive: {
+                opacity: 1
+              },
+              select: {
+                enabled: false
+              }
             }
           }
+        },
+        rules: [{
+          condition: {
+            maxWidth: 500
+          },
+          // Make the labels less space demanding on mobile
+          chartOptions: {
+            series: {
+              dataLabels: {
+                enabled: false
+              }
+            }
+          }
+        }],
+        series: [{
+          data: props.data[0].slice(0, 5)
+        }],
+        subtitle: {
+          text: undefined
+        },
+        title: {
+          text: undefined
+        },
+        tooltip: {
+          enabled: false
         }
-      }],
-      series: [{
-        data: props.data[0].slice(0, 5)
-      }],
-      subtitle: {
-        text: undefined
-      },
-      title: {
-        text: undefined
-      },
-      tooltip: {
-        enabled: false
-      }
-    });
-    chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;
+      });
+      chartRef.current.querySelector(`#chartIdx${props.idx}`).style.opacity = 1;
+    } catch (error) {
+      return true;
+      // console.error(error);
+    }
     return () => {
       if (ref.current) {
         ref.current.destroy(); // Cleanup on unmount
