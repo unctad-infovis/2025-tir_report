@@ -823,8 +823,7 @@ function App() {
               <li className="oneliner"><strong>Skills </strong></li>
             </ul>
             <blockquote>
-              {/* <img src="assets/img/rebeca_grynspan.png" className="sg_photo" alt="Rebeca Grynspan" /> */}
-              <div className="quote">“History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development.”</div>
+              <div className="quote">History has shown that while technological progress drives economic growth, it does not on its own ensure equitable income distribution or promote inclusive human development.</div>
               <div className="author">
                 <span className="name">Rebeca Grynspan</span>
                 <span className="title">Secretary-General of UN Trade and Development (UNCTAD)</span>
@@ -860,7 +859,7 @@ function App() {
                   These dots represent AI’s estimated market value in 2023.
                   <br />
                   <br />
-                  <span style={{ color: '#ffc800' }}>$189&nbsp;billion.</span>
+                  <span style={{ color: '#ffc800' }}>$189&nbsp;billion</span>
                 </p>
               </div>
             </div>
@@ -980,8 +979,26 @@ function App() {
             </div>
           </div>
           <div className="scroll-elements">
-            <div className="scroll-content"><div><p>AI can automate cognitive tasks like writing, coding and data analysis.</p></div></div>
-            <div className="scroll-content"><div><p>Up to one third of jobs in advanced economies are at risk.</p></div></div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  <span style={{ color: '#ffc800' }}>AI</span>
+                  {' '}
+                  can automate cognitive tasks like writing, coding and data analysis.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Up to
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>one third</span>
+                  {' '}
+                  of jobs in advanced economies are at risk.
+                </p>
+              </div>
+            </div>
             <div className="scroll-content"><div><p>But they are also better positioned to harness AI’s benefits.</p></div></div>
           </div>
         </div>
@@ -993,7 +1010,7 @@ function App() {
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
             <div className="text_content">
-              <h3>AI could affect 40% of jobs worldwide. But it’s not all about potential job loss.</h3>
+              <h3>AI could affect 40% of jobs worldwide, with Workers in advanced economies are more exposed. But it’s not all about potential job loss.</h3>
               <p>In advanced economies, 27% of jobs could be enhanced by AI – boosting human skills rather than replacing workers.</p>
               <p>Generative AI can unlock major productivity gains – especially in services and knowledge work.</p>
               <p>Tech history shows that AI’s full impact will take years – if not decades – to unfold.</p>
@@ -1045,14 +1062,106 @@ function App() {
             </div>
           </div>
           <div className="scroll-elements">
-            <div className="scroll-content"><div><p>This graph shows how ready countries are for AI.</p></div></div>
-            <div className="scroll-content"><div><p>Each is ranked as a laggard, practitioner, creator or leader based on AI-related skills.</p></div></div>
-            <div className="scroll-content"><div><p>Most developed countries are leaders.</p></div></div>
-            <div className="scroll-content"><div><p>Least developed countries lag furthest behind.</p></div></div>
-            <div className="scroll-content"><div><p>Developing countries are spread across all categories.</p></div></div>
-            <div className="scroll-content"><div><p>Let’s take a look at UNCTAD’s Frontier Technologies Readiness Index.</p></div></div>
-            <div className="scroll-content"><div><p>High-income countries are generally more prepared.</p></div></div>
-            <div className="scroll-content"><div><p>But Brazil, China, India and the Philippines punch above their economic development.</p></div></div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  This graph shows how ready countries are for
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>AI</span>
+                  across the population.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Each is ranked as a
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>laggard</span>
+                  ,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>practitioner</span>
+                  ,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>creator</span>
+                  {' '}
+                  or
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>leader</span>
+                  {' '}
+                  based on AI-related skills.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Most
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>developed countries</span>
+                  {' '}
+                  are leaders.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  <span style={{ color: '#ffc800' }}>Least developed countries</span>
+                  {' '}
+                  lag furthest behind.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  <span style={{ color: '#ffc800' }}>Developing countries</span>
+                  {' '}
+                  are spread across all categories.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Let’s take a look at UNCTAD’s
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>Frontier Technologies Readiness Index</span>
+                  .
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  <span style={{ color: '#ffc800' }}>High-income countries</span>
+                  {' '}
+                  are generally more prepared.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  But
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>Brazil</span>
+                  ,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>China</span>
+                  ,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>India</span>
+                  {' '}
+                  and
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>the Philippines</span>
+                  {' '}
+                  punch above their economic development.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="content_container chapter_header_3">
@@ -1063,7 +1172,7 @@ function App() {
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_03_.jpg" /></div></div>
             <div className="text_content">
-              <h3>Advanced economies have a larger talent pool of workers with advanced degrees and coding skills – giving them a head start and edge in scaling AI.</h3>
+              <h3>Advanced economies benefit from a larger talent pool of workers with advanced degrees and coding skills – giving them a head start and edge in scaling AI. But some developing countries are showing strong potential.</h3>
               <p>Brazil, China, India and the Philippines have made progress in harnessing AI for development.</p>
               <p>China excels in data affordability and volume and, along with India and Brazil, has built large pools of AI developers. These three countries trail only the US in total GitHub developers. Meanwhile, the Philippines’ pool of AI developers surged 30% between 2022 and 2023.</p>
               <p>All four nations have strengthened infrastructure to support internet access and cross-border connectivity.</p>
@@ -1082,7 +1191,7 @@ function App() {
                   Countries can assess AI opportunities and challenges through technology foresight and evaluation, identifying ways to strengthen innovation systems. UNCTAD can support this through its technology assessments and STI Policy Reviews.
                 </li>
                 <li>
-                  <strong>• Align national policies.</strong>
+                  <strong>Align national policies.</strong>
                   {' '}
                   Coordinated action across government agencies and institutions – especially those in industry, education and science, technology and innovation – is key to shaping AI strategies that align with national goals.
                 </li>
@@ -1101,9 +1210,42 @@ function App() {
             </div>
           </div>
           <div className="scroll-elements">
-            <div className="scroll-content"><div><p>In 2017, only a few countries had a national AI strategy.</p></div></div>
-            <div className="scroll-content"><div><p>By 2023, two thirds of developed economies had one.</p></div></div>
-            <div className="scroll-content"><div><p>Compared to just six least developed countries.</p></div></div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  In 2017,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>only a few countries</span>
+                  {' '}
+                  had a national
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>AI</span>
+                  {' '}
+                  strategy.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  By 2023,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>two thirds of developed economies</span>
+                  {' '}
+                  had one.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Compared to just
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>six least developed countries</span>
+                  .
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="content_container chapter_header_4">
@@ -1149,11 +1291,36 @@ function App() {
             </div>
           </div>
           <div className="scroll-elements">
-            <div className="scroll-content"><div><p>By 2025, only the G7 countries were active in all seven major governance initiatives.</p></div></div>
-            <div className="scroll-content"><div><p>75 countries were involved in at least one.</p></div></div>
             <div className="scroll-content">
               <div>
-                <p>Meanwhile, 118 nations are not involved in any. Most of them are developing countries.</p>
+                <p>
+                  By 2024,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>only the G7 countries</span>
+                  {' '}
+                  were active in all seven major governance initiatives.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>75 countries</span>
+                  {' '}
+                  were involved in at least one.
+                </p>
+              </div>
+            </div>
+            <div className="scroll-content">
+              <div>
+                <p>
+                  Meanwhile,
+                  {' '}
+                  <span style={{ color: '#ffc800' }}>118 nations</span>
+                  {' '}
+                  are not involved in any. Most are developing countries.
+                </p>
               </div>
             </div>
           </div>
@@ -1166,14 +1333,13 @@ function App() {
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
             <div className="text_content">
-              <h3>AI is a borderless technology.</h3>
-              <p>While governments can regulate AI at the national level, global collaboration is essential to ensure it serves the public good.</p>
+              <h3>AI is a borderless technology. While governments can regulate AI at the national level, global collaboration is essential to ensure it serves the public good.</h3>
               <p>Today, multinational tech giants dominate AI development – driven more by profit than public interest. Without oversight, there’s little incentive to align AI with global development goals.</p>
               <p>Governments and international institutions must act to ensure AI serves people and the planet.</p>
-              <p>But collaboration must be inclusive. People in developing countries will be affected by AI but have little or no say in shaping its future.</p>
+              <p>But collaboration must be inclusive. Yet global AI governance remains fragmented and led by a handful of wealthy nations. People in developing countries will be affected by AI but have little or no say in shaping its future. The lack of representation is alarming.</p>
               <p><strong>The United Nations is leading efforts to close this gap.</strong></p>
               <p>In 2025, UN Member States adopted the Pact for the Future and the Global Digital Compact, setting a series of commitments to enhance international AI governance for the benefit of humanity.</p>
-              <p>UN Trade and Development advocates for multi-stakeholder cooperation to steer AI towards shared goals and values.</p>
+              <p>UNCTAD advocates for multi-stakeholder cooperation to steer AI towards shared goals and values.</p>
               <h3>Key priorities for global collaboration</h3>
               <ul>
                 <li>
@@ -1208,7 +1374,7 @@ function App() {
                 </li>
               </ul>
               <h3>AI’s future must be shaped by all – not just a few.</h3>
-              <p>Stronger global cooperation in AI can drive inclusive progress – rather than deepen inequalities.</p>
+              <h3>Stronger global cooperation in AI can drive inclusive progress – rather than deepen inequalities.</h3>
             </div>
           </div>
         </div>
