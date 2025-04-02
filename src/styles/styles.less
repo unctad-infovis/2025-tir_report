@@ -114,6 +114,7 @@
             border-radius: 0;
             border: 0;
             cursor: pointer;
+            font-family: Inter, Helvetica, Arial, sans-serif;
             height: auto;
             margin: 0;
             outline: none;
@@ -223,6 +224,7 @@
                 }
                 .chapter_download_button {
                   color: #fff;
+                  font-family: Inter, Helvetica, Arial, sans-serif;
                   margin-top: -4px;
                   @media all and (max-width: 970px) {
                     display: none;
@@ -257,6 +259,31 @@
             }
           }
         }
+      }
+    }
+  }
+  >.chapters_container >.backtotop_container {
+    background-color: transparent;
+    height: 50px;
+    margin-left: calc(100vw - 55px);
+    position: sticky;
+    top: calc(100vh - 55px);
+    width: 50px;
+    z-index: 10;
+    button {
+      background-color: rgba(0, 73, 135, 1.0);
+      border-radius: 50px;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      font-family: Inter;
+      font-size: 12px;
+      font-weight: 600;
+      height: 50px;
+      position: relative;
+      width: 50px;
+      &:hover {
+        border: 1px solid #000;
       }
     }
   }
@@ -660,11 +687,12 @@
               border: 2px solid #000;
             }
           }
-           .skip_button {
+          .skip_button {
             background-color: #009edb;
             border: 0;
             border: 2px solid transparent;
             color: #fff;
+            font-family: Inter, Helvetica, Arial, sans-serif;
             font-weight: 900;
             cursor: pointer;
             margin-top: 20px;
