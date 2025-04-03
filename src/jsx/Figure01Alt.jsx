@@ -31,7 +31,11 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const getRadius = (value) => Math.sqrt((value * 1000) / Math.PI);
+  const getRadius = (value) => {
+    const maxHeight = Math.min(window.innerHeight, 900);
+
+    return Math.sqrt((value * maxHeight) / Math.PI);
+  };
 
   const chart = useCallback((nodes) => {
     const { width, height } = dimensions;
@@ -48,7 +52,7 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
 
     const padding = 10; // Padding between circles
 
-    let accumulatedHeight = verticalOffset; // Start at the vertical offset to center the circles
+    let accumulatedHeight = verticalOffset - 15; // Start at the vertical offset to center the circles
     nodes.sort((a, b) => b.percentage - a.percentage); // Sorting by percentage in descending order
     nodes.forEach((d) => {
       const radius = getRadius(d.percentage);
@@ -179,7 +183,7 @@ const FigureIntro = forwardRef(({ chart_data }, ref) => {
       .transition()
       .duration(1000)
       .attr('x', width / 2 - 300) // Center horizontally in the middle of the page
-      .attr('y', height / 2 + 150) // Center vertically
+      .attr('y', height / 2 + 50) // Center vertically
       .tween('text', (d, i, amount_nodes) => {
         let interpolate;
         if (d3.select('.amount').empty()) {

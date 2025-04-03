@@ -136,7 +136,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         endOnTick: false,
         gridLineColor: '#555',
         gridLineDashStyle: 'shortdot',
-        gridLineWidth: 1,
+        gridLineWidth: 0,
         labels: {
           distance: 10,
           padding: 0,
@@ -174,7 +174,7 @@ const ScatterPlotChart = forwardRef((props, ref) => {
         endOnTick: false,
         gridLineColor: '#555',
         gridLineDashStyle: 'shortdot',
-        gridLineWidth: 1,
+        gridLineWidth: 0,
         labels: {
           distance: 10,
           padding: 0,

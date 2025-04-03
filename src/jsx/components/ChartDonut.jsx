@@ -122,14 +122,14 @@ const DonutChart = forwardRef((props, ref) => {
               let customLabel = chart_el.options.chart.custom.label;
 
               if (!customLabel) {
-                chart_el.options.chart.custom.label = chart_el.renderer.label(
-                  '<span style="font-size: 22px;">Global frontier</span><br /><span style="font-size: 22px;">tech market</span><br /><span style="font-size: 22px;">in 20</span><span style="fill: #ffc800; font-size: 22px;">2</span><span style="font-size: 22px;">3</span><br/><strong>$2.5tn</strong>'
-                ).css({
+                const label = '<tspan style="font-size: 18px;">Global frontier</tspan><tspan dy="21" x="3">​</tspan><tspan style="font-size: 18px;">tech market in</tspan><tspan dy="21" x="3">​</tspan><tspan style="font-size: 18px;">20</tspan><tspan style="fill: #ffc800; font-size: 18px;">2</tspan><tspan style="font-size: 18px;">3</tspan><tspan dy="46" x="3">​</tspan><strong>$2.5tn</strong>';
+                chart_el.options.chart.custom.label = chart_el.renderer.label(label).css({
                   color: '#fff',
                   display: 'none',
                   fontWeight: 600,
                   textAnchor: 'middle'
                 }).add();
+                chart_el.options.chart.custom.label.text.element.innerHTML = label;
                 customLabel = chart_el.options.chart.custom.label;
               }
               const x = series.center[0] + chart_el.plotLeft;

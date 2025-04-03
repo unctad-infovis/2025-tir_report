@@ -47,12 +47,12 @@ function App() {
   const [figureIntroData, setFigureIntroData] = useState(19);
   const [figureIntroHighlight, setFigureIntroHighlight] = useState(false);
   const [positionFigureIntro, setPositionFigureIntro] = useState('');
-  const aboveSwitchPointFigureIntro = useRef({ isAbove1: null, isAbove2: null, isAbove3: null });
+  const aboveSwitchPointFigureIntro = useRef({ isAbove1: true, isAbove2: true, isAbove3: true });
   const fixedSectionRefFigureIntro = useRef(null);
   const chartFigureIntro = useRef(null);
 
   const handleScrollFigureIntro = useCallback(() => {
-    if (!fixedSectionRefFigureIntro.current || !chartFigureIntro.current) return;
+    if (!fixedSectionRefFigureIntro.current) return;
 
     // 4 screens.
     fixedSectionRefFigureIntro.current.style.height = `${4 * 130 + 80}vh`;
@@ -65,7 +65,9 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigureIntro(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigureIntro((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigureIntro.current) return;
 
     // Define switch points
     const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8, innerHeight * 2.9 + innerHeight * 0.8];
@@ -75,7 +77,6 @@ function App() {
       isAbove2: relativeScroll < switchPoints[1],
       isAbove3: relativeScroll < switchPoints[2],
     };
-
     if (newState.isAbove1) {
       fixedSectionRefFigureIntro.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     } else {
@@ -101,7 +102,7 @@ function App() {
   * FIGURE 1 *
   ***************** */
   const fixedSectionRefFigure01 = useRef(null);
-  const [positionFigure01, setPositionFigure01] = useState('');
+  const [positionFigure01, setPositionFigure01] = useState('absolute_bottom');
 
   /** **************
   * FIGURE DONUT 1 *
@@ -125,31 +126,30 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure01((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure01Donut.current) return;
 
     // Define switch points
     const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
-    const isAbove1 = relativeScroll < switchPoints[0];
-    const isAbove2 = relativeScroll < switchPoints[1];
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure01Donut.current)) return;
+    aboveSwitchPointFigure01Donut.current = newState;
 
-    const prevState = aboveSwitchPointFigure01Donut.current;
-    if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
-
-    if (isAbove1) {
+    if (newState.isAbove1) {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
-    if (chartFigure01Donut.current) {
-      aboveSwitchPointFigure01Donut.current = { isAbove1, isAbove2 };
-    }
-    const newData = isAbove2 ? figure01DonutData2023 : figure01DonutData2033;
+    const newData = newState.isAbove2 ? figure01DonutData2023 : figure01DonutData2033;
     // eslint-disable-next-line no-irregular-whitespace
-    const newLabel = `<tspan style="font-size: 22px">Global frontier</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan>${isAbove2 ? '<tspan style="font-size: 22px">tech market</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan><tspan style="font-size: 22px">in 20</tspan><tspan style="fill: #ffc800; font-size: 22px;">2</tspan><tspan style="font-size: 22px">3</tspan>' : '<tspan style="font-size: 22px">tech market</tspan><tspan class="highcharts-br" dy="25" x="3">​</tspan><tspan style="font-size: 22px">in 20</tspan><tspan style="fill: #ffc800; font-size: 22px;">3</tspan><tspan style="font-size: 22px">3</tspan>'}<tspan class="highcharts-br" dy="44" x="3">​</tspan><tspan style="font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
+    const newLabel = `<tspan style="font-size: 18px">Global frontier</tspan><tspan dy="21" x="3">​</tspan><tspan style="font-size: 18px">tech market in</tspan>${newState.isAbove2 ? '<tspan dy="21" x="3">​</tspan><tspan style="font-size: 18px">20</tspan><tspan style="fill: #ffc800; font-size: 18px;">2</tspan><tspan style="font-size: 18px">3</tspan>' : '<tspan dy="21" x="3">​</tspan><tspan style="font-size: 18px">20</tspan><tspan style="fill: #ffc800; font-size: 18px;">3</tspan><tspan style="font-size: 18px">3</tspan>'}<tspan dy="46" x="3">​</tspan><tspan style="font-weight: bold;">${newState.isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
 
-    if (!chartFigure01Donut.current) return;
     try {
       chartFigure01Donut.current.series[0].setData(newData, false);
       chartFigure01Donut.current.options.chart.custom.label.text.element.innerHTML = newLabel;
@@ -186,31 +186,30 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure01((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure01Bar.current) return;
 
     // Define switch points
     const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
-    const isAbove1 = relativeScroll < switchPoints[0];
-    const isAbove2 = relativeScroll < switchPoints[1];
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure01Bar.current)) return;
+    aboveSwitchPointFigure01Bar.current = newState;
 
-    const prevState = aboveSwitchPointFigure01Bar.current;
-    if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
-
-    if (isAbove1) {
+    if (newState.isAbove1) {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
-    if (chartFigure01Bar.current) {
-      aboveSwitchPointFigure01Bar.current = { isAbove1, isAbove2 };
-    }
-    const newData = isAbove2 ? figure01BarData2023 : figure01BarData2033;
+    const newData = newState.isAbove2 ? figure01BarData2023 : figure01BarData2033;
     // eslint-disable-next-line no-irregular-whitespace
-    const newLabel = `<tspan>Global frontier</tspan><tspan class="highcharts-br" dy="1.2em" x="3">​</tspan>${isAbove2 ? '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">2</tspan><tspan>3</tspan>' : '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">3</tspan><tspan>3</tspan>'}<tspan class="highcharts-br" dy="1.6em" x="3">​</tspan><tspan style="font-size: 40px; font-weight: bold;">${isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
+    const newLabel = `<tspan>Global frontier</tspan><tspan dy="1.2em" x="3">​</tspan>${newState.isAbove2 ? '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">2</tspan><tspan>3</tspan>' : '<tspan>tech market in 20</tspan><tspan style="fill: #ffc800;">3</tspan><tspan>3</tspan>'}<tspan dy="1.6em" x="3">​</tspan><tspan style="font-size: 40px; font-weight: bold;">${newState.isAbove2 ? '$2.5tn' : '$16.4tn'}</tspan>`;
 
-    if (!chartFigure01Bar.current) return;
     try {
       chartFigure01Bar.current.series[0].setData(newData.sort((a, b) => b.y - a.y), false);
       chartFigure01Bar.current.xAxis[0].update({
@@ -231,7 +230,7 @@ function App() {
   /** *********
   * FIGURE 1 ALT *
   *********** */
-  const figure01_data = useMemo(() => ({
+  const figure01Data = useMemo(() => ({
     2023: [{
       fill: 'rgba(0, 158, 219, 0.3)', id: 1, name: 'Internet of things', percentage: 36, value: 925
     },
@@ -264,12 +263,12 @@ function App() {
     }]
   }), []);
 
-  const [figure01AltData, setFigure01AltData] = useState(figure01_data[2023]);
-  const aboveSwitchPointFigure01Alt = useRef(({ isAbove1: null, isAbove2: null }));
+  const [figure01AltData, setFigure01AltData] = useState(figure01Data[2023]);
+  const aboveSwitchPointFigure01Alt = useRef(({ isAbove1: true, isAbove2: true }));
   const chartFigure01Alt = useRef(null);
 
   const handleScrollFigure01Alt = useCallback(() => {
-    if (!fixedSectionRefFigure01.current || !chartFigure01Alt.current) return;
+    if (!fixedSectionRefFigure01.current) return;
 
     // 3 screens.
     fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
@@ -282,26 +281,28 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure01((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure01Alt.current) return;
 
     // Define switch points
     const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
-    const isAbove1 = relativeScroll < switchPoints[0];
-    const isAbove2 = relativeScroll < switchPoints[1];
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure01Alt.current)) return;
+    aboveSwitchPointFigure01Alt.current = newState;
 
-    const prevState = aboveSwitchPointFigure01Alt.current;
-    if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
-
-    if (isAbove1) {
+    if (newState.isAbove1) {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
       fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
-    aboveSwitchPointFigure01Alt.current = { isAbove1, isAbove2 };
-    setFigure01AltData(isAbove2 ? figure01_data[2023] : figure01_data[2033]);
-  }, [figure01_data]);
+    setFigure01AltData(newState.isAbove2 ? figure01Data[2023] : figure01Data[2033]);
+  }, [figure01Data]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScrollFigure01Alt);
@@ -311,9 +312,8 @@ function App() {
   /** *********
   * FIGURE 2 *
   *********** */
-  const [figure02Data, setFigure02Data] = useState([]);
   const [positionFigure02, setPositionFigure02] = useState('absolute_bottom');
-  const aboveSwitchPointFigure02 = useRef({ isAbove1: null, isAbove2: null });
+  const aboveSwitchPointFigure02 = useRef({ isAbove1: true, isAbove2: true });
   const fixedSectionRefFigure02 = useRef(null);
   const chartFigure02 = useRef(null);
 
@@ -331,47 +331,30 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigure02(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure02((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure02.current) return;
 
     // Define switch points
-    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
-    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
-    if (!fixedSectionRefFigure02.current || !chartFigure02.current) return;
-    // Define states for switch points
-    const isAbove1 = relativeScroll < switchPoint1;
-    const isAbove2 = relativeScroll < switchPoint2;
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure02.current)) return;
+    aboveSwitchPointFigure02.current = newState;
 
-    // Store previous state to avoid unnecessary updates
-    const prevState = aboveSwitchPointFigure02.current;
-    const newState = { isAbove1, isAbove2 };
-
-    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
-
-    if (chartFigure02.current) {
-      aboveSwitchPointFigure02.current = newState;
-    }
-
-    if (isAbove1) {
+    if (newState.isAbove1) {
       fixedSectionRefFigure02.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
       fixedSectionRefFigure02.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
-    if (!figure02Data) return;
-
-    let newColors = ['#009edb', '#009edb', '#009edb'];
-
-    if (!isAbove1) {
-      chartFigure02.current.update({
-        plotOptions: { bar: { animation: { duration: 0 } } }
-      });
-      newColors = isAbove2 ? ['#fbaf17', '#009edb', '#009edb'] : ['#fbaf17', '#009edb', '#009edb'];
-    }
     chartFigure02.current.update({
-      plotOptions: { bar: { colors: newColors } }
+      plotOptions: { bar: { colors: newState.isAbove1 ? ['#009edb', '#009edb', '#009edb'] : newState.isAbove2 ? ['#fbaf17', '#009edb', '#009edb'] : ['#fbaf17', '#009edb', '#009edb'] } }
     });
-  }, [figure02Data]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScrollFigure02);
@@ -408,39 +391,35 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigure03(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure03((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure03.current) return;
 
     // Define switch points
-    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
-    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
-    const switchPoint3 = innerHeight * 2.9 + innerHeight * 0.8;
-    const switchPoint4 = innerHeight * 4.2 + innerHeight * 0.8;
-    const switchPoint5 = innerHeight * 5.5 + innerHeight * 0.8;
-    const switchPoint6 = innerHeight * 6.8 + innerHeight * 0.8;
-    const switchPoint7 = innerHeight * 8.1 + innerHeight * 0.8;
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8, innerHeight * 2.9 + innerHeight * 0.8, innerHeight * 4.2 + innerHeight * 0.8, innerHeight * 5.5 + innerHeight * 0.8, innerHeight * 6.8 + innerHeight * 0.8, innerHeight * 8.1 + innerHeight * 0.8];
 
     // Determine data stage
     let newData;
     let position = false;
-    if (relativeScroll < switchPoint1) {
+    if (relativeScroll < switchPoints[0]) {
       position = 1;
       newData = figure03DataStage1;
-    } else if (relativeScroll < switchPoint2) {
+    } else if (relativeScroll < switchPoints[1]) {
       position = 2;
       newData = figure03DataStage2;
-    } else if (relativeScroll < switchPoint3) {
+    } else if (relativeScroll < switchPoints[2]) {
       position = 3;
       newData = figure03DataStage3;
-    } else if (relativeScroll < switchPoint4) {
+    } else if (relativeScroll < switchPoints[3]) {
       position = 4;
       newData = figure03DataStage4;
-    } else if (relativeScroll < switchPoint5) {
+    } else if (relativeScroll < switchPoints[4]) {
       position = 5;
       newData = figure03DataStage5;
-    } else if (relativeScroll < switchPoint6) {
+    } else if (relativeScroll < switchPoints[5]) {
       position = 6;
       newData = figure03DataStage6;
-    } else if (relativeScroll < switchPoint7) {
+    } else if (relativeScroll < switchPoints[6]) {
       position = 7;
       newData = figure03DataStage7;
     } else {
@@ -450,12 +429,9 @@ function App() {
 
     if (aboveSwitchPointFigure03.current === newData) return;
 
-    if (chartFigure03.current) {
-      aboveSwitchPointFigure03.current = newData;
-    }
+    aboveSwitchPointFigure03.current = newData;
 
     // Update chart data
-    if (!chartFigure03.current) return;
     const newDataCopy = structuredClone(newData);
     chartFigure03.current.series.forEach((series, index) => {
       series.setData(newDataCopy[index].data, false);
@@ -475,61 +451,52 @@ function App() {
         dashStyle: 'dash',
         value: 18.5,
         width: (position > 1 && position < 8) ? 1.5 : 0,
-      }]
+      }],
     }, false);
 
     if (position > 5) {
       chartFigure03.current.series[3].setVisible(true, false);
       chartFigure03.current.xAxis[0].update({
+        gridLineWidth: 1,
         max: 5.2,
         min: 2.95,
         tickInterval: 0.5,
         title: {
-          enabled: true,
           text: 'Gross domestic product per capita‚ PPP'
         }
-      });
+      }, false);
       chartFigure03.current.yAxis[0].update({
+        gridLineWidth: 1,
         max: 1.05,
         min: 0,
         tickInterval: 0.2,
         title: {
-          enabled: true,
           text: 'Frontier Technologies Readiness Index'
         }
-      });
+      }, false);
     } else {
       chartFigure03.current.series[3].setVisible(false, false);
       chartFigure03.current.xAxis[0].update({
+        gridLineWidth: 0,
         max: 10,
         min: 0,
         tickInterval: 2,
         title: {
-          enabled: true,
           text: 'Share of developers compared to working age population'
         }
-      });
+      }, false);
       chartFigure03.current.yAxis[0].update({
+        gridLineWidth: 0,
         max: 60,
         min: 0,
         tickInterval: 20,
         title: {
-          enabled: true,
           text: 'Share of working age population with advanced degree'
         }
-      });
+      }, false);
     }
-
     chartFigure03.current.redraw();
-  }, [
-    figure03DataStage1,
-    figure03DataStage2,
-    figure03DataStage3,
-    figure03DataStage4,
-    figure03DataStage5,
-    figure03DataStage6,
-    figure03DataStage7,
-    figure03DataStage8
+  }, [figure03DataStage1, figure03DataStage2, figure03DataStage3, figure03DataStage4, figure03DataStage5, figure03DataStage6, figure03DataStage7, figure03DataStage8
   ]);
 
   useEffect(() => {
@@ -540,7 +507,6 @@ function App() {
   /** *********
   * FIGURE 4 *
   *********** */
-
   const [figure04DataFirst, setFigure04DataFirst] = useState([]);
   const [figure04DataSecond, setFigure04DataSecond] = useState([]);
   const [positionFigure04, setPositionFigure04] = useState('');
@@ -549,7 +515,7 @@ function App() {
   const chartFigure04 = useRef(null);
 
   const handleScrollFigure04 = useCallback(() => {
-    if (!fixedSectionRefFigure04.current || !chartFigure04.current) return;
+    if (!fixedSectionRefFigure04.current) return;
 
     // 3 screens.
     fixedSectionRefFigure04.current.style.height = `${3 * 130 + 80}vh`;
@@ -562,22 +528,22 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigure04(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigure04((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
+
+    if (!chartFigure04.current) return;
 
     // Define switch points
-    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
-    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
     // Define states for switch points
-    const isAbove1 = relativeScroll < switchPoint1;
-    const isAbove2 = relativeScroll < switchPoint2;
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure04.current)) return;
+    aboveSwitchPointFigure04.current = newState;
 
-    // Store previous state to avoid unnecessary updates
-    const prevState = aboveSwitchPointFigure04.current;
-    const newState = { isAbove1, isAbove2 };
-
-    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
-    if (!isAbove2) {
+    if (!newState.isAbove2) {
       chartFigure04.current.series[0].update({ lineWidth: 6 }, false);
       chartFigure04.current.series[2].update({ lineWidth: 10 }, false);
       chartFigure04.current.series[0].update({ opacity: 0.1 }, false);
@@ -586,8 +552,7 @@ function App() {
       chartFigure04.current.series[0].setData(figure04DataSecond[0].data, false);
       chartFigure04.current.series[1].setData(figure04DataSecond[1].data, false);
       chartFigure04.current.series[2].setData(figure04DataSecond[2].data, false);
-      chartFigure04.current.redraw();
-    } else if (!isAbove1) {
+    } else if (!newState.isAbove1) {
       chartFigure04.current.series[0].update({ lineWidth: 10 }, false);
       chartFigure04.current.series[2].update({ lineWidth: 6 }, false);
       chartFigure04.current.series[0].update({ opacity: 1 }, false);
@@ -596,7 +561,6 @@ function App() {
       chartFigure04.current.series[0].setData(figure04DataSecond[0].data, false);
       chartFigure04.current.series[1].setData(figure04DataSecond[1].data, false);
       chartFigure04.current.series[2].setData(figure04DataSecond[2].data, false);
-      chartFigure04.current.redraw();
     } else {
       chartFigure04.current.series[0].update({ lineWidth: 6 }, false);
       chartFigure04.current.series[2].update({ lineWidth: 6 }, false);
@@ -606,17 +570,8 @@ function App() {
       chartFigure04.current.series[0].setData(figure04DataFirst[0].data, false);
       chartFigure04.current.series[1].setData(figure04DataFirst[1].data, false);
       chartFigure04.current.series[2].setData(figure04DataFirst[2].data, false);
-      chartFigure04.current.redraw();
     }
-
-    aboveSwitchPointFigure04.current = newState;
-
-    if (!isAbove1) {
-      chartFigure04.current.update({
-      });
-    }
-    chartFigure04.current.update({
-    });
+    chartFigure04.current.redraw();
   }, [figure04DataFirst, figure04DataSecond]);
 
   useEffect(() => {
@@ -631,13 +586,13 @@ function App() {
   const [figure05DataFirst, setFigure05DataFirst] = useState([]);
   const [figure05DataSecond, setFigure05DataSecond] = useState([]);
   const [figure05DataThird, setFigure05DataThird] = useState([]);
-  const [positionFigure05, setPositionFigure05] = useState('');
-  const aboveSwitchPointFigure05 = useRef({ isAbove1: null, isAbove2: null });
+  const [positionFigure05, setPositionFigure05] = useState('absolute_bottom');
+  const aboveSwitchPointFigure05 = useRef({ isAbove1: true, isAbove2: true });
   const fixedSectionRefFigure05 = useRef(null);
   const chartFigure05 = useRef(null);
 
   const handleScrollFigure05 = useCallback(() => {
-    if (!fixedSectionRefFigure05.current || !chartFigure05.current) return;
+    if (!fixedSectionRefFigure05.current) return;
 
     // 3 screens.
     fixedSectionRefFigure05.current.style.height = `${3 * 130 + 80}vh`;
@@ -650,32 +605,25 @@ function App() {
     const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigure05(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
-
-    // Define switch points
-    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
-    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
-
-    // Define states for switch points
-    const isAbove1 = relativeScroll < switchPoint1;
-    const isAbove2 = relativeScroll < switchPoint2;
-
-    // Store previous state to avoid unnecessary updates
-    const prevState = aboveSwitchPointFigure05.current;
-    const newState = { isAbove1, isAbove2 };
-
-    if (prevState?.isAbove1 === isAbove1 && prevState?.isAbove2 === isAbove2) return;
-
-    if (chartFigure05.current) {
-      aboveSwitchPointFigure05.current = newState;
-    }
-
-    const newData = isAbove1 ? figure05DataFirst : (isAbove2) ? figure05DataSecond : figure05DataThird;
+    setPositionFigure05((scrollY < top) ? 'absolute_top' : (scrollY < fixedBottom) ? 'fixed' : 'absolute_bottom');
 
     if (!chartFigure05.current) return;
+
+    // Define switch points
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
+
+    // Define states for switch points
+    const newState = {
+      isAbove1: relativeScroll < switchPoints[0],
+      isAbove2: relativeScroll < switchPoints[1]
+    };
+    if (JSON.stringify(newState) === JSON.stringify(aboveSwitchPointFigure05.current)) return;
+    aboveSwitchPointFigure05.current = newState;
+
+    const newData = newState.isAbove1 ? figure05DataFirst : (newState.isAbove2) ? figure05DataSecond : figure05DataThird;
+
     const newDataCopy = structuredClone(newData);
     chartFigure05.current.series[0].setData(newDataCopy, false);
-
     chartFigure05.current.redraw();
   }, [figure05DataFirst, figure05DataSecond, figure05DataThird]);
 
@@ -686,20 +634,37 @@ function App() {
 
   const scrollTo = useCallback((target, name) => {
     track('Button', name);
-    setTimeout(() => {
-      scrollIntoView(appRef.current.querySelector(target), {
-        align: {
-          left: 0,
-          leftOffset: 0,
-          lockX: false,
-          lockY: false,
-          top: 0,
-          topOffset: 30
-        },
-        cancellable: false,
-        time: 1000
-      });
-    }, 50);
+    if (target.includes('anchor_')) {
+      setTimeout(() => {
+        scrollIntoView(document.querySelector(target), {
+          align: {
+            left: 0,
+            leftOffset: 0,
+            lockX: false,
+            lockY: false,
+            top: 0,
+            topOffset: 30
+          },
+          cancellable: false,
+          time: 1000
+        });
+      }, 50);
+    } else {
+      setTimeout(() => {
+        scrollIntoView(appRef.current.querySelector(target), {
+          align: {
+            left: 0,
+            leftOffset: 0,
+            lockX: false,
+            lockY: false,
+            top: 0,
+            topOffset: 30
+          },
+          cancellable: false,
+          time: 1000
+        });
+      }, 50);
+    }
   }, [track]);
 
   useEffect(() => {
@@ -707,7 +672,7 @@ function App() {
     if (hash) {
       if (hash === '#chapter1' || hash === '#chapter2' || hash === '#chapter3' || hash === '#chapter4' || hash === '#chapter5') {
         const chapter_number = hash.slice(-1);
-        scrollTo(`.chapter_header_${chapter_number}`, `To chapter ${chapter_number}`);
+        scrollTo(`.chapter_header_${chapter_number}`, `Scroll to chapter ${chapter_number}`);
       }
     }
   }, [scrollTo]);
@@ -792,14 +757,14 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
             <a href="/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
-            <button type="button" className="video" onClick={() => scrollTo('.anchor_videos')}>Media</button>
-            <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts')}>Podcast</button>
-            <button type="button" className="press" onClick={() => scrollTo('.anchor_press')}>Press</button>
+            <button type="button" className="video" onClick={() => scrollTo('.anchor_videos', 'Scroll to videos')}>Video</button>
+            <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts', 'Scroll to podcasts')}>Podcast</button>
+            <button type="button" className="press" onClick={() => scrollTo('.anchor_press', 'Scroll to press')}>Press</button>
           </div>
           <div className="chapters_navigation_container">
             {
               ['AI at the technology frontier', 'Leveraging AI for productivity and workers’ empowerment', 'Preparing to seize AI opportunities', 'Designing national policies for AI', 'Global collaboration for inclusive and equitable AI'].map((chapter_title, i) => (
-                <button onClick={() => scrollTo(`.chapter_header_${i + 1}`, `To chapter ${i + 1}`)} type="button" key={chapter_title}>
+                <button onClick={() => scrollTo(`.chapter_header_${i + 1}`, `Scroll to chapter ${i + 1}`)} type="button" key={chapter_title}>
                   <div className="chapter_navigation">
                     <div className="chapter_title"><h2>{chapter_title}</h2></div>
                     <div className="chapter_image"><div className={`chapter_image_${i + 1}`} /></div>
@@ -851,7 +816,7 @@ function App() {
           </div>
         </div>
         <div className="backtotop_container">
-          <button type="button" onClick={() => scrollTo('.header_container')}>Back to top</button>
+          <button type="button" onClick={() => scrollTo('.header_container', 'Scroll to top')}>Back to top</button>
         </div>
         <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
         <div ref={fixedSectionRefFigureIntro} className="fixed-section">
@@ -895,14 +860,14 @@ function App() {
                     { value: 120, label: '$1.2', unit: 'trillion' },
                     { value: 250, label: '$2.4', unit: 'trillion' },
                     { value: 477, label: '$4.8', unit: 'trillion' }].map((button, index) => (
-                      <button key={button.label} type="button" className={`${selectedButton === index ? 'selected' : ''} guess_button`} value={button.value} onClick={() => handleClick(button.value, index)}>
+                      <button key={button.label} type="button" className={`${(selectedButton === index) ? 'selected' : ''} guess_button`} value={button.value} onClick={() => handleClick(button.value, index)}>
                         <div className="number">{button.label}</div>
                         <div>{button.unit}</div>
                       </button>
                   ))}
                 </div>
                 <div>
-                  <button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip')}>Skip</button>
+                  <button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip', 'Scroll to skip')}>Skip</button>
                   {' '}
                   <button type="button" className="skip_button" onClick={() => handleClick(19, -1)}>Reset</button>
                 </div>
@@ -935,7 +900,7 @@ function App() {
             <div className="scroll-indicator"><div className="arrow" /></div>
             <div className="chart_container_full">
               {
-                window.innerWidth > 800 ? <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} /> : window.innerWidth > 600 ? <Figure01Donut ref={chartFigure01Donut} setData2023={setFigure01DonutData2023} setData2033={setFigure01DonutData2033} /> : <Figure01Bar ref={chartFigure01Bar} setData2023={setFigure01BarData2023} setData2033={setFigure01BarData2033} />
+                (window.innerWidth > 800 && window.innerHeight > 700) ? <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} /> : (window.innerWidth > 600) ? <Figure01Donut ref={chartFigure01Donut} setData2023={setFigure01DonutData2023} setData2033={setFigure01DonutData2033} /> : <Figure01Bar ref={chartFigure01Bar} setData2023={setFigure01BarData2023} setData2033={setFigure01BarData2033} />
               }
             </div>
           </div>
@@ -986,7 +951,7 @@ function App() {
             <div className="overlay" />
             <div className="scroll-indicator"><div className="arrow" /></div>
             <div className="chart_container_full">
-              <Figure02 ref={chartFigure02} setData={setFigure02Data} />
+              <Figure02 ref={chartFigure02} />
             </div>
           </div>
           <div className="scroll-elements">
@@ -1147,7 +1112,7 @@ function App() {
             <div className="scroll-content">
               <div>
                 <p>
-                  <span style={{ color: '#ffc800' }}>High-income countries</span>
+                  <span style={{ color: '#ffc800' }}>Developed countries</span>
                   {' '}
                   are generally more prepared.
                 </p>

@@ -504,16 +504,16 @@
     }
     .scrolling-text {
       height: 100vh;
+      max-width: 700px;
       position: fixed;
-      top: 40vh;
+      top: 35vh;
       width: 100%;
       p {
         box-sizing: border-box;
         font-size: 60px;
         font-weight: 900;
         line-height: 66px;
-        max-width: 700px;
-        padding: 0 20px;
+        padding: 0 40px;
         @media all and (max-width: 576px) {
           font-size: 40px;
           line-height: 46px;
@@ -599,6 +599,7 @@
           width: 100%;
           .svg_container {
             svg {
+              height: 100vh;
               width: 100%;
               text {
                 color: #fff;
@@ -708,7 +709,7 @@
             border: 2px solid transparent;
             color: #fff;
             font-family: Inter, Helvetica, Arial, sans-serif;
-            font-weight: 900;
+            font-weight: 500;
             cursor: pointer;
             margin-top: 20px;
             &:hover {
@@ -882,8 +883,8 @@
               line-height: 22px;
               margin: 0 0 10px 0;
               ul {
-                margin: 0 0 20px 5px;
                 list-style-type: disc;
+                margin: 0 0 20px 5px;
                 padding: 0 0 0 20px;
                 li {
                   font-size: 15px;

@@ -2,8 +2,6 @@ import React, {
   forwardRef, useState, useCallback, useEffect
 } from 'react';
 
-import PropTypes from 'prop-types';
-
 import { transpose } from 'csv-transpose';
 
 // Load helpers.
@@ -14,7 +12,6 @@ const Figure01 = forwardRef((props, ref) => {
   // Data states.
   const [dataFigure, setDataFigure] = useState(false);
 
-  const { setData } = props;
   const cleanData = useCallback((data) => data.map(el => {
     const labels = Object.keys(el).filter(val => val !== 'Name');
     const values = Object.values(el).map(val => parseFloat(val)).filter(val => !Number.isNaN(val));
@@ -26,11 +23,6 @@ const Figure01 = forwardRef((props, ref) => {
     };
     return output.data;
   }), []);
-
-  useEffect(() => {
-    if (!dataFigure) return;
-    setData(dataFigure[0]);
-  }, [dataFigure, setData]);
 
   useEffect(() => {
     const data_file = `${(window.location.href.includes('unctad.org')) ? 'https://storage.unctad.org/2025-tir_report/' : './'}assets/data/2025-tir_report_figure02_data.csv`;
@@ -53,7 +45,7 @@ const Figure01 = forwardRef((props, ref) => {
       <ChartBar
         data_label_align="right"
         animation_duration={500}
-        chart_height={Math.min(window.innerHeight, 700)}
+        chart_height={Math.min(window.innerHeight - 100, 700)}
         data={dataFigure}
         idx="02"
         ref={ref}
@@ -63,9 +55,5 @@ const Figure01 = forwardRef((props, ref) => {
     </div>
   );
 });
-
-Figure01.propTypes = {
-  setData: PropTypes.func.isRequired, // Ensure it's a function and required
-};
 
 export default Figure01;

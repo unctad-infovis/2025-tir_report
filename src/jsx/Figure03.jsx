@@ -26,7 +26,7 @@ const Figure03 = forwardRef((props, ref) => {
         data: [], name: 'Least developed countries', color: '#72bf44', dataLabels: { enabled: false }
       },
       {
-        color: '#fff',
+        color: '#ddd',
         data: [[3, -0.0185], [6, 1.2703]],
         enableMouseTracking: false,
         marker: {
@@ -237,7 +237,7 @@ const Figure03 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
         <ChartScatterPlot
-          chart_height={Math.min(window.innerHeight, 700)}
+          chart_height={Math.min(window.innerHeight - 100, 700)}
           data={dataFigure}
           idx="03"
           note=""

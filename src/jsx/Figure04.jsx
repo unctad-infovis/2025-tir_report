@@ -12,8 +12,8 @@ import ChartLine from './components/ChartLine.jsx';
 
 const colors = {
   'Developed countries': '#009edb',
-  'Developing countries excluding LDCs': '#FBAF17',
-  'Least developed countries (LDCs)': '#B06E2A'
+  'Developing countries excluding LDCs': '#B06E2A',
+  'Least developed countries (LDCs)': '#FBAF17'
 };
 
 const Figure04 = forwardRef((props, ref) => {
@@ -71,7 +71,7 @@ const Figure04 = forwardRef((props, ref) => {
     <div className="app">
       {dataFigure && (
       <ChartLine
-        chart_height={Math.min(window.innerHeight, 700)}
+        chart_height={Math.min(window.innerHeight - 100, 700)}
         data={dataFigure}
         idx="04"
         note=""

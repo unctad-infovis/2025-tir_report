@@ -67,7 +67,7 @@ const Figure01 = forwardRef((props, ref) => {
       <ChartBar
         data_label_align="left"
         animation_duration={500}
-        chart_height={Math.min(window.innerHeight, 700)}
+        chart_height={Math.min(window.innerHeight - 100, 700)}
         data={dataFigure}
         idx="01"
         prefix=""
