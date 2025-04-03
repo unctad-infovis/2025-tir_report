@@ -267,11 +267,11 @@
   }
   >.chapters_container >.backtotop_container {
     background-color: transparent;
-    height: 50px;
+    height: 0;
     margin-left: calc(100vw - 55px);
     position: sticky;
     top: calc(100vh - 55px);
-    width: 50px;
+    width: 0;
     z-index: 10;
     button {
       background-color: rgba(0, 73, 135, 1.0);
@@ -280,7 +280,7 @@
       color: #fff;
       cursor: pointer;
       font-family: Inter, Helvetica, Arial, sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       height: 50px;
       position: relative;
@@ -479,13 +479,14 @@
     background-attachment: fixed;
     background-color: #fff;
     background-image: url('./../assets/img/2025tir.jpg');
-    background-position: 0 -400px;
+    background-position: -200px -600px;
     background-repeat: no-repeat;
     background-size: auto auto;
     display: flex;
     justify-content: center;
     overflow: hidden;
     position: relative;
+    top: 0;
     &.count_2 {
       height: 250vh;
     }
