@@ -54,16 +54,18 @@ function App() {
   const handleScrollFigureIntro = useCallback(() => {
     if (!fixedSectionRefFigureIntro.current || !chartFigureIntro.current) return;
 
-    const { offsetTop, offsetHeight } = fixedSectionRefFigureIntro.current;
-    const { scrollY, innerHeight } = window;
     // 4 screens.
     fixedSectionRefFigureIntro.current.style.height = `${4 * 130 + 80}vh`;
 
-    const fixedBottom = offsetTop + offsetHeight - innerHeight;
-    const relativeScroll = scrollY - offsetTop;
+    const { scrollY, innerHeight } = window;
+    let { top } = fixedSectionRefFigureIntro.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigureIntro.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigureIntro(scrollY < offsetTop ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+    setPositionFigureIntro(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
 
     // Define switch points
     const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8, innerHeight * 2.9 + innerHeight * 0.8];
@@ -95,8 +97,12 @@ function App() {
     return () => window.removeEventListener('scroll', handleScrollFigureIntro);
   }, [handleScrollFigureIntro]);
 
+  /** **************
+  * FIGURE 1 *
+  ***************** */
   const fixedSectionRefFigure01 = useRef(null);
   const [positionFigure01, setPositionFigure01] = useState('');
+
   /** **************
   * FIGURE DONUT 1 *
   ***************** */
@@ -106,23 +112,23 @@ function App() {
   const chartFigure01Donut = useRef(null);
 
   const handleScrollFigure01Donut = useCallback(() => {
-    const fixedElement = fixedSectionRefFigure01.current;
+    if (!fixedSectionRefFigure01.current) return;
 
-    if (!fixedElement) return;
-
-    fixedElement.style.height = `${3 * 130 + 80}vh`;
+    // 3 screens.
+    fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
 
     const { scrollY, innerHeight } = window;
-    const fixedTop = fixedElement.offsetTop;
-    const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
-    const relativeScroll = scrollY - fixedTop;
-    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
+    let { top } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
-    );
+    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
     const isAbove1 = relativeScroll < switchPoints[0];
     const isAbove2 = relativeScroll < switchPoints[1];
@@ -131,9 +137,9 @@ function App() {
     if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
 
     if (isAbove1) {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
     if (chartFigure01Donut.current) {
@@ -149,7 +155,7 @@ function App() {
       chartFigure01Donut.current.options.chart.custom.label.text.element.innerHTML = newLabel;
       chartFigure01Donut.current.redraw();
     } catch {
-      fixedElement.style.height = `${3 * 130 + 80}vh`;
+      fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
     }
   }, [figure01DonutData2023, figure01DonutData2033]);
 
@@ -167,23 +173,23 @@ function App() {
   const chartFigure01Bar = useRef(null);
 
   const handleScrollFigure01Bar = useCallback(() => {
-    const fixedElement = fixedSectionRefFigure01.current;
+    if (!fixedSectionRefFigure01.current) return;
 
-    if (!fixedElement) return;
-
-    fixedElement.style.height = `${3 * 130 + 80}vh`;
+    // 3 screens.
+    fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
 
     const { scrollY, innerHeight } = window;
-    const fixedTop = fixedElement.offsetTop;
-    const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
-    const relativeScroll = scrollY - fixedTop;
-    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
+    let { top } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
-    );
+    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
     const isAbove1 = relativeScroll < switchPoints[0];
     const isAbove2 = relativeScroll < switchPoints[1];
@@ -192,9 +198,9 @@ function App() {
     if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
 
     if (isAbove1) {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
     if (chartFigure01Bar.current) {
@@ -213,7 +219,7 @@ function App() {
       chartFigure01Bar.current.options.chart.custom.label.text.element.innerHTML = newLabel;
       chartFigure01Bar.current.redraw();
     } catch {
-      fixedElement.style.height = `${3 * 130 + 80}vh`;
+      fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
     }
   }, [figure01BarData2023, figure01BarData2033]);
 
@@ -263,24 +269,23 @@ function App() {
   const chartFigure01Alt = useRef(null);
 
   const handleScrollFigure01Alt = useCallback(() => {
-    const fixedElement = fixedSectionRefFigure01.current;
-    const chartElement = chartFigure01Alt.current;
+    if (!fixedSectionRefFigure01.current || !chartFigure01Alt.current) return;
 
-    if (!fixedElement || !chartElement) return;
-
-    fixedElement.style.height = `${3 * 130 + 80}vh`;
+    // 3 screens.
+    fixedSectionRefFigure01.current.style.height = `${3 * 130 + 80}vh`;
 
     const { scrollY, innerHeight } = window;
-    const fixedTop = fixedElement.offsetTop;
-    const fixedBottom = fixedTop + fixedElement.offsetHeight - innerHeight;
-    const relativeScroll = scrollY - fixedTop;
-    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
+    let { top } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure01.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
     // Determine fixed position state
-    setPositionFigure01(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom'
-    );
+    setPositionFigure01(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
+    const switchPoints = [innerHeight * 0.3 + innerHeight * 0.8, innerHeight * 1.6 + innerHeight * 0.8];
 
     const isAbove1 = relativeScroll < switchPoints[0];
     const isAbove2 = relativeScroll < switchPoints[1];
@@ -289,9 +294,9 @@ function App() {
     if (prevState.isAbove1 === isAbove1 && prevState.isAbove2 === isAbove2) return;
 
     if (isAbove1) {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
     } else {
-      fixedElement.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
+      fixedSectionRefFigure01.current.querySelector('.fixed-background .overlay').style.backgroundColor = 'rgba(0, 0, 0, 0)';
     }
 
     aboveSwitchPointFigure01Alt.current = { isAbove1, isAbove2 };
@@ -313,21 +318,24 @@ function App() {
   const chartFigure02 = useRef(null);
 
   const handleScrollFigure02 = useCallback(() => {
+    if (!fixedSectionRefFigure02.current) return;
+
+    // 3 screens.
     fixedSectionRefFigure02.current.style.height = `${3 * 130 + 80}vh`;
 
     const { scrollY, innerHeight } = window;
-    const fixedTop = fixedSectionRefFigure02.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure02.current.offsetHeight - innerHeight;
-    const relativeScroll = scrollY - fixedTop;
-    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
-    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
+    let { top } = fixedSectionRefFigure02.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure02.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
     // Determine position state
-    setPositionFigure02(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed'
-          : 'absolute_bottom'
-    );
+    setPositionFigure02(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
+    const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
+    const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
     if (!fixedSectionRefFigure02.current || !chartFigure02.current) return;
     // Define states for switch points
@@ -387,14 +395,22 @@ function App() {
   const chartFigure03 = useRef(null);
 
   const handleScrollFigure03 = useCallback(() => {
+    if (!fixedSectionRefFigure03.current) return;
+
+    // 8 screens.
     fixedSectionRefFigure03.current.style.height = `${8 * 130 + 80}vh`;
+
     const { scrollY, innerHeight } = window;
-    const fixedTop = fixedSectionRefFigure03.current.offsetTop;
-    const sectionHeight = fixedSectionRefFigure03.current.offsetHeight;
-    const fixedBottom = fixedTop + sectionHeight - innerHeight;
+    let { top } = fixedSectionRefFigure03.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure03.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
 
-    const relativeScroll = scrollY - fixedTop;
+    // Determine position state
+    setPositionFigure03(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
 
+    // Define switch points
     const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
     const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
     const switchPoint3 = innerHeight * 2.9 + innerHeight * 0.8;
@@ -402,18 +418,6 @@ function App() {
     const switchPoint5 = innerHeight * 5.5 + innerHeight * 0.8;
     const switchPoint6 = innerHeight * 6.8 + innerHeight * 0.8;
     const switchPoint7 = innerHeight * 8.1 + innerHeight * 0.8;
-
-    // Determine position state
-    let newPosition;
-    if (scrollY < fixedTop) {
-      newPosition = 'absolute_top';
-    } else if (scrollY >= fixedBottom) {
-      newPosition = 'absolute_bottom';
-    } else {
-      newPosition = 'fixed';
-    }
-
-    setPositionFigure03((prev) => (prev !== newPosition ? newPosition : prev));
 
     // Determine data stage
     let newData;
@@ -539,29 +543,31 @@ function App() {
 
   const [figure04DataFirst, setFigure04DataFirst] = useState([]);
   const [figure04DataSecond, setFigure04DataSecond] = useState([]);
-  const [positionFigure04, setPositionFigure04] = useState('absolute_bottom');
+  const [positionFigure04, setPositionFigure04] = useState('');
   const aboveSwitchPointFigure04 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure04 = useRef(null);
   const chartFigure04 = useRef(null);
 
   const handleScrollFigure04 = useCallback(() => {
-    fixedSectionRefFigure04.current.style.height = '500vh';
-    const fixedTop = fixedSectionRefFigure04.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure04.current.offsetHeight - window.innerHeight;
-    const { scrollY, innerHeight } = window;
-    const relativeScroll = scrollY - fixedTop;
+    if (!fixedSectionRefFigure04.current || !chartFigure04.current) return;
 
+    // 3 screens.
+    fixedSectionRefFigure04.current.style.height = `${3 * 130 + 80}vh`;
+
+    const { scrollY, innerHeight } = window;
+    let { top } = fixedSectionRefFigure04.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure04.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
+
+    // Determine position state
+    setPositionFigure04(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
     const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
     const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
-    // Determine position state
-    setPositionFigure04(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed'
-          : 'absolute_bottom'
-    );
-
-    if (!fixedSectionRefFigure04.current || !chartFigure04.current) return;
     // Define states for switch points
     const isAbove1 = relativeScroll < switchPoint1;
     const isAbove2 = relativeScroll < switchPoint2;
@@ -625,28 +631,31 @@ function App() {
   const [figure05DataFirst, setFigure05DataFirst] = useState([]);
   const [figure05DataSecond, setFigure05DataSecond] = useState([]);
   const [figure05DataThird, setFigure05DataThird] = useState([]);
-  const [positionFigure05, setPositionFigure05] = useState('absolute_bottom');
+  const [positionFigure05, setPositionFigure05] = useState('');
   const aboveSwitchPointFigure05 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure05 = useRef(null);
   const chartFigure05 = useRef(null);
 
   const handleScrollFigure05 = useCallback(() => {
-    fixedSectionRefFigure05.current.style.height = '500vh';
-    const fixedTop = fixedSectionRefFigure05.current.offsetTop;
-    const fixedBottom = fixedTop + fixedSectionRefFigure05.current.offsetHeight - window.innerHeight;
+    if (!fixedSectionRefFigure05.current || !chartFigure05.current) return;
+
+    // 3 screens.
+    fixedSectionRefFigure05.current.style.height = `${3 * 130 + 80}vh`;
+
     const { scrollY, innerHeight } = window;
-    const relativeScroll = scrollY - fixedTop;
+    let { top } = fixedSectionRefFigure05.current.getBoundingClientRect();
+    top += scrollY;
+    const { height } = fixedSectionRefFigure05.current.getBoundingClientRect();
+    const fixedBottom = top + height - innerHeight;
+    const relativeScroll = scrollY - top;
+
+    // Determine position state
+    setPositionFigure05(scrollY < top ? 'absolute_top' : scrollY < fixedBottom ? 'fixed' : 'absolute_bottom');
+
+    // Define switch points
     const switchPoint1 = innerHeight * 0.3 + innerHeight * 0.8;
     const switchPoint2 = innerHeight * 1.6 + innerHeight * 0.8;
 
-    // Determine position state
-    setPositionFigure05(
-      scrollY < fixedTop ? 'absolute_top'
-        : scrollY < fixedBottom ? 'fixed'
-          : 'absolute_bottom'
-    );
-
-    if (!fixedSectionRefFigure05.current || !chartFigure05.current) return;
     // Define states for switch points
     const isAbove1 = relativeScroll < switchPoint1;
     const isAbove2 = relativeScroll < switchPoint2;
@@ -783,8 +792,9 @@ function App() {
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
             <a href="/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
-            <button type="button" className="video" onClick={() => scrollTo('.footer_override')}>Media</button>
-            <button type="button" className="podcast" onClick={() => scrollTo('.footer_override')}>Podcast</button>
+            <button type="button" className="video" onClick={() => scrollTo('.anchor_videos')}>Media</button>
+            <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts')}>Podcast</button>
+            <button type="button" className="press" onClick={() => scrollTo('.anchor_press')}>Press</button>
           </div>
           <div className="chapters_navigation_container">
             {
@@ -880,7 +890,7 @@ function App() {
                   <span style={{ color: '#ffc800' }}>2033?</span>
                 </p>
                 <p>Take a guess.</p>
-                <div>
+                <div className="quess_buttons_container">
                   {[{ value: 60, label: '$600', unit: 'billion' },
                     { value: 120, label: '$1.2', unit: 'trillion' },
                     { value: 250, label: '$2.4', unit: 'trillion' },
@@ -958,6 +968,7 @@ function App() {
               <a href="/system/files/official-document/tdr2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
+            {' '}
             <div className="text_content">
               <h3>Breakthroughs in AI are reshaping all industries – from content creation and product design to automated coding and customer service.</h3>
               <p>But AI development is highly concentrated. Just 100 companies funded 40% of research and development (R&D) in 2022. None of them are based in developing countries except China. The United States and China account for about 33% of AI publications and 60% of AI patents.</p>
@@ -1010,7 +1021,7 @@ function App() {
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
             <div className="text_content">
-              <h3>AI could affect 40% of jobs worldwide, with Workers in advanced economies are more exposed. But it’s not all about potential job loss.</h3>
+              <h3>AI could affect 40% of jobs worldwide, with workers in advanced economies more exposed. But it’s not all about potential job loss.</h3>
               <p>In advanced economies, 27% of jobs could be enhanced by AI – boosting human skills rather than replacing workers.</p>
               <p>Generative AI can unlock major productivity gains – especially in services and knowledge work.</p>
               <p>Tech history shows that AI’s full impact will take years – if not decades – to unfold.</p>
@@ -1068,6 +1079,7 @@ function App() {
                   This graph shows how ready countries are for
                   {' '}
                   <span style={{ color: '#ffc800' }}>AI</span>
+                  {' '}
                   across the population.
                 </p>
               </div>
