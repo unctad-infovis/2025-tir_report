@@ -26,6 +26,7 @@ function ScrollingText({ chapter_text, texts }) {
   return (
     <div className={`scrolling-text-container count_${texts.length}`} ref={containerRef}>
       {(scrollProgress > 0 && scrollProgress < 1) && <div className="header">{chapter_text}</div>}
+      {(scrollProgress > 0 && scrollProgress < 1) && <div className="background" />}
       {texts.map((text, index) => {
         const baseOffset = 100 * (index + 1) + 100;
         const translateX = baseOffset - scrollProgress * 400;

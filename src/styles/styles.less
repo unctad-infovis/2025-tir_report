@@ -476,17 +476,24 @@
   }
   >.chapters_container .scrolling-text-container {
     align-items: center;    
-    background-attachment: fixed;
-    background-color: #fff;
-    background-image: url('./../assets/img/2025tir.jpg');
-    background-position: -200px -600px;
-    background-repeat: no-repeat;
-    background-size: auto auto;
     display: flex;
     justify-content: center;
     overflow: hidden;
     position: relative;
-    top: 0;
+    .background {
+      background-attachment: fixed;
+      background-color: #fff;
+      background-image: url('./../assets/img/2025tir.jpg');
+      background-position: -200px -400px;
+      background-repeat: no-repeat;
+      background-size: auto auto;
+      content: '';
+      height: 100vh;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
     &.count_2 {
       height: 250vh;
     }
@@ -526,6 +533,7 @@
   }
   >.chapters_container .fixed-section {
     position: relative;
+    z-index: 2;
     .fixed-background {
       background-attachment: fixed;
       background-position: 50% 50%;
