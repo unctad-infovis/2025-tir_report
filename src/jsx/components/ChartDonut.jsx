@@ -176,7 +176,7 @@ const DonutChart = forwardRef((props, ref) => {
               duration: 1000
             },
             borderRadius: 0,
-            borderWidth: 2,
+            borderWidth: 0,
             cursor: 'default',
             dataLabels: {
               connectorColor: '#fff',

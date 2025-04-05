@@ -51,7 +51,6 @@ const BarChart = forwardRef((props, ref) => {
               if (props.data_label_align === 'left') {
                 const chart_el = this;
                 let customLabel = chart_el.options.chart.custom.label;
-
                 if (!customLabel) {
                   chart_el.options.chart.custom.label = chart_el.renderer.label(
                     '<span>Global frontier</span><br /><span>tech market in 20</span><span style="fill: #ffc800;">2</span><span>3</span><br/><span style="font-size: 40px"><strong>$2.5tn</strong></span>'
@@ -62,8 +61,7 @@ const BarChart = forwardRef((props, ref) => {
                   }).add();
                   customLabel = chart_el.options.chart.custom.label;
                 }
-
-                const x = window.innerWidth / 2;
+                const x = chart_el.chartWidth / 2;
                 const y = chart_el.plotTop - 130;
                 customLabel.attr({
                   x,

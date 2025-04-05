@@ -900,7 +900,7 @@ function App() {
             <div className="scroll-indicator"><div className="arrow" /></div>
             <div className="chart_container_full">
               {
-                (window.innerWidth > 800 && window.innerHeight > 700) ? <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} /> : (window.innerWidth > 600) ? <Figure01Donut ref={chartFigure01Donut} setData2023={setFigure01DonutData2023} setData2033={setFigure01DonutData2033} /> : <Figure01Bar ref={chartFigure01Bar} setData2023={setFigure01BarData2023} setData2033={setFigure01BarData2033} />
+                (window.innerWidth > 800 && window.innerHeight > 700) ? <Figure01Alt ref={chartFigure01Alt} chart_data={figure01AltData} /> : (window.innerWidth > 600 && window.innerHeight > 800) ? <Figure01Donut ref={chartFigure01Donut} setData2023={setFigure01DonutData2023} setData2033={setFigure01DonutData2033} /> : <Figure01Bar ref={chartFigure01Bar} setData2023={setFigure01BarData2023} setData2033={setFigure01BarData2033} />
               }
             </div>
           </div>
@@ -912,7 +912,7 @@ function App() {
                   {' '}
                   <span style={{ color: '#ffc800' }}>7%</span>
                   {' '}
-                  of the global tech market.
+                  of the global frontier tech market.
                 </p>
                 <br />
                 <p>
@@ -930,14 +930,13 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tdr2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
+              <a href="/system/files/official-document/tir2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
             </div>
-            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
-            {' '}
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
             <div className="text_content">
               <h3>Breakthroughs in AI are reshaping all industries – from content creation and product design to automated coding and customer service.</h3>
               <p>But AI development is highly concentrated. Just 100 companies funded 40% of research and development (R&D) in 2022. None of them are based in developing countries except China. The United States and China account for about 33% of AI publications and 60% of AI patents.</p>
-              <p>TThis imbalance is also seen in AI infrastructure. AI needs more than electricity and the internet. It requires computing power, servers and high-quality data to train models.</p>
+              <p>This imbalance is also seen in AI infrastructure. AI needs more than electricity and the internet. It requires computing power, servers and data centres.</p>
               <p>The US holds one third of the top supercomputers and over half the world’s computing power. Most supercomputers and data centres are in developed countries.</p>
               <p>Skills are also key – from data literacy to expert-level AI knowledge. But these skills are unevenly distributed.</p>
             </div>
@@ -982,9 +981,9 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tdr2025ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 2">Download</a>
+              <a href="/system/files/official-document/tir2025ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 2">Download</a>
             </div>
-            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_02_.jpg" /></div></div>
             <div className="text_content">
               <h3>AI could affect 40% of jobs worldwide, with workers in advanced economies more exposed. But it’s not all about potential job loss.</h3>
               <p>In advanced economies, 27% of jobs could be enhanced by AI – boosting human skills rather than replacing workers.</p>
@@ -1064,9 +1063,7 @@ function App() {
                   {' '}
                   or
                   {' '}
-                  <span style={{ color: '#ffc800' }}>leader</span>
-                  {' '}
-                  based on AI-related skills.
+                  <span style={{ color: '#ffc800' }}>leader.</span>
                 </p>
               </div>
             </div>
@@ -1145,7 +1142,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tdr2025ch3_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 3">Download</a>
+              <a href="/system/files/official-document/tir2025ch3_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 3">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_03_.jpg" /></div></div>
             <div className="text_content">
@@ -1229,9 +1226,9 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tdr2025ch4_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 4">Download</a>
+              <a href="/system/files/official-document/tir2025ch4_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 4">Download</a>
             </div>
-            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_02_.jpg" /></div></div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
             <div className="text_content">
               <h3>To be competitive in an AI-driven world, developing countries must rethink industrial policy. They should shift the focus to technology, innovation and knowledge-intensive services.</h3>
               <p>Developing countries must act quickly to set their AI strategies, aligning them with their own development goals. Simply following others’ paths may not meet their unique needs and priorities.</p>
@@ -1306,14 +1303,14 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tdr2025ch5_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 5">Download</a>
+              <a href="/system/files/official-document/tir2025ch5_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 5">Download</a>
             </div>
-            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
+            <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
             <div className="text_content">
               <h3>AI is a borderless technology. While governments can regulate AI at the national level, global collaboration is essential to ensure it serves the public good.</h3>
               <p>Today, multinational tech giants dominate AI development – driven more by profit than public interest. Without oversight, there’s little incentive to align AI with global development goals.</p>
               <p>Governments and international institutions must act to ensure AI serves people and the planet.</p>
-              <p>But collaboration must be inclusive. Yet global AI governance remains fragmented and led by a handful of wealthy nations. People in developing countries will be affected by AI but have little or no say in shaping its future. The lack of representation is alarming.</p>
+              <p>Collaboration must be inclusive. Yet global AI governance remains fragmented and led by a handful of wealthy nations. People in developing countries will be affected by AI but have little or no say in shaping its future. The lack of representation is alarming.</p>
               <p><strong>The United Nations is leading efforts to close this gap.</strong></p>
               <p>In 2025, UN Member States adopted the Pact for the Future and the Global Digital Compact, setting a series of commitments to enhance international AI governance for the benefit of humanity.</p>
               <p>UNCTAD advocates for multi-stakeholder cooperation to steer AI towards shared goals and values.</p>
@@ -1330,7 +1327,7 @@ function App() {
                   AI governance must balance innovation with public safety and trust. Policymakers must incorporate diverse voices, ensuring that AI policies protect vulnerable populations.
                 </li>
                 <li>
-                  <strong>Shared public digital infrastructure.</strong>
+                  <strong>Shared digital infrastructure.</strong>
                   {' '}
                   Governments can collaborate with the private sector to develop public AI infrastructure. A global facility – modelled on how CERN was built as an international scientific research centre – could provide equitable access to AI infrastructure.
                 </li>
