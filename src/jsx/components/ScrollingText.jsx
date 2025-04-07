@@ -37,11 +37,13 @@ function ScrollingText({ chapter_text, texts }) {
           opacity = (1 + (translateX * 1.2) / 100);
         }
         return (
-          <div key={text} className="scrolling-text" style={{ transform: `translateX(${translateX}%)`, opacity }}>
-            <p>
-              {text}
-            </p>
-          </div>
+          (scrollProgress > 0 && scrollProgress < 1) && (
+            <div key={text} className="scrolling-text" style={{ transform: `translateX(${translateX}%)`, opacity }}>
+              <p>
+                {text}
+              </p>
+            </div>
+          )
         );
       })}
     </div>

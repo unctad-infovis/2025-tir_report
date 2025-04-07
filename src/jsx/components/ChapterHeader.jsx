@@ -31,6 +31,7 @@ function ChapterHeader(props) {
         <h2>
           <div className="chapter">
             Chapter
+            {' '}
             {chapter_number}
           </div>
           <div>

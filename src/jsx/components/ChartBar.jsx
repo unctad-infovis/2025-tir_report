@@ -135,7 +135,7 @@ const BarChart = forwardRef((props, ref) => {
           enabled: false
         },
         xAxis: {
-          categories: props.data[0].map(el => el.name),
+          categories: props.data[0].slice(0, 5).sort((a, b) => b.y - a.y).map(el => el.name),
           labels: {
             distance: 5,
             rotation: 0,

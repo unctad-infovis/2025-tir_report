@@ -313,7 +313,7 @@ function App() {
   * FIGURE 2 *
   *********** */
   const [positionFigure02, setPositionFigure02] = useState('absolute_bottom');
-  const aboveSwitchPointFigure02 = useRef({ isAbove1: true, isAbove2: true });
+  const aboveSwitchPointFigure02 = useRef({ isAbove1: null, isAbove2: null });
   const fixedSectionRefFigure02 = useRef(null);
   const chartFigure02 = useRef(null);
 
@@ -751,14 +751,14 @@ function App() {
         <div className="between" />
         <div className="content_bottom">
           <h2>
-            Inclusive Artificial Intelligence for development
+            Inclusive artificial intelligence for development
             <div className="share_wrapper"><ShareContainer url={window.location.href} /></div>
           </h2>
           <div className="download_buttons_container">
             <a href="/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
             <a href="/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
             <button type="button" className="video" onClick={() => scrollTo('.anchor_videos', 'Scroll to videos')}>Video</button>
-            <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts', 'Scroll to podcasts')}>Podcast</button>
+            {/* <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts', 'Scroll to podcasts')}>Podcast</button> */}
             <button type="button" className="press" onClick={() => scrollTo('.anchor_press', 'Scroll to press')}>Press</button>
           </div>
           <div className="chapters_navigation_container">
@@ -1347,6 +1347,7 @@ function App() {
                   Enhanced science and technology cooperation can help developing countries tackle common AI challenges. Trade agreements could include AI provisions, while regional institutions can promote best practices and help shape coherent strategies.
                 </li>
               </ul>
+              <br />
               <h3>AI’s future must be shaped by all – not just a few.</h3>
               <h3>Stronger global cooperation in AI can drive inclusive progress – rather than deepen inequalities.</h3>
             </div>
