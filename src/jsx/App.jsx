@@ -4,8 +4,8 @@ import React, {
 import '../styles/styles.less';
 
 // https://www.npmjs.com/package/react-is-visible
-// import 'intersection-observer';
-// import IsVisible from 'react-is-visible';
+import 'intersection-observer';
+import { useIsVisible } from 'react-is-visible';
 
 import scrollIntoView from 'scroll-into-view';
 // import DwChartContainer from './components/DwChartContainer.jsx';
@@ -27,19 +27,78 @@ import ParallaxImage from './components/ParallaxImage.jsx';
 
 function App() {
   const appRef = useRef();
+  const overviewRef = useRef();
+  const isVisibleChapterOverview = useIsVisible(overviewRef);
+  const chapter1Ref = useRef();
+  const isVisibleChapter1 = useIsVisible(chapter1Ref);
+  const chapter2Ref = useRef();
+  const isVisibleChapter2 = useIsVisible(chapter2Ref);
+  const chapter3Ref = useRef();
+  const isVisibleChapter3 = useIsVisible(chapter3Ref);
+  const chapter4Ref = useRef();
+  const isVisibleChapter4 = useIsVisible(chapter4Ref);
+  const chapter5Ref = useRef();
+  const isVisibleChapter5 = useIsVisible(chapter5Ref);
 
   const analytics = window.gtag || undefined;
   const project_name = '2025-tir';
 
-  const track = useCallback((event_type = false, event_name = false) => {
-    if (typeof analytics !== 'undefined' && event_name !== false) {
-      analytics('event', project_name, { event_type, event_name, transport_type: 'beacon' });
+  const track = useCallback((event_name = false, event_type = false) => {
+    if (typeof analytics !== 'undefined' && event_name !== false && event_type !== false) {
+      analytics('event', 'project_interaction', {
+        event_label: event_name,
+        event_category: event_type,
+        project_name,
+        transport_type: 'beacon'
+      });
     }
   }, [analytics]);
 
-  // const seenChapter = (chapter) => {
-  // track('Scroll', chapter);
-  // };
+  const seenChapter = useCallback((chapter) => {
+    track('Scroll', chapter);
+  }, [track]);
+
+  useEffect(() => {
+    if (!overviewRef.current.classList.contains('seen') && isVisibleChapterOverview) {
+      overviewRef.current.classList.add('seen');
+      seenChapter('Overview');
+    }
+  }, [overviewRef, seenChapter, isVisibleChapterOverview]);
+
+  useEffect(() => {
+    if (!chapter1Ref.current.classList.contains('seen') && isVisibleChapter1) {
+      chapter1Ref.current.classList.add('seen');
+      seenChapter('Chapter 1');
+    }
+  }, [chapter1Ref, seenChapter, isVisibleChapter1]);
+
+  useEffect(() => {
+    if (!chapter2Ref.current.classList.contains('seen') && isVisibleChapter2) {
+      chapter2Ref.current.classList.add('seen');
+      seenChapter('Chapter 2');
+    }
+  }, [chapter2Ref, seenChapter, isVisibleChapter2]);
+
+  useEffect(() => {
+    if (!chapter3Ref.current.classList.contains('seen') && isVisibleChapter3) {
+      chapter3Ref.current.classList.add('seen');
+      seenChapter('Chapter 3');
+    }
+  }, [chapter3Ref, seenChapter, isVisibleChapter3]);
+
+  useEffect(() => {
+    if (!chapter4Ref.current.classList.contains('seen') && isVisibleChapter4) {
+      chapter4Ref.current.classList.add('seen');
+      seenChapter('Chapter 4');
+    }
+  }, [chapter4Ref, seenChapter, isVisibleChapter4]);
+
+  useEffect(() => {
+    if (!chapter5Ref.current.classList.contains('seen') && isVisibleChapter5) {
+      chapter5Ref.current.classList.add('seen');
+      seenChapter('Chapter 5');
+    }
+  }, [chapter5Ref, seenChapter, isVisibleChapter5]);
 
   /** *********
   * FIGURE INTRO *
@@ -713,6 +772,11 @@ function App() {
 
   const [selectedButton, setSelectedButton] = useState(null);
   const handleClick = (value, index) => {
+    if (index === -1) {
+      track('Guess', 'Reset');
+    } else {
+      track('Guess', value);
+    }
     setFigureIntroData(value);
     setSelectedButton(index);
   };
@@ -784,7 +848,7 @@ function App() {
       </div>
 
       { /* Overview */}
-      <div className="content_container">
+      <div className="content_container" ref={overviewRef}>
         <div className="text_container">
           <div className="text_content">
             <h3>Artificial Intelligence (AI) is the first technology that can make decisions and generate ideas, challenging the notion that technology is neutral.</h3>
@@ -926,7 +990,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="content_container chapter_header_1">
+        <div className="content_container chapter_header_1" ref={chapter1Ref}>
           <div className="text_container">
             <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
             <div className="download_buttons_container">
@@ -977,7 +1041,7 @@ function App() {
             <div className="scroll-content"><div><p>But they are also better positioned to harness AI’s benefits.</p></div></div>
           </div>
         </div>
-        <div className="content_container chapter_header_2">
+        <div className="content_container chapter_header_2" ref={chapter2Ref}>
           <div className="text_container">
             <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
             <div className="download_buttons_container">
@@ -1138,7 +1202,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="content_container chapter_header_3">
+        <div className="content_container chapter_header_3" ref={chapter3Ref}>
           <div className="text_container">
             <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
             <div className="download_buttons_container">
@@ -1222,7 +1286,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="content_container chapter_header_4">
+        <div className="content_container chapter_header_4" ref={chapter4Ref}>
           <div className="text_container">
             <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
             <div className="download_buttons_container">
@@ -1299,7 +1363,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="content_container chapter_header_5">
+        <div className="content_container chapter_header_5" ref={chapter5Ref}>
           <div className="text_container">
             <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
             <div className="download_buttons_container">
