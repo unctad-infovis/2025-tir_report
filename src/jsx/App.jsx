@@ -41,15 +41,14 @@ function App() {
   const isVisibleChapter5 = useIsVisible(chapter5Ref);
 
   const analytics = window.gtag || undefined;
-  const project_name = '2025-tir';
 
-  const track = useCallback((event_name = false, event_type = false) => {
-    if (typeof analytics !== 'undefined' && event_name !== false && event_type !== false) {
+  const track = useCallback((label_event = false, value_event = false) => {
+    if (typeof analytics !== 'undefined' && label_event !== false && value_event !== false) {
       analytics('event', 'project_interaction', {
-        event_label: event_name,
-        event_category: event_type,
-        project_name,
-        transport_type: 'beacon'
+        label: label_event,
+        project_name: '2025-tir_report',
+        transport_type: 'beacon',
+        value: value_event
       });
     }
   }, [analytics]);
@@ -731,7 +730,7 @@ function App() {
     if (hash) {
       if (hash === '#chapter1' || hash === '#chapter2' || hash === '#chapter3' || hash === '#chapter4' || hash === '#chapter5') {
         const chapter_number = hash.slice(-1);
-        scrollTo(`.chapter_header_${chapter_number}`, `Scroll to chapter ${chapter_number}`);
+        scrollTo(`.chapter_header_${chapter_number}`, `Chapter ${chapter_number}`);
       }
     }
   }, [scrollTo]);
@@ -739,7 +738,6 @@ function App() {
   const downloadDocument = (event) => {
     track('Anchor', `${event.currentTarget.href}`);
     event.stopPropagation();
-    return false;
   };
 
   useEffect(() => {
@@ -819,16 +817,16 @@ function App() {
             <div className="share_wrapper"><ShareContainer url={window.location.href} /></div>
           </h2>
           <div className="download_buttons_container">
-            <a href="/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
-            <a href="/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
-            <button type="button" className="video" onClick={() => scrollTo('.anchor_videos', 'Scroll to videos')}>Video</button>
-            {/* <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts', 'Scroll to podcasts')}>Podcast</button> */}
-            <button type="button" className="press" onClick={() => scrollTo('.anchor_press', 'Scroll to press')}>Press</button>
+            <a href="https://unctad.org/system/files/official-document/tir2025overview_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Overview" className="overview">Overview</a>
+            <a href="https://unctad.org/system/files/official-document/tir2025_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" aria-label="Download Full Report" className="pdf_download">Full report</a>
+            <button type="button" className="video" onClick={() => scrollTo('.anchor_videos', 'Videos')}>Video</button>
+            {/* <button type="button" className="podcast" onClick={() => scrollTo('.anchor_podcasts', 'Podcasts')}>Podcast</button> */}
+            <button type="button" className="press" onClick={() => scrollTo('.anchor_press', 'Press')}>Press</button>
           </div>
           <div className="chapters_navigation_container">
             {
               ['AI at the technology frontier', 'Leveraging AI for productivity and workers’ empowerment', 'Preparing to seize AI opportunities', 'Designing national policies for AI', 'Global collaboration for inclusive and equitable AI'].map((chapter_title, i) => (
-                <button onClick={() => scrollTo(`.chapter_header_${i + 1}`, `Scroll to chapter ${i + 1}`)} type="button" key={chapter_title}>
+                <button onClick={() => scrollTo(`.chapter_header_${i + 1}`, `Chapter ${i + 1}`)} type="button" key={chapter_title}>
                   <div className="chapter_navigation">
                     <div className="chapter_title"><h2>{chapter_title}</h2></div>
                     <div className="chapter_image"><div className={`chapter_image_${i + 1}`} /></div>
@@ -837,7 +835,7 @@ function App() {
                         {i + 1}
                         .
                       </div>
-                      <a href={`/system/files/official-document/tir2025ch${i + 1}_en.pdf`} target="_blank" onClick={(event) => downloadDocument(event)} className="chapter_download_button" aria-label={`Download Chapter ${i + 1}`} rel="noreferrer" />
+                      <a href={`https://unctad.org/system/files/official-document/tir2025ch${i + 1}_en.pdf`} target="_blank" onClick={(event) => downloadDocument(event)} className="chapter_download_button" aria-label={`Download Chapter ${i + 1}`} rel="noreferrer" />
                     </div>
                   </div>
                 </button>
@@ -880,7 +878,7 @@ function App() {
           </div>
         </div>
         <div className="backtotop_container">
-          <button type="button" onClick={() => scrollTo('.header_container', 'Scroll to top')}>Back to top</button>
+          <button type="button" onClick={() => scrollTo('.header_container', 'Top')}>Back to top</button>
         </div>
         <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
         <div ref={fixedSectionRefFigureIntro} className="fixed-section">
@@ -931,7 +929,7 @@ function App() {
                   ))}
                 </div>
                 <div>
-                  <button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip', 'Scroll to skip')}>Skip</button>
+                  <button type="button" className="skip_button" onClick={() => scrollTo('.scroll-content-skip', 'Skip')}>Skip</button>
                   {' '}
                   <button type="button" className="skip_button" onClick={() => handleClick(19, -1)}>Reset</button>
                 </div>
@@ -994,7 +992,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="1" title="AI at the technology frontier" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tir2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
+              <a href="https://unctad.org/system/files/official-document/tir2025ch1_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 1">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_01_.jpg" /></div></div>
             <div className="text_content">
@@ -1045,7 +1043,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="2" title="Leveraging AI for productivity and workers’ empowerment" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tir2025ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 2">Download</a>
+              <a href="https://unctad.org/system/files/official-document/tir2025ch2_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 2">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_02_.jpg" /></div></div>
             <div className="text_content">
@@ -1206,7 +1204,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="3" title="Preparing to seize AI opportunities" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tir2025ch3_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 3">Download</a>
+              <a href="https://unctad.org/system/files/official-document/tir2025ch3_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 3">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_03_.jpg" /></div></div>
             <div className="text_content">
@@ -1290,7 +1288,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="4" title="Designing national policies for AI" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tir2025ch4_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 4">Download</a>
+              <a href="https://unctad.org/system/files/official-document/tir2025ch4_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 4">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_04_.jpg" /></div></div>
             <div className="text_content">
@@ -1367,7 +1365,7 @@ function App() {
           <div className="text_container">
             <ChapterHeader chapter_number="5" title="Global collaboration for inclusive and equitable AI" />
             <div className="download_buttons_container">
-              <a href="/system/files/official-document/tir2025ch5_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 5">Download</a>
+              <a href="https://unctad.org/system/files/official-document/tir2025ch5_en.pdf" target="_blank" onClick={(event) => downloadDocument(event)} type="button" className="pdf_download" aria-label="Download Chapter 5">Download</a>
             </div>
             <div className="media_container"><div className="image_container"><ParallaxImage src="assets/img/l/_image_05_.jpg" /></div></div>
             <div className="text_content">
