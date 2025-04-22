@@ -20,15 +20,15 @@ function ShareContainer({ url }) {
     document.querySelectorAll('.share_container').forEach((el) => {
       if (el.querySelector('.share_buttons') !== shareButtonsRef.current) {
         el.querySelector('.share_buttons').style.display = 'none';
-        el.querySelector('.icon_container button img').src = 'https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_share.png';
+        el.querySelector('.icon_container button img').src = 'https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_share.png';
       }
     });
     if (shareButtonsRef.current.style.display === 'none') {
       shareButtonsRef.current.style.display = 'block';
-      iconButtonsRef.current.querySelector('img').src = 'https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_close.png';
+      iconButtonsRef.current.querySelector('img').src = 'https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_close.png';
     } else {
       shareButtonsRef.current.style.display = 'none';
-      iconButtonsRef.current.querySelector('img').src = 'https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_share.png';
+      iconButtonsRef.current.querySelector('img').src = 'https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_share.png';
     }
     event.preventDefault();
   };
@@ -47,15 +47,15 @@ function ShareContainer({ url }) {
 
   return (
     <div className="share_container">
-      <div className="icon_container" onClick={(event) => show(event)} onKeyDown={(event) => show(event)} role="presentation"><button type="button" ref={iconButtonsRef}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_share.png" alt="Share" /></button></div>
+      <div className="icon_container" onClick={(event) => show(event)} onKeyDown={(event) => show(event)} role="presentation"><button type="button" ref={iconButtonsRef}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_share.png" alt="Share" /></button></div>
       <div className="share_buttons" ref={shareButtonsRef} style={{ display: 'none' }}>
-        <div className="share_button"><a href={`https://www.facebook.com/sharer/sharer.php?u=${(url)}`} onClick={(event) => shareButton(event)}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_facebook.png" alt="Facebook" /></a></div>
-        <div className="share_button"><a href={`https://twitter.com/share?url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent('unctad')}&text=${encodeURIComponent('')}`} onClick={(event) => shareButton(event, url)}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_x.png" alt="X" /></a></div>
-        {/* <div className="share_button"><a href={`https://twitter.com/share?url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent('unctad')}&text=${encodeURIComponent('')}`} onClick={(event) => shareButton(event, url)}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_instagram.png" alt="Instagram" /></a></div> */}
-        <div className="share_button"><a href={`whatsapp://send?text=${encodeURIComponent(url)}`}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_whatsapp.png" alt="Whatspp" /></a></div>
-        <div className="share_button"><a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}`} onClick={(event) => shareButton(event)}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_linkedin.png" alt="LinkedIn" /></a></div>
+        <div className="share_button"><a href={`https://www.facebook.com/sharer/sharer.php?u=${(url)}`} onClick={(event) => shareButton(event)}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_facebook.png" alt="Facebook" /></a></div>
+        <div className="share_button"><a href={`https://twitter.com/share?url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent('unctad')}&text=${encodeURIComponent('')}`} onClick={(event) => shareButton(event, url)}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_x.png" alt="X" /></a></div>
+        {/* <div className="share_button"><a href={`https://twitter.com/share?url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent('unctad')}&text=${encodeURIComponent('')}`} onClick={(event) => shareButton(event, url)}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_instagram.png" alt="Instagram" /></a></div> */}
+        <div className="share_button"><a href={`whatsapp://send?text=${encodeURIComponent(url)}`}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_whatsapp.png" alt="Whatspp" /></a></div>
+        <div className="share_button"><a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}`} onClick={(event) => shareButton(event)}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_linkedin.png" alt="LinkedIn" /></a></div>
         <div className="share_button">
-          <a href="CO" onClick={(event) => copyToClipboard(event, url)}><img src="https://storage.unctad.org/2024-tdr_report/assets/img/icons/icon_link.png" alt="Share" /></a>
+          <a href="CO" onClick={(event) => copyToClipboard(event, url)}><img src="https://storage.unctad.org/2025-tir_report/assets/img/icons/icon_link.png" alt="Share" /></a>
           <div className="copied_message" ref={messageRef}>Copied to clipboard</div>
         </div>
       </div>
