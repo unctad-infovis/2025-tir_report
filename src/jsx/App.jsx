@@ -876,11 +876,11 @@ function App() {
             <div className="progress_bar" style={{ width: `${sectionProgress}%` }} />
           </div>
         </div>
-        {/* <div className="backtotop_container">
+        <div className="backtotop_container">
           <div>
             <button type="button" onClick={() => scrollTo('.header_container', 'Top')}>Back to top</button>
           </div>
-        </div> */}
+        </div>
         <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
         <div ref={fixedSectionRefFigureIntro} className="fixed-section">
           <div className={`fixed-background ${positionFigureIntro}`}>
