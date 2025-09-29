@@ -845,7 +845,7 @@ function App() {
       </div>
 
       { /* Overview */}
-      <div className="content_container" ref={overviewRef}>
+      <div className="content_container overview_container" ref={overviewRef}>
         <div className="text_container">
           <div className="text_content">
             <h3>Artificial Intelligence (AI) is the first technology that can make decisions and generate ideas, challenging the notion that technology is neutral.</h3>
@@ -877,7 +877,9 @@ function App() {
           </div>
         </div>
         <div className="backtotop_container">
-          <button type="button" onClick={() => scrollTo('.header_container', 'Top')}>Back to top</button>
+          <div>
+            <button type="button" onClick={() => scrollTo('.header_container', 'Top')}>Back to top</button>
+          </div>
         </div>
         <ScrollingText texts={['Just how fast is AI’s market growing?']} chapter_text="" />
         <div ref={fixedSectionRefFigureIntro} className="fixed-section">

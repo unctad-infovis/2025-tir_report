@@ -21,6 +21,7 @@
     justify-content: space-between;
     min-height: 50vh;
     position: relative;
+    z-index: 20;
     @media all and (max-width: 970px) {
       background-image: url('./../assets/img/l/cover-min.jpg');
     }
@@ -265,29 +266,45 @@
       }
     }
   }
-  >.chapters_container >.backtotop_container {
+ .chapters_container > .backtotop_container {
     background-color: transparent;
-    height: 0;
-    margin-left: calc(100vw - 65px);
-    position: sticky;
-    top: calc(100vh - 65px);
-    width: 0;
-    z-index: 10;
-    button {
-      background-color: rgba(0, 73, 135, 1.0);
-      border-radius: 45px;
-      border: 0;
-      color: #fff;
-      cursor: pointer;
-      font-family: Inter, Helvetica, Arial, sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      height: 45px;
-      position: relative;
-      width: 45px;
-      &:hover {
-        background-color: #009edb;
-        border: 1px solid #000;
+    height: 45px;
+    width: 100%;
+    div {
+      animation-delay: 10s;
+      animation-direction: normal;
+      animation-duration: 0.5s;
+      animation-fill-mode: both;
+      animation-iteration-count: 5;
+      animation-name: bounce2;
+      animation-play-state: running;
+      animation-timing-function: ease-in-out;
+      bottom: 20px;
+      position: fixed;
+      right: 50px;
+      text-align: right;
+      z-index: 15;
+      @media all and (max-width: 1000px) {
+        right: 20px;
+      }
+      button {
+        background-color: #ffcb05;
+        border-radius: 50px;
+        border: 0;
+        box-shadow: 0 0 10px #000;
+        color: #000;
+        cursor: pointer;
+        font-family: Inter, Helvetica, Arial, sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        height: 50px;
+        width: 50px;
+        position: relative;
+
+        &:hover {
+          background-color: #009edb;
+          color: #fff;
+        }
       }
     }
   }
@@ -332,6 +349,9 @@
     padding: 100px 0;
     position: relative;
     z-index: 3;
+    &.overview_container {
+      z-index: 20;
+    }
     .recommendations,
     .content {
       background-color: #fff;
